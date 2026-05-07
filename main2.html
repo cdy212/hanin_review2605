@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>대만 한인 생활 플랫폼 - 모바일 홈 시안</title>
+  <style>
+    :root {
+      --blue: #0f4fd8;
+      --navy: #0b1f45;
+      --text: #182033;
+      --muted: #6b7280;
+      --line: #e7edf7;
+      --bg: #f7f9fd;
+      --card: #ffffff;
+      --soft-blue: #eef5ff;
+      --soft-green: #eefaf3;
+      --soft-orange: #fff5ea;
+      --soft-purple: #f6f0ff;
+      --soft-gray: #f4f6fa;
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --shadow: 0 18px 50px rgba(20, 35, 70, 0.12);
+      --shadow-soft: 0 8px 24px rgba(20, 35, 70, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #eef3fb 0%, #ffffff 45%, #f6f9ff 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 34px 18px;
+    }
+
+    .stage {
+      width: 100%;
+      max-width: 1160px;
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    .phone-wrap {
+      display: flex;
+      justify-content: center;
+      position: sticky;
+      top: 24px;
+    }
+
+    .phone {
+      width: 390px;
+      height: 820px;
+      background: #fff;
+      border: 1px solid rgba(11, 31, 69, 0.16);
+      border-radius: 42px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .phone::before {
+      content: "";
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 28px;
+      background: #0b1020;
+      border-radius: 0 0 18px 18px;
+      z-index: 5;
+      opacity: 0.95;
+    }
+
+    .screen {
+      height: 100%;
+      overflow-y: auto;
+      padding: 18px 18px 92px;
+      scrollbar-width: none;
+    }
+
+    .screen::-webkit-scrollbar { display: none; }
+
+    .status {
+      height: 26px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 0 8px;
+      color: #101827;
+      margin-bottom: 24px;
+    }
+
+    .status-icons {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .location {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    .bell {
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      background: #f5f7fb;
+      display: grid;
+      place-items: center;
+      position: relative;
+      color: var(--navy);
+      cursor: pointer;
+    }
+
+    .badge {
+      position: absolute;
+      right: -2px;
+      top: -4px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #ef4444;
+      color: white;
+      font-size: 11px;
+      font-weight: 800;
+      display: grid;
+      place-items: center;
+      border: 2px solid white;
+    }
+
+    .hero {
+      min-height: 212px;
+      border-radius: 24px;
+      overflow: hidden;
+      position: relative;
+      background:
+        linear-gradient(90deg, rgba(6, 24, 62, 0.92) 0%, rgba(8, 42, 96, 0.65) 48%, rgba(8, 42, 96, 0.15) 100%),
+        url('https://images.unsplash.com/photo-1470004914212-05527e49370b?auto=format&fit=crop&w=900&q=80');
+      background-size: cover;
+      background-position: center;
+      color: #fff;
+      padding: 30px 26px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .hero h1 {
+      margin: 0 0 14px;
+      font-size: 32px;
+      line-height: 1.28;
+      letter-spacing: -1.2px;
+      font-weight: 900;
+    }
+
+    .hero p {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.55;
+      color: rgba(255,255,255,0.9);
+      font-weight: 600;
+    }
+
+    .hero-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 18px;
+      padding: 10px 20px;
+      background: #ffffff;
+      color: var(--blue);
+      font-weight: 800;
+      font-size: 14px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .hero-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    }
+    .hero-btn svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+    }
+
+    .search {
+      margin: 24px 0 24px;
+      height: 64px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      padding: 8px 8px 8px 22px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .search input {
+      border: none;
+      outline: none;
+      flex: 1;
+      font-size: 16px;
+      color: var(--text);
+      min-width: 0;
+    }
+
+    .search input::placeholder { color: #9aa3b2; }
+
+    .search button {
+      width: 50px;
+      height: 50px;
+      border: none;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      box-shadow: 0 10px 20px rgba(15, 79, 216, 0.25);
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px 14px;
+      margin-bottom: 28px;
+    }
+
+    .menu-item {
+      border: 0;
+      background: transparent;
+      padding: 0;
+      text-align: center;
+      cursor: pointer;
+      color: inherit;
+    }
+
+    .icon-box {
+      width: 76px;
+      height: 76px;
+      margin: 0 auto 10px;
+      border-radius: 24px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(214, 224, 238, 0.9);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+
+    .menu-item:hover .icon-box,
+    .menu-item:focus-visible .icon-box {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .menu-title {
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--navy);
+      letter-spacing: -0.5px;
+      margin-bottom: 5px;
+    }
+
+    .menu-desc {
+      font-size: 12px;
+      line-height: 1.35;
+      color: #3c4658;
+      font-weight: 600;
+    }
+
+    .blue-soft { background: var(--soft-blue); color: #1565d8; }
+    .green-soft { background: var(--soft-green); color: #159447; }
+    .orange-soft { background: var(--soft-orange); color: #e07a12; }
+    .purple-soft { background: var(--soft-purple); color: #7548d8; }
+    .gray-soft { background: var(--soft-gray); color: #52627a; }
+
+    .quick-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      background: #f6f9ff;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 10px;
+      margin-top: 2px;
+    }
+
+    .quick-row button {
+      border: none;
+      background: transparent;
+      color: var(--navy);
+      font-weight: 800;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 12px 4px;
+      border-radius: 16px;
+      cursor: pointer;
+    }
+
+    .quick-row button:hover { background: #fff; box-shadow: var(--shadow-soft); }
+
+    .bottom-nav {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 78px;
+      background: rgba(255,255,255,0.96);
+      border-top: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      backdrop-filter: blur(10px);
+      padding: 8px 10px 10px;
+    }
+
+    .nav-item {
+      border: 0;
+      background: transparent;
+      color: #606b7c;
+      font-size: 12px;
+      font-weight: 800;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .nav-item.active { color: var(--blue); }
+
+    .panel {
+      background: rgba(255,255,255,0.82);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .panel h2 {
+      margin: 0 0 18px;
+      color: var(--navy);
+      font-size: 28px;
+      letter-spacing: -0.8px;
+    }
+
+    .panel-sub {
+      margin: 0 0 26px;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 15px;
+    }
+
+    .feature-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .feature {
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      gap: 16px;
+      padding: 18px;
+      border-radius: 20px;
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+
+    .num {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: var(--blue);
+      color: #fff;
+      font-weight: 900;
+    }
+
+    .feature h3 {
+      margin: 0 0 6px;
+      color: var(--navy);
+      font-size: 18px;
+    }
+
+    .feature p {
+      margin: 0;
+      color: #4b5565;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .guide {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .guide-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 20px;
+    }
+
+    .guide-card h3 {
+      margin: 0 0 10px;
+      color: var(--navy);
+      font-size: 17px;
+    }
+
+    .guide-card ul {
+      margin: 0;
+      padding-left: 18px;
+      color: #536074;
+      line-height: 1.8;
+      font-size: 14px;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 28px;
+      transform: translateX(-50%) translateY(30px);
+      opacity: 0;
+      background: var(--navy);
+      color: white;
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-weight: 800;
+      box-shadow: var(--shadow);
+      transition: all .25s ease;
+      pointer-events: none;
+      z-index: 20;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    svg { width: 34px; height: 34px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    .filled svg { fill: currentColor; stroke: none; }
+    .nav-item svg { width: 24px; height: 24px; }
+    .quick-row svg { width: 18px; height: 18px; }
+    .bell svg, .search svg { width: 23px; height: 23px; }
+
+    @media (max-width: 900px) {
+      body { padding: 18px 12px 28px; }
+      .stage { grid-template-columns: 1fr; }
+      .phone-wrap { position: static; }
+      .panel { max-width: 420px; margin: 0 auto; }
+      .guide { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 430px) {
+      body { padding: 0; background: #fff; }
+      .stage { display: block; }
+      .phone-wrap { width: 100%; }
+      .phone {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+        border: none;
+        box-shadow: none;
+      }
+      .phone::before { display: none; }
+      .screen { padding: 18px 18px 92px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage">
+    <section class="phone-wrap" aria-label="모바일 홈 화면 미리보기">
+      <div class="phone">
+        <div class="screen">
+          <div class="status">
+            <span>9:41</span>
+            <div class="status-icons" aria-hidden="true"><span>●●●</span><span>Wi‑Fi</span><span>▰</span></div>
+          </div>
+
+          <header class="topbar">
+            <div class="location">타이베이 <span aria-hidden="true">⌄</span></div>
+            <button class="bell" type="button" data-action="알림">
+              <span class="badge">3</span>
+              <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+            </button>
+          </header>
+
+          <section class="hero" aria-label="브랜드 메시지">
+            <h1>100년을 잇고,<br />미래를 연결합니다</h1>
+            <p>대만 한인의 삶이 더 편리하고<br />더 풍요로워지도록</p>
+            <button class="hero-btn" type="button" data-action="100년 역사">
+              100년 역사 보러가기
+              <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </button>
+          </section>
+
+          <form class="search" id="searchForm" aria-label="통합 검색">
+            <input id="searchInput" type="search" placeholder="병원, 마트, 학원, 비자 정보 검색" />
+            <button type="submit" aria-label="검색">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            </button>
+          </form>
+
+          <section class="menu-grid" aria-label="핵심 메뉴 6개">
+            <button class="menu-item" type="button" data-action="병원·의료">
+              <div class="icon-box blue-soft"><svg viewBox="0 0 24 24"><path d="M7 21h10a2 2 0 0 0 2-2V8l-5-5H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2Z"/><path d="M14 3v5h5"/><path d="M12 11v6"/><path d="M9 14h6"/></svg></div>
+              <div class="menu-title">병원·의료</div>
+              <div class="menu-desc">한국어 가능 병원 찾기</div>
+            </button>
+
+            <button class="menu-item" type="button" data-action="마트·쇼핑">
+              <div class="icon-box orange-soft"><svg viewBox="0 0 24 24"><path d="M6 6h15l-2 8H8L6 3H3"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M10 10h6"/></svg></div>
+              <div class="menu-title">마트·쇼핑</div>
+              <div class="menu-desc">한인 마트·쇼핑 정보</div>
+            </button>
+
+            <button class="menu-item" type="button" data-action="행정·비자">
+              <div class="icon-box blue-soft"><svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M15 3v4h4"/><path d="M9 12h6"/><path d="M9 16h6"/><path d="M9 8h3"/></svg></div>
+              <div class="menu-title">행정·비자</div>
+              <div class="menu-desc">비자·체류·행정 정보</div>
+            </button>
+
+            <button class="menu-item" type="button" data-action="교육·육아">
+              <div class="icon-box green-soft"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg></div>
+              <div class="menu-title">교육·육아</div>
+              <div class="menu-desc">학교·학원·육아 정보</div>
+            </button>
+
+            <button class="menu-item" type="button" data-action="한인업체">
+              <div class="icon-box purple-soft"><svg viewBox="0 0 24 24"><path d="M4 10h16"/><path d="M5 10l1-5h12l1 5"/><path d="M6 10v9h12v-9"/><path d="M9 19v-5h6v5"/></svg></div>
+              <div class="menu-title">한인업체</div>
+              <div class="menu-desc">신뢰할 수 있는 업체</div>
+            </button>
+
+            <button class="menu-item" type="button" data-action="커뮤니티">
+              <div class="icon-box purple-soft"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M21 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+              <div class="menu-title">커뮤니티</div>
+              <div class="menu-desc">교민 소식·나눔 공간</div>
+            </button>
+          </section>
+
+          <section class="quick-row" aria-label="빠른 바로가기">
+            <button type="button" data-action="한인회 공지"><svg viewBox="0 0 24 24"><path d="M3 11v2a2 2 0 0 0 2 2h2l4 4v-5l8-3V7l-8-3v14"/></svg>한인회 공지</button>
+            <button type="button" data-action="행사·이벤트"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>행사·이벤트</button>
+            <button type="button" data-action="제휴 혜택"><svg viewBox="0 0 24 24"><path d="M8 12h8"/><path d="M12 8v8"/><path d="M7 21h10a4 4 0 0 0 4-4v-1a4 4 0 0 0-4-4h-1V9a4 4 0 0 0-8 0v3H7a4 4 0 0 0-4 4v1a4 4 0 0 0 4 4Z"/></svg>제휴 혜택</button>
+          </section>
+        </div>
+
+        <nav class="bottom-nav" aria-label="하단 내비게이션">
+          <button class="nav-item active" type="button" data-action="홈"><svg viewBox="0 0 24 24"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/></svg>홈</button>
+          <button class="nav-item" type="button" data-action="공지 News"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>공지 News</button>
+          <button class="nav-item" type="button" data-action="지도"><svg viewBox="0 0 24 24"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3z"/><path d="M9 3v15"/><path d="M15 6v15"/></svg>지도</button>
+          <button class="nav-item" type="button" data-action="커뮤니티"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M21 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>커뮤니티</button>
+          <button class="nav-item" type="button" data-action="마이"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>마이</button>
+        </nav>
+      </div>
+    </section>
+
+    <aside class="panel" aria-label="화면 기능 설명">
+      <h2>메인화면 기능 설명</h2>
+      <p class="panel-sub" style="font-size: 19px; font-weight: 800; color: var(--blue); background: var(--soft-blue); padding: 18px 24px; border-radius: 16px; line-height: 1.5; border-left: 5px solid var(--blue);">
+        핵심 사용자층을 고려한 심플하면서 문제 해결 위주의 네비게이션 수정안
+      </p>
+
+      <div class="feature-list">
+        <div class="feature"><div class="num">1</div><div><h3>최상단 브랜드 배너</h3><p>타이베이 야경 이미지와 핵심 문구를 가장 먼저 보여줘 신뢰와 정체성을 전달합니다.</p></div></div>
+        <div class="feature"><div class="num">2</div><div><h3>통합 검색바</h3><p>병원, 마트, 학원, 비자 등 교민이 자주 찾는 정보를 키워드로 빠르게 찾습니다.</p></div></div>
+        <div class="feature"><div class="num">3</div><div><h3>6개 핵심 메뉴</h3><p>병원·의료, 마트·쇼핑, 행정·비자, 교육·육아, 한인업체, 커뮤니티를 2줄 배열로 배치했습니다.</p></div></div>
+        <div class="feature"><div class="num">4</div><div><h3>빠른 바로가기</h3><p>공지, 행사, 제휴 혜택처럼 한인회가 직접 운영하는 주요 소식을 바로 확인합니다.</p></div></div>
+        <div class="feature"><div class="num">5</div><div><h3>하단 내비게이션</h3><p>홈, 공지 News, 지도, 커뮤니티, 마이 메뉴로 반복 사용에 필요한 이동 경로를 고정했습니다.</p></div></div>
+      </div>
+
+      <div class="guide" style="display: none;">
+        <div class="guide-card">
+          <h3>아이콘 지침</h3>
+          <ul>
+            <li>이모지 대신 단순 라인 아이콘 사용</li>
+            <li>아이콘당 최대 2색 이하</li>
+            <li>파스텔 배경 + 진한 단색 라인</li>
+            <li>과한 그라데이션과 입체 효과 금지</li>
+          </ul>
+        </div>
+        <div class="guide-card">
+          <h3>UX 지침</h3>
+          <ul>
+            <li>상단에서 바로 신뢰 전달</li>
+            <li>검색을 모든 정보의 입구로 사용</li>
+            <li>메뉴는 6개 이하로 제한</li>
+            <li>모바일 터치 영역은 크게 유지</li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <div class="toast" id="toast">선택되었습니다</div>
+
+  <script>
+    const toast = document.getElementById('toast');
+    const searchForm = document.getElementById('searchForm');
+    const searchInput = document.getElementById('searchInput');
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => toast.classList.remove('show'), 1400);
+    }
+
+    document.querySelectorAll('[data-action]').forEach((el) => {
+      el.addEventListener('click', () => {
+        const action = el.getAttribute('data-action');
+        showToast(`${action} 화면으로 이동합니다`);
+      });
+    });
+
+    searchForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const query = searchInput.value.trim();
+      showToast(query ? `“${query}” 검색 결과로 이동합니다` : '검색어를 입력해 주세요');
+    });
+  </script>
+</body>
+</html>

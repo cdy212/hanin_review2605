@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>대만한인회 사용자층 실데이터 분석</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f5f3ee;
+            --surface: #ffffff;
+            --ink: #171717;
+            --muted: #66615c;
+            --line: #ded8cf;
+            --red: #c11b2f;
+            --blue: #2563eb;
+            --teal: #0f766e;
+            --gold: #b45309;
+            --green: #15803d;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+        }
+
+        .page {
+            width: min(1440px, calc(100% - 48px));
+            margin: 0 auto;
+            padding: 40px 0 64px;
+        }
+
+        header {
+            display: grid;
+            grid-template-columns: 1.4fr 0.8fr;
+            gap: 24px;
+            align-items: end;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(2rem, 4vw, 4rem);
+            line-height: 1.12;
+            letter-spacing: -0.03em;
+        }
+
+        h2,
+        h3,
+        p {
+            margin-top: 0;
+        }
+
+        .lead {
+            margin: 14px 0 0;
+            color: var(--muted);
+            font-size: 1rem;
+        }
+
+        .meta {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 18px;
+            color: var(--muted);
+            font-size: 0.88rem;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 999px;
+            padding: 4px 10px;
+            background: #fde8eb;
+            color: var(--red);
+            font-size: 0.75rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .kpi-grid {
+            grid-template-columns: repeat(4, 1fr);
+            margin: 24px 0;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+        }
+
+        .kpi-label {
+            color: var(--muted);
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+        .kpi-value {
+            margin: 8px 0 4px;
+            font-size: 2rem;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+        }
+
+        .kpi-sub {
+            color: var(--muted);
+            font-size: 0.82rem;
+        }
+
+        .section {
+            margin-top: 28px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 14px;
+        }
+
+        .section-title h2 {
+            margin: 0;
+            font-size: 1.45rem;
+            letter-spacing: -0.02em;
+        }
+
+        .fold-card .section-title {
+            cursor: pointer;
+            margin-bottom: 0;
+        }
+
+        .fold-card .section-title::after {
+            content: '열기';
+            color: var(--red);
+            font-size: 0.8rem;
+            font-weight: 900;
+            margin-left: auto;
+        }
+
+        .fold-card.open .section-title {
+            margin-bottom: 14px;
+        }
+
+        .fold-card.open .section-title::after {
+            content: '닫기';
+        }
+
+        .fold-content {
+            display: none;
+        }
+
+        .fold-card.open .fold-content {
+            display: block;
+        }
+
+        .chart-grid {
+            grid-template-columns: 1.1fr 0.9fr;
+        }
+
+        .chart-card {
+            min-height: 360px;
+        }
+
+        .chart-wrap {
+            position: relative;
+            height: 290px;
+        }
+
+        .two-col {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+        }
+
+        th,
+        td {
+            border-bottom: 1px solid var(--line);
+            padding: 11px 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: #faf8f4;
+            color: var(--muted);
+            font-size: 0.76rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        td.num,
+        th.num {
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .status {
+            display: inline-flex;
+            border-radius: 999px;
+            padding: 3px 8px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .status.official {
+            background: #dcfce7;
+            color: var(--green);
+        }
+
+        .status.infer {
+            background: #fef3c7;
+            color: var(--gold);
+        }
+
+        .status.limit {
+            background: #e0f2fe;
+            color: var(--blue);
+        }
+
+        .pill-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .pill {
+            border: 1px solid var(--line);
+            background: #fbfaf7;
+            border-radius: 999px;
+            padding: 6px 10px;
+            font-size: 0.78rem;
+            color: var(--muted);
+            font-weight: 700;
+        }
+
+        .region-summary {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .region-chip {
+            border: 1px solid var(--line);
+            border-left: 4px solid var(--red);
+            border-radius: 8px;
+            background: #fbfaf7;
+            padding: 10px 12px;
+            font-size: 0.84rem;
+            color: var(--muted);
+            font-weight: 700;
+        }
+
+        .region-chip strong {
+            color: var(--ink);
+            margin-right: 4px;
+        }
+
+        .more-button {
+            appearance: none;
+            width: 100%;
+            margin-top: 14px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: #fbfaf7;
+            color: var(--red);
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.92rem;
+            font-weight: 800;
+            padding: 12px 16px;
+        }
+
+        .more-button:hover {
+            background: #fde8eb;
+        }
+
+        .priority-grid {
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .priority {
+            border-top: 4px solid var(--red);
+        }
+
+        .priority-count {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .priority-count-value {
+            display: block;
+            font-size: 1.28rem;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+        }
+
+        .priority strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .small {
+            color: var(--muted);
+            font-size: 0.82rem;
+        }
+
+        .source-list a {
+            color: var(--red);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(193, 27, 47, 0.4);
+        }
+
+        @media (max-width: 1100px) {
+
+            header,
+            .chart-grid,
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+
+            .kpi-grid,
+            .priority-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 680px) {
+            .page {
+                width: min(100% - 24px, 1440px);
+                padding-top: 24px;
+            }
+
+            .kpi-grid,
+            .priority-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 16px;
+            }
+
+            .chart-wrap {
+                height: 240px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="page">
+        <header>
+            <div>
+                <span class="tag">Community / Renewal / User Analysis</span>
+                <h1>대만한인회 사용자층 실데이터 분석</h1>
+                <p class="lead">목적: 주 사용자층인 장기거주자, 사업자, 주재원 및 유학생의 거주지와 인원 기준을 한눈에 확인합니다. 관광객 추이 등은 부가 정보로만 분리합니다.</p>
+            </div>
+            <aside class="meta">
+                <strong>Review Date</strong><br>2026-05-02<br><br>
+                <strong>기준 출처</strong><br>
+                NIA 2026.3, 재외동포청 2025 재외동포현황, Study in Taiwan Key Numbers
+            </aside>
+        </header>
+
+        <section class="grid kpi-grid" id="kpiCards"></section>
+
+        <section class="section grid chart-grid">
+            <article class="card chart-card">
+                <div class="section-title">
+                    <h2>권역별 사용자층</h2>
+                    <span class="status official">거주지 합산</span>
+                </div>
+                <div class="chart-wrap"><canvas id="regionChart"></canvas></div>
+            </article>
+            <article class="card chart-card">
+                <div class="section-title">
+                    <h2>상위 거주지</h2>
+                    <span class="status official">시/현별 분포</span>
+                </div>
+                <div class="chart-wrap"><canvas id="cityChart"></canvas></div>
+            </article>
+        </section>
+
+        <section class="section card">
+            <div class="section-title">
+                <h2>대만 한국 유학생 요약 정보</h2>
+                <span class="status official">사실 기반 데이터</span>
+            </div>
+
+            <div class="grid" style="grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 24px 0 32px;">
+                <div style="background: #fbfaf7; border-radius: 8px; padding: 20px; border: 1px solid var(--line);">
+                    <div class="kpi-label" style="margin-bottom: 8px;">총 유학생 수</div>
+                    <div class="kpi-value" style="color: var(--red); font-size: 2.2rem; margin: 0;">2,418<span
+                            style="font-size: 1.1rem; color: var(--ink); font-weight: 700; margin-left: 4px;">명</span>
+                    </div>
+                </div>
+                <div style="background: #fbfaf7; border-radius: 8px; padding: 20px; border: 1px solid var(--line);">
+                    <div class="kpi-label" style="margin-bottom: 8px;">비학위생 비중 (화어센터·단기 등)</div>
+                    <div class="kpi-value" style="color: var(--blue); font-size: 2.2rem; margin: 0;">73.9<span
+                            style="font-size: 1.1rem; color: var(--ink); font-weight: 700; margin-left: 4px;">%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid chart-grid"
+                style="grid-template-columns: 1fr 320px; gap: 32px; align-items: center; border-top: 1px solid var(--line); padding-top: 24px;">
+                <div class="chart-wrap" style="height: 300px;">
+                    <canvas id="studentPurposeChart"></canvas>
+                </div>
+                <div>
+                    <h3
+                        style="font-size: 1.05rem; margin-bottom: 14px; border-bottom: 1px solid var(--line); padding-bottom: 10px; color: var(--ink);">
+                        데이터 출처</h3>
+                    <p style="font-size: 0.9rem; color: var(--muted); font-weight: 700; margin-bottom: 6px;">대만 교육부
+                        113[2024]학년도 국가별 CSV</p>
+                    <a href="https://stats.moe.gov.tw/files/opendata/113_ab112_C.csv" target="_blank"
+                        style="font-size: 0.82rem; color: var(--red); text-decoration: none; display: inline-block; border-bottom: 1px solid rgba(193, 27, 47, 0.4); margin-bottom: 16px;">[공식
+                        원자료 다운로드]</a>
+                    <p
+                        style="font-size: 0.8rem; color: var(--muted); line-height: 1.5; background: #faf8f4; padding: 12px; border-radius: 6px;">
+                        * 본 차트는 대만 교육부 통계처에서 발표하는 경외학생(외국인 유학생) 통계 중 한국(南韓) 국적 학생 데이터를 기반으로 시각화되었습니다.</p>
+                </div>
+            </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const ctx = document.getElementById('studentPurposeChart').getContext('2d');
+
+                    const customDataLabels = {
+                        id: 'customDataLabels',
+                        afterDatasetsDraw(chart, args, options) {
+                            const { ctx } = chart;
+                            chart.data.datasets.forEach((dataset, i) => {
+                                const meta = chart.getDatasetMeta(i);
+                                meta.data.forEach((bar, index) => {
+                                    const val = dataset.data[index];
+                                    const total = 2418;
+                                    const percentage = ((val / total) * 100).toFixed(1) + '%';
+
+                                    ctx.fillStyle = '#171717';
+                                    ctx.font = 'bold 12px "Noto Sans KR"';
+                                    ctx.textAlign = 'center';
+                                    ctx.textBaseline = 'bottom';
+
+                                    ctx.fillText(`${val}명 (${percentage})`, bar.x, bar.y - 6);
+                                });
+                            });
+                        }
+                    };
+
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['화어센터', '정규 학위', '단기/개인선독', '교환학생', '화교/기타 학위'],
+                            datasets: [{
+                                label: '학생 수 (명)',
+                                data: [969, 486, 435, 382, 146],
+                                backgroundColor: [
+                                    'rgba(37, 99, 235, 0.85)',
+                                    'rgba(193, 27, 47, 0.85)',
+                                    'rgba(21, 128, 61, 0.85)',
+                                    'rgba(15, 118, 110, 0.85)',
+                                    'rgba(180, 83, 9, 0.85)'
+                                ],
+                                borderRadius: 6,
+                                barThickness: 45
+                            }]
+                        },
+                        options: {
+                            layout: {
+                                padding: {
+                                    top: 24
+                                }
+                            },
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    padding: 12,
+                                    titleFont: { size: 14, family: 'Noto Sans KR' },
+                                    bodyFont: { size: 13, family: 'Noto Sans KR' },
+                                    callbacks: {
+                                        label: function (context) {
+                                            const total = 2418;
+                                            const val = context.raw;
+                                            const percentage = ((val / total) * 100).toFixed(1);
+                                            return val + '명 (' + percentage + '%)';
+                                        }
+                                    }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    grid: { color: '#ded8cf', drawBorder: false },
+                                    ticks: { font: { family: 'Noto Sans KR' }, color: '#66615c' }
+                                },
+                                x: {
+                                    grid: { display: false },
+                                    ticks: { font: { family: 'Noto Sans KR', weight: 'bold' }, color: '#171717' }
+                                }
+                            }
+                        },
+                        plugins: [customDataLabels]
+                    });
+                });
+            </script>
+        </section>
+
+        <section class="section card fold-card">
+            <div class="section-title">
+                <h2>거주지별 분포</h2>
+                <span class="status official">NIA 2026.3 원자료 기준</span>
+            </div>
+            <div class="fold-content">
+                <div id="cityTable"></div>
+                <button type="button" class="more-button" id="toggleCityRows">전체 거주지 펼치기</button>
+            </div>
+        </section>
+
+        <section class="section card fold-card">
+            <div class="section-title">
+                <h2>검증된 출처</h2>
+            </div>
+            <div class="fold-content source-list">
+                <div id="sourceTable"></div>
+            </div>
+        </section>
+    </main>
+
+    <script src="./review_user.js"></script>
+</body>
+
+</html>

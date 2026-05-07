@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주대만 한국인 인구 통계 대시보드 (駐台韓國人人口統計儀表板)</title>
+    <!-- Tailwind CSS (스타일링) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js (차트 렌더링) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts (Noto Sans KR) -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f3f4f6;
+            /* bg-gray-100 */
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+        }
+
+        .table-header {
+            background-color: #f8fafc;
+            /* bg-slate-50 */
+        }
+    </style>
+</head>
+
+<body class="text-gray-800 antialiased p-4 md:p-8">
+
+    <div class="max-w-7xl mx-auto space-y-6">
+
+        <!-- 대시보드 헤더 -->
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">
+                주대만 한국인 인구 통계 현황
+                <span class="text-xl text-gray-500 font-normal ml-2">(駐台韓國人人口統計)</span>
+            </h1>
+            <p class="text-gray-600">
+                대만 내 한인 거주자 추이, 주요 지역별 직업군 추정 및 관광객 동향을 분석한 대시보드입니다. (기준: 2026.03 데이터 포함)
+            </p>
+        </header>
+
+        <!-- 핵심 요약 지표 (KPI Cards) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="card border-l-4 border-blue-500">
+                <p class="text-sm text-gray-500 mb-1">장기거주 정착형 <span class="text-xs">(長期居留)</span></p>
+                <h2 class="text-3xl font-bold text-gray-900">5,047<span
+                        class="text-lg font-normal text-gray-500 ml-1">명</span></h2>
+                <p class="text-xs text-green-600 mt-2">▲ 2026.03 기준 <span class="text-gray-400 font-normal ml-1">| 출처:
+                        대만 내정부 이민서(NIA)</span></p>
+            </div>
+            <div class="card border-l-4 border-teal-500">
+                <p class="text-sm text-gray-500 mb-1">유학생 및 어학연수 <span class="text-xs">(留學生)</span></p>
+                <h2 class="text-3xl font-bold text-gray-900">2,312<span
+                        class="text-lg font-normal text-gray-500 ml-1">명</span></h2>
+                <p class="text-xs text-gray-500 mt-2">2025/26 학년도 기준 <span class="text-gray-400 font-normal ml-1">| 출처:
+                        Study in Taiwan</span></p>
+            </div>
+            <div class="card border-l-4 border-orange-500">
+                <p class="text-sm text-gray-500 mb-1">관광객 및 단기방문 <span class="text-xs">(觀光客)</span></p>
+                <h2 class="text-3xl font-bold text-gray-900">1,003,086<span
+                        class="text-lg font-normal text-gray-500 ml-1">명</span></h2>
+                <p class="text-xs text-green-600 mt-2">▲ 2024년 기준 <span class="text-gray-400 font-normal ml-1">| 출처: 대만
+                        관광서/외교부</span></p>
+            </div>
+        </div>
+
+        <!-- 차트 영역: 거주자 추이 vs 관광객 별도 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- 연도별 거주자 추이 -->
+            <div class="card">
+                <h3 class="text-lg font-bold mb-4 border-b pb-2 flex items-center justify-between">
+                    <span>연도별 한인 거주자 추이 <span class="text-sm font-normal text-gray-500">(歷年居留人數趨勢)</span></span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full font-normal">신뢰도: High
+                        (공식통계)</span>
+                </h3>
+                <div class="relative h-64 w-full">
+                    <canvas id="residentChart"></canvas>
+                </div>
+            </div>
+
+            <!-- 관광객 별도 추이 -->
+            <div class="card">
+                <h3 class="text-lg font-bold mb-4 border-b pb-2 text-orange-600 flex items-center justify-between">
+                    <span>한국발 대만 관광객 추이 <span class="text-sm font-normal text-gray-500">(歷年觀光客趨勢)</span></span>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full font-normal">신뢰도: High
+                        (공식통계)</span>
+                </h3>
+                <div class="relative h-64 w-full">
+                    <canvas id="touristChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 표 영역: 지역별 현황 & 주요 군집 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+            <!-- 지역별 현황 (거주 순 표 형태) -->
+            <div class="card overflow-x-auto">
+                <h3 class="text-lg font-bold mb-4 border-b pb-2 flex items-center justify-between">
+                    <span>2026 거주 지역별 현황 및 직업군 <span class="text-sm font-normal text-gray-500">(居住地區與職業)</span></span>
+                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full font-normal">신뢰도: Medium
+                        (추정포함)</span>
+                </h3>
+                <!-- 많이 거주하는 순으로 정렬 -->
+                <tr class="hover:bg-gray-50">
+                    <td class="px-4 py-3 font-semibold text-gray-900">타이베이 등 기타 지역<br><span
+                            class="text-xs text-gray-500 font-normal">其他臺灣地區</span></td>
+                    <td class="px-4 py-3 text-blue-600 font-bold">4,112</td>
+                    <td class="px-4 py-3 text-gray-600">요식업, 유학생, 일반 사업자 등<br><span class="text-xs text-gray-400">餐飲業,
+                            留學生, 企業派駐 等</span></td>
+                </tr>
+                <tr class="hover:bg-gray-50">
+                    <td class="px-4 py-3 font-semibold text-gray-900">타오위안시<br><span
+                            class="text-xs text-gray-500 font-normal">桃園市</span></td>
+                    <td class="px-4 py-3 text-blue-600 font-bold">472</td>
+                    <td class="px-4 py-3 text-gray-600">제조업, IT 파견, 항공/물류<br><span class="text-xs text-gray-400">製造業,
+                            IT派駐, 物流</span></td>
+                </tr>
+                <tr class="hover:bg-gray-50">
+                    <td class="px-4 py-3 font-semibold text-gray-900">신주현<br><span
+                            class="text-xs text-gray-500 font-normal">新竹縣</span></td>
+                    <td class="px-4 py-3 text-blue-600 font-bold">220</td>
+                    <td class="px-4 py-3 text-gray-600">반도체, 첨단산업 주재원 및 가족<br><span class="text-xs text-gray-400">半導體,
+                            科技業派駐與家屬</span></td>
+                </tr>
+                <tr class="hover:bg-gray-50">
+                    <td class="px-4 py-3 font-semibold text-gray-900">신주시<br><span
+                            class="text-xs text-gray-500 font-normal">新竹市</span></td>
+                    <td class="px-4 py-3 text-blue-600 font-bold">196</td>
+                    <td class="px-4 py-3 text-gray-600">과학단지 엔지니어, 연구원<br><span class="text-xs text-gray-400">科學園區工程師,
+                            研究員</span></td>
+                </tr>
+                <tr class="hover:bg-gray-50">
+                    <td class="px-4 py-3 font-semibold text-gray-900">먀오리현<br><span
+                            class="text-xs text-gray-500 font-normal">苗栗縣</span></td>
+                    <td class="px-4 py-3 text-blue-600 font-bold">47</td>
+                    <td class="px-4 py-3 text-gray-600">제조업, 반도체 협력사<br><span class="text-xs text-gray-400">製造業,
+                            半導體供應商</span></td>
+                </tr>
+                </tbody>
+                </table>
+            </div>
+
+            <!-- 타겟 군집 개요 (관광객 제외) -->
+            <div class="card overflow-x-auto flex flex-col justify-between">
+                <div>
+                    <h3 class="text-lg font-bold mb-4 border-b pb-2 flex items-center justify-between">
+                        <span>주요 사용자 군집 개요 <span class="text-sm font-normal text-gray-500">(主要客群規模)</span></span>
+                        <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full font-normal">복합 지표</span>
+                    </h3>
+                    <table class="min-w-full text-sm text-left">
+                        <thead class="table-header text-gray-600 font-medium">
+                            <tr>
+                                <th class="px-4 py-3 rounded-tl-lg">군집 분류 (分類)</th>
+                                <th class="px-4 py-3">데이터 기준</th>
+                                <th class="px-4 py-3 rounded-tr-lg">규모 (명)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-3 font-semibold">장기거주 생활 정착형<br><span
+                                        class="text-xs text-gray-500 font-normal">長期居留</span></td>
+                                <td class="px-4 py-3 text-gray-500">2026.03 NIA 공식</td>
+                                <td class="px-4 py-3 font-bold">5,047</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-3 font-semibold">유학생·어학연수생<br><span
+                                        class="text-xs text-gray-500 font-normal">留學生</span></td>
+                                <td class="px-4 py-3 text-gray-500">25/26 Study in Taiwan</td>
+                                <td class="px-4 py-3 font-bold text-teal-600">2,312</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-3 font-semibold">주재원·파견 가족형<br><span
+                                        class="text-xs text-gray-500 font-normal">企業派駐與家屬</span></td>
+                                <td class="px-4 py-3 text-gray-500">2026 산업벨트 대체지표</td>
+                                <td class="px-4 py-3 font-bold text-indigo-600">935 <span
+                                        class="text-xs font-normal text-gray-400">(장기거주 포함)</span></td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-3 font-semibold">한인 사업자 / 원격근무자<br><span
+                                        class="text-xs text-gray-500 font-normal">創業者 / 遠距工作者</span></td>
+                                <td class="px-4 py-3 text-gray-500">공식 통계 분리 불가</td>
+                                <td class="px-4 py-3 font-bold text-gray-400">-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-4 p-4 bg-yellow-50 rounded-lg text-xs text-yellow-800 border border-yellow-200">
+                    <strong>* 주의 및 참고 (註) :</strong><br>
+                    대만 정부 공개 통계상 한국인의 정확한 '직업/비자 목적별' 분류는 제공되지 않습니다. 표기된 추정 직업군은 지역별 산업벨트(예: 신주 과학단지 등) 특성과 보조 지표를 바탕으로
+                    서비스 기획을 위해 추정한 대체 지표입니다.<br>
+                    <span class="text-gray-500 block mt-1">官方公開統計未提供精確職業分類，職業群為基於新竹科學園區等地區產業特性之推估指標。</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 종합 데이터 출처 및 신뢰도 테이블 -->
+        <div class="card overflow-x-auto mt-6">
+            <h3 class="text-lg font-bold mb-4 border-b pb-2">종합 데이터 출처 및 신뢰도 검증 <span
+                    class="text-sm font-normal text-gray-500">(資料來源與可靠度驗證)</span></h3>
+            <table class="min-w-full text-sm text-left border-collapse">
+                <thead class="table-header text-gray-600 font-medium">
+                    <tr>
+                        <th class="px-4 py-3 border-b border-gray-200">데이터 분류</th>
+                        <th class="px-4 py-3 border-b border-gray-200">출처명 (원문 제목)</th>
+                        <th class="px-4 py-3 border-b border-gray-200 text-center">신뢰도</th>
+                        <th class="px-4 py-3 border-b border-gray-200">적용 내용</th>
+                        <th class="px-4 py-3 border-b border-gray-200">원문 링크</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 text-gray-700">
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3 font-semibold" rowspan="5">거주자 총계 및<br>지역 분포 (공식)</td>
+                        <td class="px-4 py-3 text-gray-600">NIA 2026.3 Foreign Residents by Nationality</td>
+                        <td class="px-4 py-3 text-center"><span
+                                class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">High</span></td>
+                        <td class="px-4 py-3">2026년 한국 국적 거주자 총계·지역</td>
+                        <td class="px-4 py-3"><a
+                                href="https://www.immigration.gov.tw/5475/5478/141478/141380/411940/cp_news"
+                                target="_blank" class="text-blue-500 hover:underline">Link ↗</a></td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3 text-gray-600">NIA 2025.3 Foreign Residents by Nationality</td>
+                        <td class="px-4 py-3 text-center"><span
+                                class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">High</span></td>
+                        <td class="px-4 py-3">2025년 한국 국적 거주자 총계·지역</td>
+                        <td class="px-4 py-3"><a
+                                href="https://www.immigration.gov.tw/5475/5478/141478/141380/390899/cp_news"
+                                target="_blank" class="text-blue-500 hover:underline">Link ↗</a></td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3 text-gray-600">NIA 2024.3 Foreign Residents by Nationality</td>
+                        <td class="px-4 py-3 text-center"><span
+                                class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">High</span></td>
+                        <td class="px-4 py-3">2024년 한국 국적 거주자 총계·지역</td>
+                        <td class="px-4 py-3"><a
+                                href="https://www.immigration.gov.tw/5475/5478/141478/141380/367759/cp_news"
+                                target="_blank" class="text-blue-500 hover:underline">Link ↗</a></td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3 text-gray-600">NIA 2023.3 Foreign Residents by Nationality</td>
+                        <td class="px-4 py-3 text-center"><span
+                                class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">High</span></td>
+                        <td class="px-4 py-3">2023년 한국 국적 거주자 총계·지역</td>
+                        <td class="px-4 py-3"><a
+                                href="https://www.immigration.gov.tw/5475/5478/141478/141380/345832/cp_news"
+                                target="_blank" class="text-blue-500 hover:underline">Link ↗</a></td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3 text-gray-600">NIA 2022.3 Foreign Residents by Nationality (ODS)</td>
+                        <td class="px-4 py-3 text-center"><span
+                                class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">High</span></td>
+                        <td class="px-4 py-3">2022년 한국 국적 거주자 총계·지역</td>
+                        <td class="px-4 py-3"><a
+                                href="https://www.immigration.gov.tw/media/78573/20223foreign-residents-by-nationality.ods"
+                                target="_blank" class="text-blue-500 hover:underline">Link ↗</a></td>
+                    </tr>
+                    <tr class="hover:bg-gray-50 border-t border-gray-200">
+                        <td class="px-4 py-3 font-semibold" rowspan="4">관광객 추이 (공식)</td>
+                        <td class="px-4 py-3 text-gray-600">Taiwan Tourism Admin 2024 Annual Report</td>
+                        <td class="px-4 py-3 text-center"><span
+                                class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">High</span></td>
+                        <td class="px-4 py-3">2024년 한국 방문객 (1,003,086명)</td>
+                        <td class="px-4 py-3"><a
+                                href="https://admin.taiwan.net.tw/upload/contentFile/auser/b/annual_2024_htm/en/01_Taiwan_Travel_Market.html"
+                                target="_blank" class="text-blue-500 hover:underline">Link ↗</a></td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3 text-gray-600">Taiwan Tourism Admin 2023 Annual Report</td>
+                        <td class="px-4 py-3 text-center"><span
+                                class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">High</span></td>
+                        <td class="px-4 py-3">2023년 한국 방문객 (744,727명)</td>
+                        <td class="px-4 py-3"><a
+                                href="https://admin.taiwan.net.tw/upload/contentFile/auser/b/annual_2023_htm/en/01_Taiwan_Travel_Market.html"
+                                target="_blank" class="text-blue-500 hover:underline">Link ↗</a></td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3 text-gray-600">Taiwan Tourism Admin 2022 Annual Report</td>
+                        <td class="px-4 py-3 text-center"><span
+                                class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">High</span></td>
+                        <td class="px-4 py-3">2021~2022년 전체 입국시장 배경</td>
+                        <td class="px-4 py-3"><a
+                                href="https://admin.taiwan.net.tw/upload/contentFile/auser/b/annual_2022_htm/EN/01_1_Taiwan-Travel-Market.html"
+                                target="_blank" class="text-blue-500 hover:underline">Link ↗</a></td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3 text-gray-600">Taiwan Tourism Admin 2020 Annual Report</td>
+                        <td class="px-4 py-3 text-center"><span
+                                class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">High</span></td>
+                        <td class="px-4 py-3">2020년 한국 방문객 (178,911명)</td>
+                        <td class="px-4 py-3"><a
+                                href="https://admin.taiwan.net.tw/upload/contentfile/auser/b/annual_2020_htm/en/01_2_taiwan-travel-market.html"
+                                target="_blank" class="text-blue-500 hover:underline">Link ↗</a></td>
+                    </tr>
+                    <tr class="hover:bg-gray-50 border-t border-gray-200">
+                        <td class="px-4 py-3 font-semibold">유학생 통계</td>
+                        <td class="px-4 py-3 text-gray-600">Study in Taiwan Key Numbers</td>
+                        <td class="px-4 py-3 text-center"><span
+                                class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">Medium</span></td>
+                        <td class="px-4 py-3">2025/26 학년도 한국 국제학생 수치</td>
+                        <td class="px-4 py-3"><a href="https://www.studyintaiwan.org/why-taiwan/key-numbers/chart1?p=2"
+                                target="_blank" class="text-blue-500 hover:underline">Link ↗</a></td>
+                    </tr>
+                    <tr class="hover:bg-gray-50 border-t border-gray-200">
+                        <td class="px-4 py-3 font-semibold" rowspan="2">직업/가족 보조지표</td>
+                        <td class="px-4 py-3 text-gray-600">대한민국 외교부 국가정보 대만</td>
+                        <td class="px-4 py-3 text-center"><span
+                                class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">High</span></td>
+                        <td class="px-4 py-3">인적교류 및 2024 교역·투자 (사업자 추정 근거)</td>
+                        <td class="px-4 py-3"><a href="https://www.mofa.go.kr/www/nation/m_3458/view.do?seq=2"
+                                target="_blank" class="text-blue-500 hover:underline">Link ↗</a></td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3 text-gray-600">Taipei Times - transnational couples</td>
+                        <td class="px-4 py-3 text-center"><span
+                                class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">Medium</span></td>
+                        <td class="px-4 py-3">2023년 대만 국제결혼 보조지표</td>
+                        <td class="px-4 py-3"><a
+                                href="https://www.taipeitimes.com/News/taiwan/archives/2024/04/22/2003816780"
+                                target="_blank" class="text-blue-500 hover:underline">Link ↗</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Chart.js 스크립트 (차트 데이터 및 렌더링) -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            // 공통 차트 옵션
+            Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
+            Chart.defaults.color = '#6b7280'; // text-gray-500
+
+            // 1. 연도별 장기 거주자 추이 (Line Chart)
+            const residentCtx = document.getElementById('residentChart').getContext('2d');
+            new Chart(residentCtx, {
+                type: 'line',
+                data: {
+                    labels: ['2022', '2023', '2024', '2025', '2026'],
+                    datasets: [{
+                        label: '한국 국적 거주자 수 (명)',
+                        data: [4830, 4964, 5009, 4879, 5047],
+                        borderColor: '#3b82f6', // blue-500
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#2563eb',
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        fill: true,
+                        tension: 0.3 // 부드러운 곡선
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) { return context.raw.toLocaleString() + ' 명'; }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            min: 4500, // 데이터 변화를 잘 보여주기 위해 최솟값 조정
+                            ticks: {
+                                stepSize: 100
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 2. 관광객 추이 (Bar Chart) - 변동폭이 커서 막대그래프가 적합
+            const touristCtx = document.getElementById('touristChart').getContext('2d');
+            new Chart(touristCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['2020', '2021', '2022', '2023', '2024'],
+                    datasets: [{
+                        label: '관광/단기 방문객 수 (명)',
+                        data: [178911, 3300, 51748, 744727, 1003086],
+                        backgroundColor: [
+                            'rgba(249, 115, 22, 0.4)', // 2020 (코로나 초기)
+                            'rgba(249, 115, 22, 0.2)', // 2021 (최저)
+                            'rgba(249, 115, 22, 0.5)', // 2022 (회복 시작)
+                            'rgba(249, 115, 22, 0.8)', // 2023 (급증)
+                            'rgba(249, 115, 22, 1.0)', // 2024 (100만 돌파)
+                        ],
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) { return context.raw.toLocaleString() + ' 명'; }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function (value) {
+                                    if (value >= 10000) return (value / 10000) + '만';
+                                    return value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
