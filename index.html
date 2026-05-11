@@ -99,6 +99,12 @@
             display: flex;
         }
 
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
         .nav-item {
             font-size: 0.7rem;
             letter-spacing: 1.2px;
@@ -122,6 +128,95 @@
 
         .nav-item:hover {
             color: var(--ink);
+        }
+
+        .nav-more {
+            position: relative;
+            height: 60px;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-more-toggle {
+            width: 38px;
+            height: 38px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.48);
+            color: var(--ink-2);
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            transition: all .2s ease;
+        }
+
+        .nav-more-toggle:hover,
+        .nav-more.open .nav-more-toggle {
+            color: var(--red);
+            border-color: rgba(193, 27, 47, 0.32);
+            background: var(--surface);
+        }
+
+        .nav-more-lines,
+        .nav-more-lines::before,
+        .nav-more-lines::after {
+            width: 16px;
+            height: 2px;
+            border-radius: 999px;
+            background: currentColor;
+            display: block;
+            content: "";
+        }
+
+        .nav-more-lines {
+            position: relative;
+        }
+
+        .nav-more-lines::before,
+        .nav-more-lines::after {
+            position: absolute;
+            left: 0;
+        }
+
+        .nav-more-lines::before {
+            top: -6px;
+        }
+
+        .nav-more-lines::after {
+            top: 6px;
+        }
+
+        .nav-more-menu {
+            position: absolute;
+            top: 54px;
+            right: 0;
+            min-width: 180px;
+            padding: 8px;
+            border: 1px solid var(--rule);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.96);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+            opacity: 0;
+            transform: translateY(-6px);
+            pointer-events: none;
+            transition: opacity .2s ease, transform .2s ease;
+        }
+
+        .nav-more.open .nav-more-menu {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .nav-more-menu .nav-item {
+            height: 42px;
+            border-bottom: 0;
+            border-radius: 8px;
+            justify-content: space-between;
+        }
+
+        .nav-more-menu .nav-item.active {
+            background: var(--red-pale);
         }
 
         /* NAV REF BADGE */
@@ -849,7 +944,16 @@
     <div id="bar"></div>
     <nav>
         <div class="nav-brand">대만한인회 <span>·</span> 플랫폼 리뉴얼</div>
-        <div class="nav-menu" id="navMenu"></div>
+        <div class="nav-actions">
+            <div class="nav-menu" id="navMenu"></div>
+            <div class="nav-more" id="navMore">
+                <button class="nav-more-toggle" type="button" id="navMoreToggle" aria-label="추가 메뉴 열기"
+                    aria-expanded="false">
+                    <span class="nav-more-lines" aria-hidden="true"></span>
+                </button>
+                <div class="nav-more-menu" id="navMoreMenu"></div>
+            </div>
+        </div>
     </nav>
 
     <!-- HERO -->
@@ -1143,7 +1247,9 @@
             중<br><br>
             <strong>문의사항</strong><br>
             - 디자인 UI UX 적으로 벤치마킹 혹은 원하는 APP 형태가 있을지 문의<br>
-            - 주요 소통 채널: 페이스북, 라인, 인스타 [ 링크 등 정보 ]
+            - 주요 소통 채널: 페이스북, 라인, 인스타 [ 링크 등 정보 ]<br>
+            - 라인 및 메인 커뮤니티 사이트에 공지성 링크를 재공유하는 방향으로 검토<br>
+            - 기존 사이트 운영자 혹은 운영팀 지원 여부 확인 필요
         </div>
 
         <div class="c-table-wrapper fi">
@@ -1159,12 +1265,11 @@
                     <tr>
                         <td class="topic">회원제 운영 방식</td>
                         <td><span class="badge badge-must">필수 결정</span></td>
-                        <td>등급 없는 개방형으로 운영할 것인지, 등급제 도입 시 가입 기준과 권한 정의 필요.</td>
-                    </tr>
-                    <tr>
-                        <td class="topic">KoreanNet 연동 범위</td>
-                        <td><span class="badge badge-must">필수 결정</span></td>
-                        <td>기존 코리안넷 연동 유지 여부 및 회원 데이터 API 협의 필요.</td>
+                        <td>
+                            회원등급은 충성도에 따른 등급 방향으로 검토.<br>
+                            단계별 포인트 지급 등을 통해 자료·정보 공개 범위를 운영.<br>
+                            [등급 별 정책] 각 단계는 레벨 개념으로 구성.
+                        </td>
                     </tr>
                     <tr>
                         <td class="topic">기존 데이터 보존 범위</td>
@@ -1182,8 +1287,9 @@
 
         <!-- 한인회 근황 및 포모사 관계 -->
         <div class="analysis-box fi" style="margin-top: 48px;">
-            <h3 class="h-block" style="font-size: 1.4rem; margin-bottom: 24px;">대만한인회 최근 5년(2021~2026) 주요 활동 내역 및 관심사</h3>
-            
+            <h3 class="h-block" style="font-size: 1.4rem; margin-bottom: 24px;">대만한인회 최근 5년(2021~2026) 주요 활동 내역 및 관심사
+            </h3>
+
             <div class="strategy-panel active fi">
                 <button type="button" class="strategy-toggle" aria-expanded="true">1. 최근 5년 주요 활동 내역 (최신순)</button>
                 <div class="strategy-body">
@@ -1212,7 +1318,8 @@
                         </div>
                         <div class="p-card">
                             <div class="p-card-head">
-                                <span class="p-badge core" style="background: #fdf2f8; color: #db2777;">2021~2024년</span>
+                                <span class="p-badge core"
+                                    style="background: #fdf2f8; color: #db2777;">2021~2024년</span>
                                 <div class="p-title">팬데믹 대응 및 일상 회복</div>
                             </div>
                             <div class="p-list">
@@ -1261,13 +1368,16 @@
             </div>
 
             <div class="strategy-panel active fi">
-                <button type="button" class="strategy-toggle" aria-expanded="true">3. 대만한인회와 네이버 카페 "포모사(Formosa)"의 관계</button>
+                <button type="button" class="strategy-toggle" aria-expanded="true">3. 대만한인회와 네이버 카페 "포모사(Formosa)"의
+                    관계</button>
                 <div class="strategy-body">
-                    <div class="strategy-note" style="margin-top: 0; margin-bottom: 24px; text-align: left; line-height: 1.6;">
+                    <div class="strategy-note"
+                        style="margin-top: 0; margin-bottom: 24px; text-align: left; line-height: 1.6;">
                         <strong>📌 요약: "공식 기구(한인회)"와 "풀뿌리 커뮤니티(포모사)"의 투트랙 보완 관계</strong><br>
-                        공식적인 업무협약이나 공동 주관 행사가 눈에 띄게 보도된 바는 없으나, 대만 교민 사회 내에서 명확히 역할을 분담하며 <strong>상호 보완적인 관계</strong>를 맺고 있습니다.
+                        공식적인 업무협약이나 공동 주관 행사가 눈에 띄게 보도된 바는 없으나, 대만 교민 사회 내에서 명확히 역할을 분담하며 <strong>상호 보완적인 관계</strong>를
+                        맺고 있습니다.
                     </div>
-                    
+
                     <div class="policy-grid-3">
                         <div class="p-card" style="border-top: 4px solid var(--red);">
                             <div class="p-card-head">
@@ -1354,9 +1464,9 @@
             { id: 's-concept', label: '사이트 컨셉' },
             { id: 's-strategy', label: '사용자전략' },
             { id: 's-confirm', label: '질문 및 확인 사항' },
-            { id: 's-closing', label: '마치며...' },
+            { id: 's-closing', label: '마치며...', inMore: true },
             { id: 's-dashboard-link', label: '인구통계', isRef: true, externalUrl: 'review_user.html' },
-            { id: 's-history', label: '한인회역사', isRef: true },
+            { id: 's-history', label: '한인회역사', isRef: true, inMore: true },
             { id: 's-main2-link', label: '2안 메안화면', isRef: true, externalUrl: 'main2.html' }
         ];
 
@@ -1391,7 +1501,14 @@
         historyOverlay.addEventListener('click', closeHistoryOverlay);
 
         const navMenu = document.getElementById('navMenu');
-        SECTIONS.forEach(s => {
+        const navMore = document.getElementById('navMore');
+        const navMoreToggle = document.getElementById('navMoreToggle');
+        const navMoreMenu = document.getElementById('navMoreMenu');
+        const closeNavMore = () => {
+            navMore.classList.remove('open');
+            navMoreToggle.setAttribute('aria-expanded', 'false');
+        };
+        const createNavItem = (s) => {
             const el = document.createElement('div');
             el.className = 'nav-item'; el.dataset.id = s.id;
             el.innerHTML = s.isRef ? `${s.label}<span class="nav-ref-badge">참고자료</span>` : s.label;
@@ -1402,8 +1519,19 @@
                 }
                 const target = document.getElementById(s.id);
                 window.scrollTo({ top: target.getBoundingClientRect().top + window.pageYOffset - 60, behavior: 'smooth' });
+                closeNavMore();
             });
-            navMenu.appendChild(el);
+            return el;
+        };
+        SECTIONS.forEach(s => {
+            (s.inMore ? navMoreMenu : navMenu).appendChild(createNavItem(s));
+        });
+        navMoreToggle.addEventListener('click', () => {
+            const isOpen = navMore.classList.toggle('open');
+            navMoreToggle.setAttribute('aria-expanded', String(isOpen));
+        });
+        document.addEventListener('click', event => {
+            if (!navMore.contains(event.target)) closeNavMore();
         });
 
         function onScroll() {
@@ -1415,7 +1543,7 @@
                 const el = document.getElementById(s.id);
                 if (el && el.getBoundingClientRect().top <= 150) active = s.id;
             });
-            navMenu.querySelectorAll('.nav-item').forEach(el => el.classList.toggle('active', el.dataset.id === active));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.toggle('active', el.dataset.id === active));
         }
 
         const obs = new IntersectionObserver(entries => {
