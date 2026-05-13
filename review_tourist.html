@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>한-대만 관광객 통계 참고자료</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f5f3ee;
+            --surface: #ffffff;
+            --ink: #171717;
+            --muted: #66615c;
+            --line: #ded8cf;
+            --red: #c11b2f;
+            --blue: #2563eb;
+            --teal: #0f766e;
+            --gold: #b45309;
+            --green: #15803d;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+            line-height: 1.6;
+        }
+
+        .page {
+            width: min(1440px, calc(100% - 48px));
+            margin: 0 auto;
+            padding: 40px 0 64px;
+        }
+
+        header {
+            display: grid;
+            grid-template-columns: 1.35fr 0.85fr;
+            gap: 24px;
+            align-items: end;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(2rem, 4vw, 4rem);
+            line-height: 1.12;
+            letter-spacing: -0.03em;
+        }
+
+        h2,
+        h3,
+        p {
+            margin-top: 0;
+        }
+
+        .lead {
+            margin: 14px 0 0;
+            color: var(--muted);
+            font-size: 1rem;
+        }
+
+        .meta,
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+        }
+
+        .meta {
+            padding: 18px;
+            color: var(--muted);
+            font-size: 0.88rem;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 999px;
+            padding: 4px 10px;
+            background: #e0f2fe;
+            color: var(--blue);
+            font-size: 0.75rem;
+            font-weight: 900;
+            margin-bottom: 12px;
+        }
+
+        .grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .kpi-grid {
+            grid-template-columns: repeat(4, 1fr);
+            margin: 24px 0;
+        }
+
+        .card {
+            padding: 20px;
+        }
+
+        .kpi-label {
+            color: var(--muted);
+            font-size: 0.82rem;
+            font-weight: 800;
+        }
+
+        .kpi-value {
+            margin: 8px 0 4px;
+            font-size: 2rem;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+        }
+
+        .kpi-sub {
+            color: var(--muted);
+            font-size: 0.82rem;
+        }
+
+        .section {
+            margin-top: 28px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 14px;
+        }
+
+        .section-title h2 {
+            margin: 0;
+            font-size: 1.45rem;
+            letter-spacing: -0.02em;
+        }
+
+        .chart-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .chart-card {
+            min-height: 360px;
+        }
+
+        .chart-wrap {
+            position: relative;
+            height: 290px;
+        }
+
+        .three-col {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .summary-card {
+            border-top: 4px solid var(--blue);
+        }
+
+        .summary-card strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.04rem;
+        }
+
+        .summary-card p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .status {
+            display: inline-flex;
+            border-radius: 999px;
+            padding: 3px 8px;
+            font-size: 0.72rem;
+            font-weight: 900;
+            white-space: nowrap;
+        }
+
+        .status.official {
+            background: #dcfce7;
+            color: var(--green);
+        }
+
+        .status.limit {
+            background: #e0f2fe;
+            color: var(--blue);
+        }
+
+        .fold-card .section-title {
+            cursor: pointer;
+            margin-bottom: 0;
+        }
+
+        .fold-card .section-title::after {
+            content: '열기';
+            color: var(--red);
+            font-size: 0.8rem;
+            font-weight: 900;
+            margin-left: auto;
+        }
+
+        .fold-card.open .section-title {
+            margin-bottom: 14px;
+        }
+
+        .fold-card.open .section-title::after {
+            content: '닫기';
+        }
+
+        .fold-content {
+            display: none;
+        }
+
+        .fold-card.open .fold-content {
+            display: block;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+        }
+
+        th,
+        td {
+            border-bottom: 1px solid var(--line);
+            padding: 11px 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: #faf8f4;
+            color: var(--muted);
+            font-size: 0.76rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        td.num,
+        th.num {
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .note {
+            border: 1px solid #bae6fd;
+            background: #f0f9ff;
+            color: #075985;
+            border-radius: 8px;
+            padding: 14px 16px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            margin: 0 0 16px;
+        }
+
+        .source-list a {
+            color: var(--red);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(193, 27, 47, 0.4);
+        }
+
+        .source-inline {
+            margin-top: 12px;
+            color: var(--muted);
+            font-size: 0.78rem;
+            font-weight: 800;
+        }
+
+        .source-inline a {
+            color: var(--red);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(193, 27, 47, 0.4);
+        }
+
+        .pill-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .pill {
+            border: 1px solid var(--line);
+            background: #fbfaf7;
+            border-radius: 999px;
+            padding: 6px 10px;
+            font-size: 0.78rem;
+            color: var(--muted);
+            font-weight: 800;
+        }
+
+        @media (max-width: 1100px) {
+            header,
+            .chart-grid,
+            .three-col {
+                grid-template-columns: 1fr;
+            }
+
+            .kpi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 680px) {
+            .page {
+                width: min(100% - 24px, 1440px);
+                padding-top: 24px;
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 16px;
+            }
+
+            .chart-wrap {
+                height: 240px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="page">
+        <header>
+            <div>
+                <span class="tag">Travel / Statistics / Reference</span>
+                <h1>한-대만 관광객 통계 참고자료</h1>
+                <p class="lead">목적: 관광객 세부 타겟층에 기재한 한국인 대만 방문, 대만인 한국 방문, K-content 서비스 교집합의 근거 수치와 출처를 한눈에 확인합니다.
+                </p>
+            </div>
+            <aside class="meta">
+                <strong>Review Date</strong><br>2026-05-13<br><br>
+                <strong>기준 출처</strong><br>
+                Korea Tourism Data Lab, Korea Tourism Organization, Taiwan Tourism Administration, Korea.kr, Daegu
+                Newsroom
+            </aside>
+        </header>
+
+        <section class="grid kpi-grid">
+            <article class="card">
+                <div class="kpi-label">2025 한국인 대만 방문객</div>
+                <div class="kpi-value" style="color: var(--blue);">1,016,520</div>
+                <div class="kpi-sub">전년 대비 +1.3%</div>
+                <div class="source-inline">출처: <a href="https://admin.taiwan.net.tw/english/info/News?a=1329&id=35220"
+                        target="_blank">Visitor Statistical Analysis for December 2025</a></div>
+            </article>
+            <article class="card">
+                <div class="kpi-label">2025 대만인 한국 방문객</div>
+                <div class="kpi-value" style="color: var(--red);">1,891,414</div>
+                <div class="kpi-sub">전년 대비 +28.3%</div>
+                <div class="source-inline">출처: <a
+                        href="https://datalab.visitkorea.or.kr/site/portal/ex/bbs/View.do?bcIdx=310195&cbIdx=1127"
+                        target="_blank">한국관광 데이터랩 2025년 12월 통계</a></div>
+            </article>
+            <article class="card">
+                <div class="kpi-label">대만 소비자 한국문화 경험</div>
+                <div class="kpi-value" style="color: var(--teal);">88.00%</div>
+                <div class="kpi-sub">K-content 접점 기반</div>
+                <div class="source-inline">출처: <a href="https://knto.or.kr/pressRelease/549339" target="_blank">한국관광공사
+                        K-콘텐츠 보도자료</a></div>
+            </article>
+            <article class="card">
+                <div class="kpi-label">방한 희망 활동 1위</div>
+                <div class="kpi-value" style="color: var(--gold);">98.06%</div>
+                <div class="kpi-sub">쇼핑, 중복응답</div>
+                <div class="source-inline">출처: <a
+                        href="https://datalab.visitkorea.or.kr/site/portal/ex/bbs/View.do?bcIdx=309213&cbIdx=1127"
+                        target="_blank">2024년 잠재 방한여행객 조사</a></div>
+            </article>
+        </section>
+
+        <section class="section grid chart-grid">
+            <article class="card chart-card">
+                <div class="section-title">
+                    <h2>방문객 증가 추이</h2>
+                    <span class="status official">2021-2025</span>
+                </div>
+                <div class="chart-wrap"><canvas id="trendChart"></canvas></div>
+                <div class="source-inline">출처: <a href="https://stat.taiwan.net.tw/data/opendata/10"
+                        target="_blank">Taiwan Tourism Open Data</a>, <a
+                        href="https://datalab.visitkorea.or.kr/site/portal/ex/bbs/View.do?bcIdx=310195&cbIdx=1127"
+                        target="_blank">한국관광 데이터랩</a></div>
+            </article>
+            <article class="card chart-card">
+                <div class="section-title">
+                    <h2>대만인 방한 주요 활동</h2>
+                    <span class="status limit">잠재 방한 의향자</span>
+                </div>
+                <div class="chart-wrap"><canvas id="activityChart"></canvas></div>
+                <div class="source-inline">출처: <a
+                        href="https://datalab.visitkorea.or.kr/site/portal/ex/bbs/View.do?bcIdx=309213&cbIdx=1127"
+                        target="_blank">2024년 잠재 방한여행객 조사</a></div>
+            </article>
+        </section>
+
+        <section class="section grid three-col">
+            <article class="card summary-card">
+                <strong>한국인 → 대만</strong>
+                <p>2025년 한국인 대만 방문객은 1,016,520명이며, 2025년 기준 입국 거점은 타오위안 공항 80.43% 중심입니다.</p>
+                <div class="pill-row">
+                    <span class="pill">타오위안 80.43%</span>
+                    <span class="pill">가오슝 8.78%</span>
+                    <span class="pill">타이중 4.52%</span>
+                </div>
+                <div class="source-inline">출처: <a href="https://stat.taiwan.net.tw/data/opendata/13"
+                        target="_blank">Taiwan Open Data 13</a></div>
+            </article>
+            <article class="card summary-card">
+                <strong>대만인 → 한국</strong>
+                <p>2025년 대만인 한국 방문객은 1,891,414명입니다. 부산, 대구 등 서울 외 지역 방문 의향도 서비스 기획에 의미가 있습니다.</p>
+                <div class="pill-row">
+                    <span class="pill">부산 78.63%</span>
+                    <span class="pill">대구 32.33%</span>
+                    <span class="pill">김해공항 24.6%</span>
+                </div>
+                <div class="source-inline">출처: <a href="https://knto.or.kr/pressRelease/549550" target="_blank">KTO
+                        라인페이 부산 협약</a>, <a
+                        href="https://datalab.visitkorea.or.kr/site/portal/ex/bbs/View.do?bcIdx=309213&cbIdx=1127"
+                        target="_blank">잠재 방한여행객 조사</a></div>
+            </article>
+            <article class="card summary-card">
+                <strong>서비스 교집합</strong>
+                <p>한국문화 경험 88%, 재방문 긍정 영향 77.52%를 기반으로 음식, K-pop, 쇼핑, 지역 체험 콘텐츠 접점을 검토합니다.</p>
+                <div class="pill-row">
+                    <span class="pill">K-content</span>
+                    <span class="pill">음식 문화</span>
+                    <span class="pill">검증 여행 정보</span>
+                </div>
+                <div class="source-inline">출처: <a href="https://knto.or.kr/pressRelease/549339" target="_blank">KTO
+                        K-콘텐츠 보도자료</a>, <a
+                        href="https://datalab.visitkorea.or.kr/site/portal/ex/bbs/View.do?bcIdx=309213&cbIdx=1127"
+                        target="_blank">잠재 방한여행객 조사</a></div>
+            </article>
+        </section>
+
+        <section class="section card fold-card open">
+            <div class="section-title">
+                <h2>주요 수치표: 한국인 대만 방문</h2>
+                <span class="status official">상단 그래프 근거</span>
+            </div>
+            <div class="fold-content">
+                <div class="note">한국인 대만 방문 자료는 방문 지역 비중 대신 2025년 입국 거점 비중을 우선 사용합니다.</div>
+                <div class="grid chart-grid">
+                    <div>
+                        <h3>방문 증가 추이</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>연도</th>
+                                    <th class="num">방문객 수</th>
+                                    <th class="num">전년 대비</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>2021</td><td class="num">3,300</td><td class="num">-</td></tr>
+                                <tr><td>2022</td><td class="num">51,748</td><td class="num">1,468.1%</td></tr>
+                                <tr><td>2023</td><td class="num">744,727</td><td class="num">1,339.1%</td></tr>
+                                <tr><td>2024</td><td class="num">1,003,086</td><td class="num">34.7%</td></tr>
+                                <tr><td>2025</td><td class="num">1,016,520</td><td class="num">1.3%</td></tr>
+                            </tbody>
+                        </table>
+                        <div class="source-inline">출처: <a href="https://stat.taiwan.net.tw/data/opendata/10"
+                                target="_blank">Taiwan Tourism Administration Open Data</a>, <a
+                                href="https://admin.taiwan.net.tw/english/info/News?a=1329&id=35220"
+                                target="_blank">Visitor Statistical Analysis for December 2025</a></div>
+                    </div>
+                    <div>
+                        <h3>2025 입국 거점 비중</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>입국 거점</th>
+                                    <th class="num">방문객 수</th>
+                                    <th class="num">비중</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>타오위안 공항</td><td class="num">817,610</td><td class="num">80.43%</td></tr>
+                                <tr><td>가오슝 공항</td><td class="num">89,210</td><td class="num">8.78%</td></tr>
+                                <tr><td>타이중 공항</td><td class="num">45,958</td><td class="num">4.52%</td></tr>
+                                <tr><td>쑹산 공항</td><td class="num">40,437</td><td class="num">3.98%</td></tr>
+                                <tr><td>지룽항</td><td class="num">21,517</td><td class="num">2.12%</td></tr>
+                            </tbody>
+                        </table>
+                        <div class="source-inline">출처: <a href="https://stat.taiwan.net.tw/data/opendata/13"
+                                target="_blank">Taiwan Open Data 13</a></div>
+                    </div>
+                </div>
+                <h3 style="margin-top: 20px;">한국인 대만 방문 입국 거점 비중, 2025년</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>입국 거점</th>
+                            <th>유형</th>
+                            <th class="num">방문객 수</th>
+                            <th class="num">비중</th>
+                            <th>서비스 해석</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>타오위안 공항</td><td>항공</td><td class="num">817,610</td><td class="num">80.43%</td><td>대만 방문 한인 대상 기본 입국·교통 정보 우선 구성</td></tr>
+                        <tr><td>가오슝 공항</td><td>항공</td><td class="num">89,210</td><td class="num">8.78%</td><td>남부 생활·관광 정보 보강 후보</td></tr>
+                        <tr><td>타이중 공항</td><td>항공</td><td class="num">45,958</td><td class="num">4.52%</td><td>중부 방문 정보와 이동 동선 참고</td></tr>
+                        <tr><td>쑹산 공항</td><td>항공</td><td class="num">40,437</td><td class="num">3.98%</td><td>타이베이 도심 접근 정보 참고</td></tr>
+                        <tr><td>지룽항</td><td>해상</td><td class="num">21,517</td><td class="num">2.12%</td><td>해상 입국 및 북부 이동 정보 보조</td></tr>
+                        <tr><td>기타 항공·해상</td><td>항공+해상</td><td class="num">1,788</td><td class="num">0.17%</td><td>소수 경로로 보조 표기</td></tr>
+                    </tbody>
+                </table>
+                <div class="source-inline">출처: <a href="https://stat.taiwan.net.tw/data/opendata/13"
+                        target="_blank">Taiwan Open Data 13, residence by transport and port</a></div>
+            </div>
+        </section>
+
+        <section class="section card fold-card open">
+            <div class="section-title">
+                <h2>주요 수치표: 대만인 한국 방문</h2>
+                <span class="status official">상단 그래프 근거</span>
+            </div>
+            <div class="fold-content">
+                <div class="note">지역 방문 비중은 실제 방문 비중과 방문 의향이 섞이지 않도록 구분해서 활용해야 합니다.</div>
+                <div class="grid chart-grid">
+                    <div>
+                        <h3>방한 증가 추이</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>연도</th>
+                                    <th class="num">방문객 수</th>
+                                    <th class="num">전년 대비</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>2021</td><td class="num">4,130</td><td class="num">-</td></tr>
+                                <tr><td>2022</td><td class="num">72,925</td><td class="num">1,665.7%</td></tr>
+                                <tr><td>2023</td><td class="num">960,607</td><td class="num">1,217.3%</td></tr>
+                                <tr><td>2024</td><td class="num">1,473,908</td><td class="num">53.4%</td></tr>
+                                <tr><td>2025</td><td class="num">1,891,414</td><td class="num">28.3%</td></tr>
+                            </tbody>
+                        </table>
+                        <div class="source-inline">출처: <a
+                                href="https://datalab.visitkorea.or.kr/site/portal/ex/bbs/View.do?bcIdx=310195&cbIdx=1127"
+                                target="_blank">한국관광 데이터랩 2025년 12월 한국관광통계</a></div>
+                    </div>
+                    <div>
+                        <h3>2024 방한 입국공항 경로</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>입국 경로</th>
+                                    <th class="num">비중</th>
+                                    <th>기획 힌트</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>인천공항</td><td class="num">49.0%</td><td>서울 및 수도권 정보</td></tr>
+                                <tr><td>김해공항</td><td class="num">24.6%</td><td>부산 콘텐츠 및 Line Pay 접점</td></tr>
+                                <tr><td>기타 공항/항만</td><td class="num">26.4%</td><td>지역 확장 콘텐츠</td></tr>
+                            </tbody>
+                        </table>
+                        <div class="source-inline">출처: <a href="https://knto.or.kr/pressRelease/549511"
+                                target="_blank">KTO 지역관광 보도자료</a>, <a href="https://knto.or.kr/pressRelease/549550"
+                                target="_blank">KTO 라인페이 부산 협약</a></div>
+                    </div>
+                </div>
+                <h3 style="margin-top: 20px;">서울 외 지역 방문 의향, 2024 잠재 방한여행객 조사</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>순위</th>
+                            <th>지역</th>
+                            <th class="num">대만 응답률</th>
+                            <th>서비스 해석</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>부산</td><td class="num">78.63%</td><td>해양·미식·결제 편의 콘텐츠 우선 검토</td></tr>
+                        <tr><td>2</td><td>제주</td><td class="num">51.78%</td><td>자연경관 및 휴식형 콘텐츠 후보</td></tr>
+                        <tr><td>4</td><td>대구</td><td class="num">32.33%</td><td>전통문화·축제 미션 콘텐츠 후보</td></tr>
+                        <tr><td>-</td><td>서울 포함 타 지역</td><td class="num">62.56%</td><td>서울 외 지역 확장 의향 근거</td></tr>
+                    </tbody>
+                </table>
+                <div class="source-inline">출처: <a
+                        href="https://datalab.visitkorea.or.kr/site/portal/ex/bbs/View.do?bcIdx=309213&cbIdx=1127"
+                        target="_blank">2024년 잠재 방한여행객 조사</a></div>
+            </div>
+        </section>
+
+        <section class="section card fold-card">
+            <div class="section-title">
+                <h2>세부 활동 및 K-content 근거</h2>
+                <span class="status limit">접힘 자료</span>
+            </div>
+            <div class="fold-content">
+                <div class="grid chart-grid">
+                    <div>
+                        <h3>대만 방한 의향자의 한국 방문 희망 활동</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>활동</th>
+                                    <th class="num">응답률</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>쇼핑</td><td class="num">98.06%</td></tr>
+                                <tr><td>식도락 관광</td><td class="num">52.26%</td></tr>
+                                <tr><td>전통문화 체험</td><td class="num">48.17%</td></tr>
+                                <tr><td>문화·역사 유적지 방문</td><td class="num">43.44%</td></tr>
+                                <tr><td>한류 콘텐츠·한류스타 관련 문화 체험</td><td class="num">22.58%</td></tr>
+                                <tr><td>치료/건강검진</td><td class="num">6.67%</td></tr>
+                            </tbody>
+                        </table>
+                        <div class="source-inline">출처: <a
+                                href="https://datalab.visitkorea.or.kr/site/portal/ex/bbs/View.do?bcIdx=309213&cbIdx=1127"
+                                target="_blank">2024년 잠재 방한여행객 조사</a></div>
+                    </div>
+                    <div>
+                        <h3>한국문화 경험 및 재방문 근거</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>항목</th>
+                                    <th class="num">비중</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>한국문화 경험 있음</td><td class="num">88.00%</td></tr>
+                                <tr><td>드라마 경험</td><td class="num">61.65%</td></tr>
+                                <tr><td>영화 경험</td><td class="num">54.17%</td></tr>
+                                <tr><td>K-pop 경험</td><td class="num">34.81%</td></tr>
+                                <tr><td>재방문의향 긍정 영향</td><td class="num">77.52%</td></tr>
+                            </tbody>
+                        </table>
+                        <div class="source-inline">출처: <a href="https://knto.or.kr/pressRelease/549339"
+                                target="_blank">KTO K-콘텐츠 보도자료</a>, <a
+                                href="https://datalab.visitkorea.or.kr/site/portal/ex/bbs/View.do?bcIdx=309213&cbIdx=1127"
+                                target="_blank">잠재 방한여행객 조사</a></div>
+                    </div>
+                </div>
+                <h3 style="margin-top: 20px;">한국 음식 경험 선호, 중복응답</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>한국 음식 경험 유형</th>
+                            <th>예시 음식/콘텐츠</th>
+                            <th class="num">대만 응답률</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>일반 한식 체험</td><td>불고기, 비빔밥, 김치 등</td><td class="num">83.95%</td></tr>
+                        <tr><td>길거리·시장 음식 체험</td><td>닭꼬치, 호떡, 핫도그, 떡볶이 등</td><td class="num">83.54%</td></tr>
+                        <tr><td>한국 배달 음식 체험</td><td>치킨, 짜장면 등</td><td class="num">55.97%</td></tr>
+                        <tr><td>한국 편의점 먹거리 체험</td><td>편의점 간편식, 간식 등</td><td class="num">54.73%</td></tr>
+                        <tr><td>한국 인기 카페 투어</td><td>카페, 디저트, 음료</td><td class="num">46.50%</td></tr>
+                    </tbody>
+                </table>
+                <div class="source-inline">출처: <a
+                        href="https://datalab.visitkorea.or.kr/site/portal/ex/bbs/View.do?bcIdx=309213&cbIdx=1127"
+                        target="_blank">2024년 잠재 방한여행객 조사</a></div>
+            </div>
+        </section>
+
+        <section class="section card fold-card">
+            <div class="section-title">
+                <h2>추천 콘텐츠 및 한인회 서비스 교집합</h2>
+                <span class="status limit">접힘 자료</span>
+            </div>
+            <div class="fold-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>추천 콘텐츠</th>
+                            <th>연결 수치</th>
+                            <th>한인회 서비스 접점</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>부산 K-content·Line Pay·해양/미식 패스</td><td>김해공항 24.6%, 부산 방문 의향 78.63%</td><td>부산 제휴처 안내, 쿠폰, 긴급 연락망</td></tr>
+                        <tr><td>대구 K-전통문화·축제 미션</td><td>대구 방문 의향 32.33%</td><td>축제·전통문화 체험 예약/통역 연결</td></tr>
+                        <tr><td>쇼핑·식도락 지도</td><td>쇼핑 98.06%, 식도락 52.26%, 식료품 26.02%</td><td>검증 매장, 시장, 지역 맛집 정보</td></tr>
+                        <tr><td>K-content Calendar</td><td>한국문화 경험 88%, 재방문 영향 77.52%</td><td>공연·스포츠·미식·촬영지 일정 큐레이션</td></tr>
+                        <tr><td>K-beauty 검증 가이드</td><td>대만 외국인 환자 8.3만 명, 피부과 6.7만 명</td><td>병원·미용·통역 업체 검증 배지 운영</td></tr>
+                    </tbody>
+                </table>
+                <div class="source-inline">출처: <a href="https://knto.or.kr/pressRelease/549550" target="_blank">KTO
+                        라인페이 부산 협약</a>, <a
+                        href="https://datalab.visitkorea.or.kr/site/portal/ex/bbs/View.do?bcIdx=309213&cbIdx=1127"
+                        target="_blank">잠재 방한여행객 조사</a>, <a
+                        href="https://m.korea.kr/briefing/pressReleaseView.do?newsId=156682188&pWise=mSub&pWiseSub=C1"
+                        target="_blank">정책브리핑 외국인 환자 자료</a></div>
+            </div>
+        </section>
+
+        <section class="section card fold-card">
+            <div class="section-title">
+                <h2>출처 및 주의사항</h2>
+                <span class="status limit">접힘 자료</span>
+            </div>
+            <div class="fold-content source-list">
+                <div class="note">일부 자료는 실제 입국객 행동이 아니라 2024년 잠재 방한여행객 조사입니다. 중복응답 수치는 합계 100%로 해석하지 않습니다.</div>
+                <ul>
+                    <li>Taiwan Tourism Administration Open Data:
+                        <a href="https://stat.taiwan.net.tw/data/opendata/10" target="_blank">Open Data 10</a>,
+                        <a href="https://stat.taiwan.net.tw/data/opendata/13" target="_blank">Open Data 13</a>
+                    </li>
+                    <li>2024 Annual Survey Report on Visitors Expenditure and Trends in Taiwan:
+                        <a href="https://admin.taiwan.net.tw/fapi/AttFile?id=38412&type=AttFile" target="_blank">PDF</a>
+                    </li>
+                    <li>한국관광 데이터랩:
+                        <a href="https://datalab.visitkorea.or.kr/site/portal/ex/bbs/View.do?bcIdx=310195&cbIdx=1127"
+                            target="_blank">2025년 12월 한국관광통계</a>,
+                        <a href="https://datalab.visitkorea.or.kr/site/portal/ex/bbs/View.do?bcIdx=309213&cbIdx=1127"
+                            target="_blank">2024년 잠재 방한여행객 조사</a>
+                    </li>
+                    <li>한국관광공사 보도자료:
+                        <a href="https://knto.or.kr/pressRelease/549511" target="_blank">대만이 움직이니 지역관광이 들썩인다</a>,
+                        <a href="https://knto.or.kr/pressRelease/549550" target="_blank">라인페이 부산 협약</a>,
+                        <a href="https://knto.or.kr/pressRelease/549339" target="_blank">K-콘텐츠로 대만 관광객 유치 박차</a>
+                    </li>
+                    <li>정책브리핑 보건복지부:
+                        <a href="https://m.korea.kr/briefing/pressReleaseView.do?newsId=156682188&pWise=mSub&pWiseSub=C1"
+                            target="_blank">외국인 환자 보도자료</a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const chartFont = {
+            family: 'Noto Sans KR',
+            size: 12,
+            weight: '700'
+        };
+
+        Chart.defaults.font.family = 'Noto Sans KR';
+        Chart.defaults.color = '#4f4a45';
+
+        new Chart(document.getElementById('trendChart'), {
+            type: 'line',
+            data: {
+                labels: ['2021', '2022', '2023', '2024', '2025'],
+                datasets: [
+                    {
+                        label: '한국인 대만 방문객',
+                        data: [3300, 51748, 744727, 1003086, 1016520],
+                        borderColor: '#2563eb',
+                        backgroundColor: 'rgba(37, 99, 235, 0.12)',
+                        tension: 0.35,
+                        fill: true,
+                        pointRadius: 4
+                    },
+                    {
+                        label: '대만인 한국 방문객',
+                        data: [4130, 72925, 960607, 1473908, 1891414],
+                        borderColor: '#c11b2f',
+                        backgroundColor: 'rgba(193, 27, 47, 0.1)',
+                        tension: 0.35,
+                        fill: true,
+                        pointRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { font: chartFont }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: context => `${context.dataset.label}: ${context.parsed.y.toLocaleString()}명`
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        ticks: {
+                            callback: value => `${(value / 10000).toLocaleString()}만`
+                        }
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('activityChart'), {
+            type: 'bar',
+            data: {
+                labels: ['쇼핑', '식도락', '전통문화', '문화·역사', '자연경관', 'K-content', '의료'],
+                datasets: [{
+                    label: '대만 응답률',
+                    data: [98.06, 52.26, 48.17, 43.44, 40.22, 22.58, 6.67],
+                    backgroundColor: [
+                        'rgba(193, 27, 47, 0.85)',
+                        'rgba(37, 99, 235, 0.85)',
+                        'rgba(15, 118, 110, 0.85)',
+                        'rgba(21, 128, 61, 0.85)',
+                        'rgba(180, 83, 9, 0.85)',
+                        'rgba(124, 58, 237, 0.85)',
+                        'rgba(75, 85, 99, 0.85)'
+                    ],
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: context => `${context.parsed.x}%`
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        max: 100,
+                        ticks: {
+                            callback: value => `${value}%`
+                        }
+                    }
+                }
+            }
+        });
+
+        document.querySelectorAll('.fold-card .section-title').forEach(title => {
+            title.addEventListener('click', () => {
+                title.closest('.fold-card').classList.toggle('open');
+            });
+        });
+    </script>
+</body>
+
+</html>

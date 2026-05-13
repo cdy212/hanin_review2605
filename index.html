@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>대만한인회 — 플랫폼 리뉴얼 브리핑</title>
     <link
-        href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
     <style>
         *,
@@ -40,12 +40,16 @@
         }
 
         body {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Noto Sans KR', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
             background: var(--bg);
             color: var(--ink);
             overflow-x: hidden;
             font-size: 15px;
             line-height: 1.6;
+        }
+
+        em {
+            font-style: normal;
         }
 
         button,
@@ -84,7 +88,7 @@
         }
 
         .nav-brand {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Noto Sans KR', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
             font-size: 1.1rem;
             color: var(--ink);
             font-weight: 700;
@@ -277,18 +281,17 @@
 
         /* HEADINGS */
         .h-display {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Noto Sans KR', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
             font-size: clamp(2.8rem, 6vw, 4.5rem);
             line-height: 1.25;
             color: var(--ink);
             margin-bottom: 16px;
-            font-weight: 700;
+            font-weight: 800;
         }
 
         .h-display em {
-            font-style: italic;
             color: var(--red);
-            font-weight: 400;
+            font-weight: 800;
         }
 
         .h-block {
@@ -582,7 +585,7 @@
         }
 
         .policy-title {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Noto Sans KR', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
             font-size: 1.6rem;
             font-weight: 700;
             margin-bottom: 24px;
@@ -712,6 +715,11 @@
             color: var(--red);
             font-size: 0.88rem;
             font-weight: 800;
+        }
+
+        .principle-chip.pending {
+            background: #e0f2fe;
+            color: #0284c7;
         }
 
         .service-ideal {
@@ -1140,8 +1148,6 @@
     <section id="s-concept">
         <div class="s-label fi">01 — 사이트 컨셉 및 벤치 마킹</div>
         <h2 class="h-display fi"><em>지도 중심 생활플랫폼</em></h2>
-        <p class="lead fi">단순 커뮤니티 사이트가 아닌 대만 한인 생활 전반을 연결하는 지도 중심 플랫폼으로 설계합니다. 당근마켓처럼 내 주변 정보와 커뮤니티 행동이 자연스럽게 이어지는
-            구조입니다.</p>
 
         <div class="analysis-box fi">
             <h3 class="h-block" style="font-size: 1.4rem; margin-bottom: 12px;">1.1 사이트 컨셉</h3>
@@ -1172,11 +1178,12 @@
                     인삿말</a>
                 및
                 <a href="https://youtu.be/mG0gP4ZMZ-E?si=hM9p5N-0JNn0G4sD" target="_blank"
-                    style="color: var(--red); text-decoration: none; border-bottom: 1px solid var(--red);">영상</a>
+                    style="color: var(--red); text-decoration: none; border-bottom: 1px solid var(--red);">영상</a>,
+                2019년에 발간된 <span class="review-emphasis">대만한인100년사: 이 땅에 살아온 한인의 피와 땀 그리고 도전</span>
             </p>
             <div class="principle-summary">
                 <span class="principle-chip">화합</span>
-                <span class="principle-chip">역사</span>
+                <span class="principle-chip pending">역사 · 검토필요</span>
                 <span class="principle-chip">권익</span>
                 <span class="principle-chip">지원·봉사</span>
             </div>
@@ -1191,7 +1198,7 @@
                         <div class="p-list-item">지속적인 정보 업데이트로 사용자 재방문 유도</div>
                     </div>
                     <div class="service-ideal">서비스 내 기재 이념: <span class="review-emphasis">화합 · 권익</span></div>
-                    <div class="p-result">→ 커뮤니티 결속 강화</div>
+                    <div class="p-result">→ 한인회 공지 및 활동 정보, 한인들을 위한 중요 뉴스 정보</div>
                 </div>
                 <div class="p-card review-highlight-card concept-principle-card" tabindex="0">
                     <div class="p-card-head"><span class="p-badge core principle-badge">02</span>
@@ -1202,8 +1209,8 @@
                         <div class="p-list-item">생활 지원과 지역 기반 탐색 편의성 강화</div>
                         <div class="p-list-item">한인 사업체 노출 및 광고 효과 확보</div>
                     </div>
-                    <div class="service-ideal">서비스 내 기재 이념: <span class="review-emphasis">권익 · 지원·봉사</span></div>
-                    <div class="p-result">→ 생활 밀착 참여 유도</div>
+                    <div class="service-ideal">서비스 내 기재 이념: <span class="review-emphasis">지원·봉사</span></div>
+                    <div class="p-result">→ 구글맵 기반 생활 밀착 참여 유도 한인 업체 소개 및 생활 밀착형 구성[육아,병원 등]</div>
                 </div>
                 <div class="p-card review-highlight-card concept-principle-card" tabindex="0">
                     <div class="p-card-head"><span class="p-badge core principle-badge">03</span>
@@ -1215,7 +1222,7 @@
                         <div class="p-list-item">사용자 간 교류가 지속되는 커뮤니티 기반 확보</div>
                     </div>
                     <div class="service-ideal">서비스 내 기재 이념: <span class="review-emphasis">화합 · 지원·봉사</span></div>
-                    <div class="p-result">→ 커뮤니티 결속 강화</div>
+                    <div class="p-result">→ 중고장터, 구인구직, 자유게시판 등 한인을 위한 사용자간 참여형 게시판 운영</div>
                 </div>
             </div>
             <div class="analysis-box review-highlight-card" style="margin-top: 24px; margin-bottom: 0;" tabindex="0">
@@ -1225,9 +1232,7 @@
                 </div>
                 <div class="p-list">
                     <div class="p-list-item"><span class="review-emphasis">역사 부분</span>은 대만 한인 100년사, 한인회 활동 기록, 스토리 보드 등으로 별도 검토 및 구현 필요</div>
-                    <div class="p-list-item"><span class="review-emphasis">정보의 신뢰도 확보</span>는 복지·법률·생활·의료·세금 자료의 출처 표기와 검증 기준 수립 필요</div>
                 </div>
-                <div class="p-result">→ 정체성 계승 · 정보 신뢰도 확보</div>
             </div>
         </div>
 
@@ -1282,7 +1287,7 @@
         </div>
 
         <div class="strategy-panel active fi">
-            <button type="button" class="strategy-toggle" aria-expanded="true">2. 1차 사용자 — 메인 사용자층</button>
+            <button type="button" class="strategy-toggle" aria-expanded="true">2. 핵심 사용자</button>
             <div class="strategy-body">
 
 
@@ -1324,9 +1329,15 @@
         </div>
 
         <div class="strategy-panel fi">
-            <button type="button" class="strategy-toggle" aria-expanded="false">3. 2차 사용자 — 유학생</button>
+            <button type="button" class="strategy-toggle" aria-expanded="false">3. 잠재 사용자</button>
             <div class="strategy-body">
-                <div class="analysis-grid">
+                <div class="strategy-note review-highlight-card" style="margin-top: 0; margin-bottom: 24px;"
+                    tabindex="0">
+                    <strong class="review-emphasis">결정 전 확인 필요</strong><br>
+                    3차 사용자층은 한인회의 성격, 즉 <span class="review-emphasis">대만에 거주 및 생활하는 한인 대상 서비스</span>라는 목적성에
+                    부합하는지 여부를 먼저 확인한 뒤 포함 여부를 결정해야 합니다.
+                </div>
+                <div class="policy-grid-3">
                     <div class="a-card mid review-highlight-card" tabindex="0">
                         <div class="a-card-title strategy-key">유학생 · 어학연수생</div>
                         <div class="a-card-desc">
@@ -1335,9 +1346,19 @@
                             예시 니즈: 주거·행정 등 정착 초기 생활 정보, 나눔 게시판을 통한 저비용 물품 확보, 구인·과외 등 부업 정보, 또래 및 교민 네트워크 연결.
                         </div>
                     </div>
+                    <div class="a-card low">
+                        <div class="a-card-title">단기 체류자 · 원격근무자</div>
+                        <div class="a-card-desc">예시 니즈: 183일 거주 판정 세금·비자 전문 콘텐츠, 단기 주거 및 코워킹 정보, 공식 한인 네트워크 편입, 장기 정착 전환
+                            정보.</div>
+                    </div>
+                    <div class="a-card low">
+                        <div class="a-card-title">관광객</div>
+                        <div class="a-card-desc">예시 니즈: 방한 대만인에 대한 한국 문화, 음식, 콘텐츠 간접 체험 및 대만 방문 한인에게 인증된 여행 정보 제공.</div>
+                    </div>
                 </div>
 
-                <div class="policy-group" style="margin-top: 28px;">
+                <div class="analysis-box review-highlight-card" style="margin-top: 28px; margin-bottom: 0;"
+                    tabindex="0">
                     <div class="policy-title">유학생 세부 타겟층 (총 2,418명) <span
                             style="font-size: 0.8rem; color: var(--ink-3); font-weight: 400; margin-left: 8px;">출처: 대만
                             교육부 113학년도 국가별 CSV</span></div>
@@ -1377,28 +1398,90 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="analysis-box review-highlight-card" style="margin-top: 28px; margin-bottom: 0;"
+                    tabindex="0">
+                    <div class="policy-title">관광객 세부 타겟층 <span
+                            style="font-size: 0.8rem; color: var(--ink-3); font-weight: 400; margin-left: 8px;">출처:
+                            한-대만 그래프용 수치표 및 서비스 교집합</span></div>
+                    <div class="policy-grid-3">
+                        <div class="p-card review-highlight-card" tabindex="0">
+                            <div class="p-card-head"><span class="p-badge strategy-key"
+                                    style="background: #e0f2fe; color: #0284c7;">한국인 → 대만</span>
+                                <div class="p-title strategy-key">대만 방문 관광 수요 100만명[2025년]</div>
+                            </div>
+                            <div class="p-list">
+                                <div class="p-list-item">2025년 한국인 대만 방문객: 1,016,520명</div>
+                                <div class="p-list-item">입국 거점: 타오위안 공항 80.43%, 가오슝 8.78%, 타이중 4.52%</div>
+                                <div class="p-list-item">주요 도시 비중 참고: 타이베이 84.85%, 신베이 60.17%</div>
+                            </div>
+                            <div class="p-result">→ 관광 중심 인증 여행 정보 제공</div>
+                        </div>
+                        <div class="p-card review-highlight-card" tabindex="0">
+                            <div class="p-card-head"><span class="p-badge strategy-key"
+                                    style="background: #e0f2fe; color: #0284c7;">대만인 → 한국</span>
+                                <div class="p-title strategy-key">방한 관광·활동 수요 190만명[2025년]</div>
+                            </div>
+                            <div class="p-list">
+                                <div class="p-list-item">2025년 대만인 한국 방문객: 1,891,414명</div>
+                                <div class="p-list-item">입국 경로: 인천공항 49.0%, 김해공항 24.6%</div>
+                                <div class="p-list-item">서울 포함 타 지역 방문 의향 62.56%, 부산 78.63%, 대구 32.33%</div>
+                                <div class="p-list-item">주요 활동: 쇼핑 98.06%, 식도락 52.26%, 전통문화 체험 48.17%, 의료 6.67%</div>
+                            </div>
+                            <div class="p-result">→ 쇼핑·음식·관광·의료 정보 큐레이션</div>
+                        </div>
+                        <div class="p-card review-highlight-card" tabindex="0">
+                            <div class="p-card-head"><span class="p-badge strategy-key"
+                                    style="background: #e0f2fe; color: #0284c7;">서비스 교집합</span>
+                                <div class="p-title strategy-key">한인회 콘텐츠 확장 포인트</div>
+                            </div>
+                            <div class="p-list">
+                                <div class="p-list-item">대만 소비자의 한국문화 경험 88.00%</div>
+                                <div class="p-list-item">드라마 61.65%, 영화 54.17%, K-pop 34.81% 경험</div>
+                                <div class="p-list-item">한국문화 경험이 재방문의향에 긍정 영향 77.52%</div>
+                                <div class="p-list-item">음식 문화, K-pop 등 대만 현지 간접 체험 콘텐츠 검토</div>
+                            </div>
+                            <div class="p-result">→ 한국 인지도 강화 콘텐츠 교집합 확인</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="strategy-panel fi">
-            <button type="button" class="strategy-toggle" aria-expanded="false">4. 3차 사용자 — 기타 사용자층</button>
-            <div class="strategy-body">
-                <div class="strategy-note review-highlight-card" style="margin-top: 0; margin-bottom: 24px;"
-                    tabindex="0">
-                    <strong class="review-emphasis">결정 전 확인 필요</strong><br>
-                    3차 사용자층은 한인회의 성격, 즉 <span class="review-emphasis">대만에 거주 및 생활하는 한인 대상 서비스</span>라는 목적성에
-                    부합하는지 여부를 먼저 확인한 뒤 포함 여부를 결정해야 합니다.
-                </div>
-                <div class="analysis-grid">
-                    <div class="a-card low">
-                        <div class="a-card-title">디지털 노마드 · 원격근무자</div>
-                        <div class="a-card-desc">예시 니즈: 183일 거주 판정 세금·비자 전문 콘텐츠, 단기 주거 및 코워킹 정보, 공식 한인 네트워크 편입, 장기 정착 전환
-                            정보.</div>
+        <div class="analysis-box fi review-highlight-card" style="margin-top: 36px;" tabindex="0">
+            <h3 class="h-block" style="font-size: 1.4rem; margin-bottom: 18px;">4. 전략방안[가안]</h3>
+            <div class="policy-grid-3">
+                <div class="p-card review-highlight-card" tabindex="0">
+                    <div class="p-card-head">
+                        <span class="p-badge core strategy-key">4.1</span>
+                        <div class="p-title strategy-key">사용자 락인 전략</div>
                     </div>
-                    <div class="a-card low">
-                        <div class="a-card-title">관광객 · 단기 체류자</div>
-                        <div class="a-card-desc">예시 니즈: 한국어 지원 음식점·업체 탐색, 교민 추천 맛집·관광 정보, 여권 분실 등 긴급 상황의 한인 네트워크 접근, 모바일
-                            웹 즉시 접속.</div>
+                    <div class="p-list">
+                        <div class="p-list-item">한인에게 필요한 정보 및 문제 해결</div>
+                        <div class="p-list-item"><span class="review-emphasis">생활 밀착형</span>: 거주민 육아, 병원 등 실사용 정보</div>
+                        <div class="p-list-item">정보의 고급화: 세무, 법률, 행정 등 <span class="review-emphasis">내부 확인 필요</span></div>
+                    </div>
+                </div>
+                <div class="p-card review-highlight-card" tabindex="0">
+                    <div class="p-card-head">
+                        <span class="p-badge core strategy-key">4.2</span>
+                        <div class="p-title strategy-key">사용자 재방문 전략</div>
+                    </div>
+                    <div class="p-list">
+                        <div class="p-list-item"><span class="review-emphasis">News</span> 업데이트</div>
+                        <div class="p-list-item">중고거래·나눔 게시판 운영</div>
+                        <div class="p-list-item">쿠폰 등 사용자 혜택 제공</div>
+                    </div>
+                </div>
+                <div class="p-card review-highlight-card" tabindex="0">
+                    <div class="p-card-head">
+                        <span class="p-badge core strategy-key">4.3</span>
+                        <div class="p-title strategy-key">홍보 전략</div>
+                    </div>
+                    <div class="p-list">
+                        <div class="p-list-item">기존 사용하는 <span class="review-emphasis">Line</span> 채널 활용</div>
+                        <div class="p-list-item">Cafe 등 기존 커뮤니티 채널을 통한 사이트 홍보</div>
+                        <div class="p-list-item">공지성 링크 공유로 초기 유입 확보</div>
                     </div>
                 </div>
             </div>
@@ -1468,7 +1551,14 @@
                     <tr>
                         <td class="topic">기존 데이터 보존 범위</td>
                         <td><span class="badge badge-must">필수 결정</span></td>
-                        <td>이관해야 할 게시글·회원 정보의 범위 확정. 마이그레이션 우선순위 결정.</td>
+                        <td>
+                            이관해야 할 게시글·회원 정보의 범위 확정. 마이그레이션 우선순위 결정.<br>
+                            예시:
+                            <a href="http://homepy.korean.net/~tw/www/news/notice/read.htm?bn=notice&fmlid=1472&pkid=1472&board_no=3530"
+                                target="_blank"
+                                style="color: var(--red); text-decoration: none; border-bottom: 1px solid var(--red);">[코리안넷소식]
+                                차세대동포 모국 초청연수 참가자 선정 명단</a>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -1587,6 +1677,7 @@
             { id: 's-confirm', label: '질문 및 확인 사항' },
             { id: 's-closing', label: '마치며...', inMore: true },
             { id: 's-dashboard-link', label: '인구통계', isRef: true, externalUrl: 'review_user.html' },
+            { id: 's-tourist-link', label: '관광객통계', isRef: true, externalUrl: 'review_tourist.html' },
             { id: 's-history', label: '한인회역사', isRef: true, inMore: true },
             { id: 's-main2-link', label: '2안 메안화면', isRef: true, externalUrl: 'main2.html' }
         ];
