@@ -749,6 +749,14 @@
             line-height: 1.55;
         }
 
+        .next-step-role {
+            display: inline-block;
+            min-width: 72px;
+            margin-right: 8px;
+            color: var(--red);
+            font-weight: 900;
+        }
+
         .strategy-key {
             transition: color .28s ease, background .28s ease, box-shadow .28s ease;
         }
@@ -1566,14 +1574,13 @@
 
         <div class="analysis-box fi review-highlight-card" style="margin-top: 32px;" tabindex="0">
             <h3 class="h-block" style="font-size: 1.4rem; margin-bottom: 12px;">향후 진행 예정사항</h3>
-            <p class="lead" style="max-width: none; margin: 0; font-size: 0.95rem;">
-                <span class="review-emphasis">논의된 사항 기반으로 2차 리뉴얼 작업</span>을 진행합니다.
-            </p>
             <div class="next-step-list">
-                <div class="next-step-item">서비스 필수 데이터 입력 <span class="review-emphasis">지도, 공지 등</span> 및 운영 정리</div>
-                <div class="next-step-item">1차 배포: <span class="review-emphasis">사용자 리뷰, 주요 접근 메뉴 확인</span></div>
-                <div class="next-step-item">콘텐츠 강화 및 사용자 필요 서비스 구축</div>
-                <div class="next-step-item">안정화 및 운영 진행</div>
+                <div class="next-step-item">1. <span class="next-step-role">개발팀</span>260513 리뷰 및 방향성, 컨셉 등에 대한 디자인 시안 반영</div>
+                <div class="next-step-item">2. <span class="next-step-role">승인자</span>디자인 시안 최종 확인 및 조정 피드백 <span
+                        class="review-emphasis">&lt;-&gt;</span> 개발팀 조정 및 승인요청</div>
+                <div class="next-step-item">3. <span class="next-step-role">개발팀</span>최종안에 대한 개발작업</div>
+                <div class="next-step-item">4. <span class="next-step-role">운영팀</span>컨텐츠 등록 작업</div>
+                <div class="next-step-item">5. <span class="next-step-role">운영,개발</span>서비스 모니터링</div>
             </div>
         </div>
 
