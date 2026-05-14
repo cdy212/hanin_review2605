@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>의사결정 압축형 PMO 협업 화면</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <main class="app-shell">
+        <header class="hero">
+            <div>
+                <p class="eyebrow">AI PMO / GitHub Workflow / Executive Dashboard</p>
+                <h1>최종 의사결정자 협업 리뷰 화면</h1>
+                <p class="hero-copy">개발 로그가 아니라 의사결정에 필요한 현재 상태, 리스크, 승인 필요사항, 다음 행동만 압축해서 보여주는 운영 화면입니다.</p>
+            </div>
+            <aside class="hero-panel">
+                <span class="panel-label">운영 원칙</span>
+                <strong>대표가 3~5분 안에 판단 가능해야 한다.</strong>
+                <p>회의록, GitHub 진행상태, 리스크, 의사결정 요청을 하나의 상황판으로 압축합니다.</p>
+            </aside>
+        </header>
+
+        <section class="kpi-grid" id="kpiGrid" aria-label="핵심 지표"></section>
+
+        <section class="layout-grid">
+            <article class="card executive-card">
+                <div class="section-head">
+                    <div>
+                        <span class="section-kicker">Executive Dashboard</span>
+                        <h2>최종 의사결정자 요약</h2>
+                    </div>
+                    <span class="status-badge danger">결정 필요 3건</span>
+                </div>
+                <div id="executiveSummary" class="summary-stack"></div>
+            </article>
+
+            <article class="card">
+                <div class="section-head">
+                    <div>
+                        <span class="section-kicker">Decision Board</span>
+                        <h2>의사결정 필요사항</h2>
+                    </div>
+                    <button class="ghost-button" type="button" data-filter="decision">필터</button>
+                </div>
+                <div id="decisionList" class="decision-list"></div>
+            </article>
+        </section>
+
+        <section class="card">
+            <div class="section-head">
+                <div>
+                    <span class="section-kicker">Workflow</span>
+                    <h2>전체 운영 흐름</h2>
+                </div>
+                <span class="status-badge">회의 → GitHub → Dashboard</span>
+            </div>
+            <div id="workflow" class="workflow"></div>
+        </section>
+
+        <section class="layout-grid">
+            <article class="card">
+                <div class="section-head">
+                    <div>
+                        <span class="section-kicker">Meeting Automation</span>
+                        <h2>회의록 처리 결과 예시</h2>
+                    </div>
+                    <span class="status-badge">AI 요약</span>
+                </div>
+                <div id="meetingOutput" class="meeting-output"></div>
+            </article>
+
+            <article class="card">
+                <div class="section-head">
+                    <div>
+                        <span class="section-kicker">GitHub Sync</span>
+                        <h2>작업 상태 분석</h2>
+                    </div>
+                    <span class="status-badge warn">수동 리뷰 기준</span>
+                </div>
+                <div id="githubBoard" class="github-board"></div>
+            </article>
+        </section>
+
+        <section class="card">
+            <div class="section-head">
+                <div>
+                    <span class="section-kicker">Human Only</span>
+                    <h2>사람이 직접 해야 하는 작업</h2>
+                </div>
+                <a class="text-link" href="human_actions.md" target="_blank">문서 열기</a>
+            </div>
+            <div id="humanActions" class="human-grid"></div>
+        </section>
+
+        <section class="card">
+            <div class="section-head">
+                <div>
+                    <span class="section-kicker">Outputs</span>
+                    <h2>운영 산출물 파일</h2>
+                </div>
+            </div>
+            <div class="file-grid">
+                <a href="human_actions.md" target="_blank">human_actions.md<span>사람이 해야 하는 작업만 분리</span></a>
+                <a href="workflow.md" target="_blank">workflow.md<span>회의부터 대시보드까지 전체 행동 흐름</span></a>
+                <a href="implementation_plan.md" target="_blank">implementation_plan.md<span>이 시스템을 만들기 위한 작업 플랜</span></a>
+                <a href="pmo_master_prompt.md" target="_blank">pmo_master_prompt.md<span>AI PMO 운영 프롬프트</span></a>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
