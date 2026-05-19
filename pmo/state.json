@@ -1,0 +1,273 @@
+{
+  "meta": {
+    "eyebrow": "AI PMO / Executive Dashboard / 2026-05-13 Review",
+    "title": "대만한인회 리뉴얼 PMO 대시보드",
+    "lead": "회의록과 GitHub 작업 상태를 기반으로 회원 정책, 메인 운영 기능, 뉴스 피드, 지도/서버 확인사항을 의사결정 중심으로 압축했습니다.",
+    "chips": [
+      {
+        "label": "결정 필요 5건",
+        "tone": "urgent"
+      },
+      {
+        "label": "확인 필요 4건"
+      },
+      {
+        "label": "진행률 60%"
+      },
+      {
+        "label": "한인회 의견 검토 필요",
+        "tone": "urgent"
+      },
+      {
+        "label": "승인 전 초안"
+      }
+    ],
+    "approvalState": "draft",
+    "lastGeneratedAt": "2026-05-15T06:59:35.163Z"
+  },
+  "kpis": [
+    {
+      "label": "전체 진행률",
+      "value": "60%",
+      "sub": "1차 리뷰 내용 정리 및 TODO 분해 완료",
+      "tone": "green",
+      "progress": true
+    },
+    {
+      "label": "의사결정 필요",
+      "value": "5건",
+      "sub": "한인회 의견 반영 범위, 회원 단계, 권한, 메인 운영, 뉴스 원천",
+      "tone": "red"
+    },
+    {
+      "label": "확인 필요",
+      "value": "4건",
+      "sub": "지도 비용, 업체 추출, 서버/도메인, 웹푸쉬",
+      "tone": "amber"
+    },
+    {
+      "label": "다음 액션",
+      "value": "승인",
+      "sub": "정회원 기준과 뉴스 피드 원천 우선 확정",
+      "tone": "blue"
+    }
+  ],
+  "cycle": [
+    {
+      "title": "회의",
+      "desc": "웹앱 버전 1차 리뷰 완료",
+      "state": "done"
+    },
+    {
+      "title": "AI 요약",
+      "desc": "결정, 미결, TODO 분리 완료",
+      "state": "done"
+    },
+    {
+      "title": "TODO",
+      "desc": "회원/뉴스/지도 확인 작업화",
+      "state": "active"
+    },
+    {
+      "title": "GitHub",
+      "desc": "Issue 생성 및 담당자 배정 대기",
+      "state": ""
+    },
+    {
+      "title": "Push 확인",
+      "desc": "최근 변경사항 검토 대기",
+      "state": ""
+    },
+    {
+      "title": "진척률",
+      "desc": "완료, QA, 병목 종합 판단",
+      "state": ""
+    },
+    {
+      "title": "Dashboard",
+      "desc": "대표용 현황판 갱신",
+      "state": ""
+    }
+  ],
+  "decisions": [
+    {
+      "level": "high",
+      "badge": "High",
+      "title": "260515 한인회 의견 반영 범위 결정",
+      "body": "세부페이지, 회원가입, 커뮤니티, 쿠폰 등록, 마이페이지, MVP 범위가 기존 260513 기준보다 확장되어 협의가 필요합니다.",
+      "impact": "바로 반영하면 1차 개발 범위와 일정이 커질 수 있으므로 확정 항목만 작업 Issue로 발행해야 합니다."
+    },
+    {
+      "level": "high",
+      "badge": "High",
+      "title": "회원가입 2단계 입력 정책 결정",
+      "body": "2단계 정보를 언제 받을지, 어떤 항목을 받을지, 수동/인증 중 어떤 방식으로 관리할지 결정해야 합니다.",
+      "impact": "쿠폰 사용, 게시글 등록, 정회원 전환 흐름 전체에 영향을 줍니다."
+    },
+    {
+      "level": "high",
+      "badge": "High",
+      "title": "회원 권한 구조 확정",
+      "body": "일반회원, 정회원, 업체회원, 관리자의 권한과 정회원 전환 기준을 확정해야 합니다.",
+      "impact": "게시판 글쓰기, 쿠폰 사용, 업체 쿠폰 등록 승인 정책의 기준이 됩니다."
+    },
+    {
+      "level": "medium",
+      "badge": "Medium",
+      "title": "메인 화면 운영 관리자 기능 결정",
+      "body": "메인 배너 등 메인 화면에서 운영자가 직접 관리해야 하는 기능 범위를 정해야 합니다.",
+      "impact": "관리자 페이지 범위와 초기 개발 작업량을 결정합니다."
+    },
+    {
+      "level": "high",
+      "badge": "High",
+      "title": "뉴스 피드 구성 원천 결정",
+      "body": "코트라 RSS, 타이완 투데이 RSS, 인스타 공식 커뮤니티 중 어떤 원천을 사용할지 결정해야 합니다.",
+      "impact": "커뮤니티 탭의 자동화 범위, 출처 표기, 운영 검수 방식에 영향을 줍니다."
+    }
+  ],
+  "todos": [
+    {
+      "id": "todo-compare-260515-opinion",
+      "p": "P0",
+      "tone": "p0",
+      "title": "260515 한인회 의견 비교 검토",
+      "owner": "기획/승인자",
+      "targetRepo": "review",
+      "body": "260513 기준안과 260515 한인회 의견의 차이를 검토하고, 협의/확정/보류 항목을 분리합니다."
+    },
+    {
+      "id": "todo-member-step2-policy",
+      "p": "P0",
+      "tone": "p0",
+      "title": "회원가입 2단계 정책안 작성",
+      "owner": "기획/승인자",
+      "targetRepo": "review",
+      "body": "입력 시점, 수집 항목, 인증 방식, 약관/선택정보 포함 여부를 한 장으로 정리합니다."
+    },
+    {
+      "id": "todo-member-role-policy",
+      "p": "P0",
+      "tone": "p0",
+      "title": "정회원 기준 및 권한표 확정",
+      "owner": "승인자",
+      "targetRepo": "review",
+      "body": "일반회원, 정회원, 업체회원, 관리자 권한과 쿠폰/게시판 접근 기준을 확정합니다."
+    },
+    {
+      "id": "todo-admin-backoffice-partner",
+      "p": "P0",
+      "tone": "p0",
+      "title": "백오피스 관리자 기능 및 제휴업체 기능 체크",
+      "owner": "승인자/개발팀",
+      "targetRepo": "back",
+      "body": "쿠폰 등록 승인, 회원 관리, 홈페이지 운영 관리 범위와 접근 권한을 확정합니다."
+    },
+    {
+      "id": "todo-coupon-review",
+      "p": "P0",
+      "tone": "p0",
+      "title": "쿠폰기능 검토",
+      "owner": "기획/개발팀",
+      "targetRepo": "front+back",
+      "body": "업체회원 쿠폰 등록, 오프라인 승인 비밀번호, 사용자 쿠폰 사용 흐름을 검토합니다."
+    },
+    {
+      "id": "todo-main-design-update",
+      "p": "P0",
+      "tone": "p0",
+      "title": "메인화면 디자인 수정",
+      "owner": "디자인/개발팀",
+      "targetRepo": "front",
+      "body": "결정 시안 기준으로 메인 화면과 하단 공지 스크롤 처리 수정 범위를 정리합니다."
+    },
+    {
+      "id": "todo-news-source-compare",
+      "p": "P1",
+      "tone": "p1",
+      "title": "뉴스 피드 원천 비교",
+      "owner": "운영팀",
+      "targetRepo": "review",
+      "body": "코트라 RSS, 타이완 투데이 RSS, 인스타 공식 커뮤니티의 출처 안정성과 운영 부담을 비교합니다."
+    },
+    {
+      "id": "todo-google-map-check",
+      "p": "P1",
+      "tone": "p1",
+      "title": "구글 지도 비용 및 업체 정보 확인",
+      "owner": "개발팀",
+      "targetRepo": "back",
+      "body": "지도 사용 비용, 업체 정보 추출 가능 여부, 제휴맵 소팅 방식 검토 결과를 정리합니다."
+    },
+    {
+      "id": "todo-server-domain-check",
+      "p": "P1",
+      "tone": "p1",
+      "title": "서버/도메인 사양 확인",
+      "owner": "개발팀",
+      "targetRepo": "back",
+      "body": "현 배포 환경과 향후 운영 사양을 확인하고 필요한 변경 여부를 보고합니다."
+    },
+    {
+      "id": "todo-webpush-review",
+      "p": "P2",
+      "tone": "p2",
+      "title": "웹푸쉬 적용 가능성 검토",
+      "owner": "개발팀",
+      "targetRepo": "front+back",
+      "body": "공지, 쿠폰, 커뮤니티 알림에 웹푸쉬를 적용할 필요와 구현 부담을 검토합니다."
+    }
+  ],
+  "github": [
+    {
+      "status": "Review Gate",
+      "body": "260515 한인회 의견 비교 검토 완료 전 FRONT/BACK Issue 발행 보류",
+      "count": "1건"
+    },
+    {
+      "status": "Need Decision",
+      "body": "회원 2단계 입력 정책, 권한 구조, 메인 관리자 기능, 뉴스 원천",
+      "count": "4건"
+    },
+    {
+      "status": "Ready",
+      "body": "회원 정책표, 뉴스 원천 비교표, 지도 비용 확인 이슈 생성 가능",
+      "count": "3건"
+    },
+    {
+      "status": "In Progress",
+      "body": "회의록 정리, PMO 대시보드 반영",
+      "count": "2건"
+    },
+    {
+      "status": "Blocked",
+      "body": "구글 지도 비용, 업체 정보 추출, 서버/도메인 사양 확인 전 개발 범위 확정 어려움",
+      "count": "3건"
+    }
+  ],
+  "analysis": [
+    [
+      "완료 반영",
+      "1차 리뷰 회의록 정리와 의사결정 항목 추출 완료"
+    ],
+    [
+      "검토 게이트",
+      "260515 한인회 의견은 기존 기준안과 차이가 있어 확정 전 작업 발행을 보류"
+    ],
+    [
+      "진행 요인",
+      "하단 네비게이션과 쿠폰/제휴맵 방향성은 초안 정리됨"
+    ],
+    [
+      "정체 요인",
+      "회원 정책과 뉴스 원천 결정 전 기능 범위 확정 어려움"
+    ],
+    [
+      "판단",
+      "P0 정책 2건 확정 시 개발 착수 가능성이 크게 올라감"
+    ]
+  ],
+  "meetingDirectoryUrl": "cowork_plan/회의/",
+  "meetingIndexUrl": "cowork_plan/회의/meetings.json",
+  "reviewPlanUrl": "pmo/review_plan_260515.json"
+}

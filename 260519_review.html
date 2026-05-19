@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>한인회 웹앱 구축 프로젝트 통합 정책 및 로드맵</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+
+        body {
+            font-family: 'Noto Sans KR', 'Inter', sans-serif;
+        }
+
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <span class="w-3 h-6 bg-indigo-600 rounded-sm"></span>
+                <h1 class="text-lg font-bold text-slate-900 tracking-tight">대만 한인회 통합 프로젝트 대시보드</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="text-xs text-slate-400">최종 업데이트: 2026.05.19</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Top Tab Navigation (1Page Style) -->
+    <nav class="bg-white border-b border-slate-200 sticky top-16 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex space-x-1 py-3 overflow-x-auto no-scrollbar">
+                <button onclick="switchTab('policy')" id="btn-policy"
+                    class="tab-btn shrink-0 flex items-center px-4 py-2.5 rounded-lg text-sm font-medium transition-all text-indigo-600 bg-indigo-50">
+                    <span>통합 정책 정리</span>
+                </button>
+                <button onclick="switchTab('mvp1')" id="btn-mvp1"
+                    class="tab-btn shrink-0 flex items-center px-4 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-50">
+                    <span>1차 MVP 개발 범위</span>
+                </button>
+                <button onclick="switchTab('mvp2')" id="btn-mvp2"
+                    class="tab-btn shrink-0 flex items-center px-4 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-50">
+                    <span>2차 고도화 범위</span>
+                </button>
+                <button onclick="switchTab('risks')" id="btn-risks"
+                    class="tab-btn shrink-0 flex items-center px-4 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-50">
+                    <span>체크사항 & 리스크</span>
+                </button>
+                <button onclick="switchTab('tasks')" id="btn-tasks"
+                    class="tab-btn shrink-0 flex items-center px-4 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-50">
+                    <span>부서별 Task 관리</span>
+                </button>
+                <a href="260519_구글가격정책_산정로직.html"
+                    class="tab-btn shrink-0 flex items-center px-4 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-50">
+                    <span>구글가격정책</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+        <main class="min-w-0">
+
+            <!-- SECTION 1: 통합 정책 정리 -->
+            <section id="sec-policy" class="tab-section space-y-6">
+
+                <!-- 작업 절차 (최상단 고정) -->
+                <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+                    <h3 class="text-base font-bold text-slate-900 mb-4 pb-2 border-b border-slate-100">프로젝트 작업 절차</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-3">
+                        <div class="p-3.5 bg-indigo-50 border border-indigo-100 rounded-lg relative overflow-hidden">
+                            <div
+                                class="absolute top-0 right-0 bg-indigo-600 text-[10px] text-white px-2 py-0.5 rounded-bl">
+                                진행중</div>
+                            <span class="text-[11px] font-bold text-indigo-600 block mb-1">01단계</span>
+                            <p class="text-xs text-slate-800 leading-relaxed font-semibold">정책 결정, 방향성 시안/기능 안 공유 및 회의
+                            </p>
+                        </div>
+                        <div class="p-3.5 bg-slate-50 border border-slate-100 rounded-lg">
+                            <span class="text-[11px] font-bold text-slate-400 block mb-1">02단계</span>
+                            <p class="text-xs text-slate-700 leading-relaxed font-medium">1차 MVP 및 2차 범위 산정</p>
+                        </div>
+                        <div class="p-3.5 bg-slate-50 border border-slate-100 rounded-lg">
+                            <span class="text-[11px] font-bold text-slate-400 block mb-1">03단계</span>
+                            <p class="text-xs text-slate-700 leading-relaxed font-medium">
+                                <strong class="font-bold text-slate-950">개발팀</strong> : 1차 MVP 기능 개발<br>
+                                <strong class="font-bold text-slate-950">한인회</strong> : QA 진행
+                            </p>
+                        </div>
+                        <div class="p-3.5 bg-slate-50 border border-slate-100 rounded-lg">
+                            <span class="text-[11px] font-bold text-slate-400 block mb-1">04단계</span>
+                            <p class="text-xs text-slate-700 leading-relaxed font-medium">APP 개발진행 혹은 2차 개발 진행 의사결정</p>
+                        </div>
+                        <div class="p-3.5 bg-slate-50 border border-slate-100 rounded-lg">
+                            <span class="text-[11px] font-bold text-slate-400 block mb-1">05단계</span>
+                            <p class="text-xs text-slate-700 leading-relaxed font-medium">APP 개발 환경 셋팅 (장비, 계정 등)</p>
+                        </div>
+                        <div class="p-3.5 bg-slate-50 border border-slate-100 rounded-lg">
+                            <span class="text-[11px] font-bold text-slate-400 block mb-1">06단계</span>
+                            <p class="text-xs text-slate-700 leading-relaxed font-medium">최종 출시 및 QA 운영 진행</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 회의 안건 및 의견 정리 -->
+                <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+                    <h2 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-4 mb-4">1. 회의 안건 및 한인회 의견
+                        통합 정책 정리</h2>
+                    <p class="text-sm text-slate-500 mb-6 leading-relaxed">
+                        1차 회의록과 이후 취합된 한인회 의견을 정밀 대조하여 상호 조율 및 <strong>통합 최종 정책안</strong>을 확정 탑재했습니다.
+                    </p>
+
+                    <!-- 회원 가입 및 등급 정책 -->
+                    <div class="space-y-4">
+                        <h3 class="text-base font-bold text-slate-800 flex items-center space-x-2">
+                            <span class="w-1 h-4 bg-indigo-500 rounded-full"></span>
+                            <span>회원 가입 및 등급 권한 정책</span>
+                        </h3>
+                        <div class="overflow-x-auto border border-slate-200 rounded-lg">
+                            <table class="min-w-full divide-y divide-slate-200 text-sm">
+                                <thead class="bg-slate-50 text-slate-700 font-medium">
+                                    <tr>
+                                        <th class="px-4 py-3 text-left w-1/6">등급 구분</th>
+                                        <th class="px-4 py-3 text-left w-7/12">통합 최종 결정 정책 (권한 및 구조)</th>
+                                        <th class="px-4 py-3 text-left w-3/12">필수 정보 및 약관</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200 text-slate-600 bg-white">
+                                    <tr>
+                                        <td class="px-4 py-3.5 font-semibold text-slate-900">일반회원</td>
+                                        <td class="px-4 py-3.5 leading-relaxed">
+                                            <span class="text-red-600 font-bold block mb-1">[회원 가입 필수 - 비회원 완전
+                                                배제]</span>
+                                            소셜 로그인 또는 이메일을 통한 로그인이 선행되어야만 서비스를 정상 이용 가능합니다.<br>
+                                            글쓰기, 댓글 작성, 쿠폰 사용 등 실제 서비스 이용과 연결되는 핵심 기능은 모두 로그인 완료 후 활성화됩니다.
+                                        </td>
+                                        <td class="px-4 py-3.5 text-xs text-slate-500 space-y-1">
+                                            <p class="font-semibold text-slate-700 mb-1">소셜/이메일 정보</p>
+                                            <hr class="my-1 border-slate-100">
+                                            <p>- 서비스 이용약관 동의</p>
+                                            <p>- 개인정보 수집 및 이용 동의</p>
+                                            <p>- 커뮤니티 운영정책 동의</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-3.5 font-semibold text-slate-900">정회원</td>
+                                        <td class="px-4 py-3.5 leading-relaxed">
+                                            글쓰기나 쿠폰 사용 과정에서 정회원 전용 제한에 해당하여 인증이 필요한 경우, <span
+                                                class="font-semibold text-indigo-600">“정회원 신청/전환”</span> 화면을 동적으로 안내하고
+                                            추가 정보를 입력하도록 설계하여 자연스러운 회원 등급 고도화를 유도합니다.<br>
+                                            <span
+                                                class="bg-amber-50 text-amber-800 text-[11px] px-2 py-0.5 rounded-md font-semibold border border-amber-200 block mt-1.5 w-max">
+                                                [확인 필요 사항] 정회원 승인 방식은 자동 승인으로 할지, 관리자 승인 절차를 둘지 운영 정책에 따라 결정 필요 (자동 정회원
+                                                승급 시 별도 검증 적용 여부 혹은 수동 시 세부 절차)
+                                            </span>
+                                        </td>
+                                        <td class="px-4 py-3.5 text-xs text-slate-500 space-y-1">
+                                            <p class="font-semibold text-indigo-700 mb-1">추가 기입 정보</p>
+                                            <p class="text-slate-800 font-medium">- 연락처, 나이, 지역 등</p>
+                                            <hr class="my-1 border-slate-100">
+                                            <p>- 개인정보 수집 동의</p>
+                                            <p>- 정회원 인증/승인 절차 동의</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-3.5 font-semibold text-slate-900">업체회원</td>
+                                        <td class="px-4 py-3.5 leading-relaxed">
+                                            가맹점주의 입점 정보 등록 및 가맹점 전용 쿠폰을 등록하고 요청할 수 있는 권한을 보유합니다.<br>
+                                            <span class="font-semibold text-slate-900">Happytuk 플랫폼 전용 쿠폰 종류 3종이
+                                                지원됩니다:</span>
+                                            <ul class="list-disc pl-4 mt-1 text-xs text-slate-500 space-y-0.5">
+                                                <li><strong>범용 쿠폰:</strong> 동일한 고유 번호를 사용하여 1인당 1회 사용이 가능한 구조</li>
+                                                <li><strong>개인 쿠폰:</strong> 유저별 고유한 식별 전용 일련번호 쿠폰을 개별 발급하는 구조</li>
+                                                <li><strong>한도 쿠폰:</strong> 선착순 개념으로 발행하여 사용 횟수 또는 총발행량이 제한되는 구조</li>
+                                            </ul>
+                                            <span class="text-indigo-600 font-semibold block mt-1 text-xs">
+                                                [승인 정책] 초기에는 업체 등록 시 자동 승인되도록 설계하며, 향후 필요시 관리자 플래그 전환으로 원터치 승인 프로세스를 즉시
+                                                도입할 수 있는 유연한 기술 스펙 적용.
+                                            </span>
+                                        </td>
+                                        <td class="px-4 py-3.5 text-xs text-slate-500 space-y-1">
+                                            <p class="font-semibold text-slate-700 mb-1">업장 가입 정보</p>
+                                            <p>- 사업자 등록 번호 및 사업장 정보</p>
+                                            <p>- 제휴 입점 수집 동의</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-3.5 font-semibold text-slate-900 text-indigo-600">관리자</td>
+                                        <td class="px-4 py-3.5 leading-relaxed font-medium text-slate-700" colspan="2">
+                                            한인회 시스템 및 홈페이지 전반적 통제 수행.<br>
+                                            - 업체 등록 및 상태 승인 관리<br>
+                                            - 자체 발행 및 가맹점 소유 쿠폰(범용, 개인, 한도) 통합 등록 및 발급/제어 관리<br>
+                                            - 메인 페이지 상단 플로팅 배너 설정 및 조율 (링크, 우선순위, 레이아웃)<br>
+                                            - 메인 페이지 중앙 Core 기능 바로가기 아이콘 제어 및 배치 순위 우선 배치 권한<br>
+                                            - 스팸 광고 및 비방 목적 악성 게시글/댓글 필터링 및 실시간 블라인드(숨김) 처리 등의 백오피스 CMS 관리 기능 일체 수행
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 쿠폰 등록 및 사용 정책 -->
+                    <div class="space-y-4 mt-8">
+                        <h3 class="text-base font-bold text-slate-800 flex items-center space-x-2">
+                            <span class="w-1 h-4 bg-indigo-500 rounded-full"></span>
+                            <span>쿠폰 등록 및 사용 프로세스</span>
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="border border-slate-200 rounded-lg p-4 bg-slate-50">
+                                <h4 class="font-bold text-slate-900 text-sm mb-2">Happytuk 쿠폰 시스템 사양</h4>
+                                <ul class="text-xs text-slate-600 space-y-2 list-disc pl-4 leading-relaxed">
+                                    <li><span class="font-semibold text-indigo-600">범용 쿠폰 사양:</span> 하나의 쿠폰번호를 여러 사용자가
+                                        동일하게 사용하며, 1인당 최종 사용 여부를 검사해 1회만 노출 처리.</li>
+                                    <li><span class="font-semibold text-indigo-600">개인 쿠폰 사양:</span> 데이터베이스에 사전 인덱싱되거나
+                                        런타임에 개인마다 완전히 독립적인 번호를 교부하여 보안성 증대.</li>
+                                    <li><span class="font-semibold text-indigo-600">한도 쿠폰 사양:</span> 선착순 수량을 제한하여 발급하거나,
+                                        한인회의 자본 혹은 제휴 혜택 한계치 도달 시 수량이 소진되는 선착순 한정 쿠폰.</li>
+                                    <li><span class="font-semibold text-slate-800">승인 유연성 정책:</span> 업체가 쿠폰 등록 신청 시 초기에는
+                                        <span class="text-indigo-600 font-semibold">자동 승인</span>을 디폴트로 적용하여 운영 리소스를 아끼고,
+                                        악용 발생 시 어드민 설정 탭의 플래그 토글을 통해 승인 검증 절차로 즉시 전환 지원.</li>
+                                </ul>
+                            </div>
+                            <div class="border border-slate-200 rounded-lg p-4 bg-slate-50">
+                                <h4 class="font-bold text-slate-900 text-sm mb-2">사용 및 정렬 방식</h4>
+                                <ul class="text-xs text-slate-600 space-y-2 list-disc pl-4 leading-relaxed">
+                                    <li><span class="font-semibold text-slate-800">오프라인 PIN 승인 방식:</span> 사용자가 오프라인 매장에서
+                                        쿠폰 화면을 제시하면 가맹점주가 기기 화면에 매장 비밀번호(PIN)를 입력하여 중복 사용을 제어하는 방식.</li>
+                                    <li><span class="font-semibold text-slate-800">제휴 맵 소팅 가중치:</span> 지도 화면 연동 시 한인회
+                                        가맹점을 우선 정렬하거나 가중치 스코어를 기반으로 정렬 노출하는 기능 검토.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: 1차 MVP 개발 범위 -->
+            <section id="sec-mvp1" class="tab-section hidden space-y-6">
+                <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-4 mb-4">
+                        <h2 class="text-lg font-bold text-slate-900">2. 1차 MVP 개발 범위</h2>
+                        <span class="text-xs bg-indigo-600 text-white font-medium px-2.5 py-1 rounded">모바일 웹 최적화
+                            집중</span>
+                    </div>
+
+                    <!-- 모바일 웹 진행 vs 네이티브 앱 장단점 안내 -->
+                    <p class="text-sm text-slate-500 mb-4">
+                        한정된 개발 기간 및 리소스를 감안하여, 1차 빌드 시에는 크로스 플랫폼 앱 패키징 및 하드웨어 연동(푸시알림 등)을 후순위로 조정하고 모바일 브라우저 전반에서 매끄럽게
+                        동작하는 반응형 웹을 구축하는 데 역량을 집중합니다.
+                    </p>
+
+                    <div
+                        class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-xs text-amber-900 space-y-2 mb-6 shadow-sm">
+                        <p class="font-bold text-sm text-amber-950 flex items-center">
+                            <span class="inline-block w-1.5 h-3.5 bg-amber-600 rounded-sm mr-2"></span>
+                            중요 의사결정 참고: 플랫폼별 런칭 리스크 분석
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
+                            <div class="bg-white/70 p-3 rounded-lg border border-amber-100">
+                                <p class="font-bold text-slate-900 mb-1">■ 모바일 웹 진행 시</p>
+                                <p class="text-slate-600 leading-relaxed">오픈 이후 운영 개선에 대한 실시간 업데이트 및 피드백 처리가 매우 신속하나,
+                                    모바일 전용 네이티브 PUSH 발송 등에 기술적인 제한이 따릅니다.</p>
+                            </div>
+                            <div class="bg-white/70 p-3 rounded-lg border border-amber-100">
+                                <p class="font-bold text-slate-900 mb-1">■ 앱 [IOS, 안드로이드] 진행 시</p>
+                                <p class="text-slate-600 leading-relaxed">네이티브 푸시 적용은 원활하나, 까다로운 IOS 앱스토어 심사 프로세스 및 개발팀
+                                    내 테스팅 장비 부재로 인해 배포 QA 일정 지연 및 수정 패치 개선 작업이 크게 더딜 수 있습니다.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- 회원 권한 -->
+                        <div class="border border-slate-100 rounded-xl p-5 bg-slate-50/50 space-y-4">
+                            <h3 class="text-sm font-bold text-slate-800 border-b border-slate-200 pb-2">회원 권한</h3>
+                            <ul class="text-xs text-slate-600 space-y-3">
+                                <li class="flex items-start">
+                                    <span class="text-indigo-600 font-semibold mr-2">-</span>
+                                    <span>
+                                        소셜로그인 기반 [ 구글, 카톡, Line-네이버 ] 기능 사용
+                                        <strong
+                                            class="text-red-600 font-bold bg-red-50 px-1.5 py-0.5 rounded border border-red-100 inline-block ml-1">[
+                                            한인회 계정 전달 필요 ]</strong>
+                                    </span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-indigo-600 font-semibold mr-2">-</span>
+                                    <span>
+                                        <strong
+                                            class="bg-amber-100 text-slate-900 px-1 rounded border-b border-amber-300 font-semibold">회원가입
+                                            정책 일반, 정회원 정책 및 개인정보 정책 전달 필요.</strong>
+                                    </span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-indigo-600 font-semibold mr-2">-</span>
+                                    <span>일반 가입 정보 수집 및 이용약관, 개인정보 커뮤니티 정책 동의 필수 모달 설계</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-indigo-600 font-semibold mr-2">-</span>
+                                    <span>정회원 권한 도달 시 추가 데이터 기입 폼 호출 및 유도 화면 레이아웃 (전화번호, 나이, 지역 수집)</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- 제휴 쿠폰 및 지도 (Map) -->
+                        <div class="border border-slate-100 rounded-xl p-5 bg-slate-50/50 space-y-4">
+                            <h3 class="text-sm font-bold text-slate-800 border-b border-slate-200 pb-2">제휴 쿠폰 및 지도 (Map)
+                            </h3>
+                            <ul class="text-xs text-slate-600 space-y-3">
+                                <li class="flex items-start">
+                                    <span class="text-indigo-600 font-semibold mr-2">-</span>
+                                    <span>가맹점별 3가지 쿠폰(범용, 개인, 한도)의 상세 스펙 뷰 노출 및 적용 조건 필터링</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-indigo-600 font-semibold mr-2">-</span>
+                                    <span>오프라인 결제 승인을 위한 업장 전용 비밀번호(PIN) 비교 검증 모듈</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-indigo-600 font-semibold mr-2">-</span>
+                                    <span
+                                        class="font-semibold text-slate-900 bg-indigo-50 px-1 py-0.5 rounded border border-indigo-100">구글지도
+                                        기능의 범위를 제한적으로 적용하며 무료 사용이 가능한지 확인 및 방향성 검토 필요:</span>
+                                </li>
+                                <li class="pl-4 space-y-1.5 text-slate-500">
+                                    <p class="flex items-center">• 구글 지도 및 상호 이미지 사용 플랜에 따른 비용 산정</p>
+                                    <p class="flex items-center">• APP 내에 SDK로 탑재하여 사용하게 되면 웹 호출 대비 비용 구조가 상이해 지는지 상세 확인
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- 커뮤니티 및 외부 RSS 연동 -->
+                        <div class="border border-slate-100 rounded-xl p-5 bg-slate-50/50 space-y-4">
+                            <h3 class="text-sm font-bold text-slate-800 border-b border-slate-200 pb-2">커뮤니티 및 외부 RSS 연동
+                            </h3>
+                            <ul class="text-xs text-slate-600 space-y-3">
+                                <li class="flex items-start">
+                                    <span class="text-indigo-600 font-semibold mr-2">-</span>
+                                    <span>자유, 질문, 사고팔기, 구인구직, 공지 게시판 정렬 및 텍스트 검색 기능</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-indigo-600 font-semibold mr-2">-</span>
+                                    <span>게시판 리스트 최상단 긴급 주의 안내를 위한 헤더 고정 공지 영역 마련</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-indigo-600 font-semibold mr-2">-</span>
+                                    <span>글 작성, 편집, 댓글 작성, 유해성 게시글 비활성화 및 유저 신고 연동</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-indigo-600 font-semibold mr-2">-</span>
+                                    <span>코트라 무역 정보 및 현지 뉴스 RSS 연동 정밀 데이터 수집 프로세스</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- 마이페이지 및 심플 어드민 -->
+                        <div class="border border-slate-100 rounded-xl p-5 bg-slate-50/50 space-y-4">
+                            <h3 class="text-sm font-bold text-slate-800 border-b border-slate-200 pb-2">마이페이지 및 심플 어드민
+                            </h3>
+                            <ul class="text-xs text-slate-600 space-y-3">
+                                <li class="flex items-start">
+                                    <span class="text-indigo-600 font-semibold mr-2">-</span>
+                                    <span>개인 회원 정보 수정, 찜한 쿠폰 바인딩, 자신이 업로드한 게시글/댓글 일괄 조회</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: 2차 고도화 범위 -->
+            <section id="sec-mvp2" class="tab-section hidden space-y-6">
+                <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+                    <h2 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-4 mb-4">3. 2차 고도화 범위 및 확장
+                        사안</h2>
+                    <p class="text-sm text-slate-500 mb-6">
+                        안정적인 1차 모바일 웹 런칭 이후 순차 연계하여 추진해 나갈 기술 업데이트 사안입니다.
+                    </p>
+
+                    <div class="space-y-4">
+                        <!-- 하이브리드 앱 패키징 -->
+                        <div
+                            class="flex items-start space-x-3 p-3 bg-slate-50 rounded-lg border border-slate-100 relative overflow-hidden">
+                            <span class="text-indigo-600 font-bold text-xs mt-1">01</span>
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-2">
+                                    <h4 class="font-bold text-slate-900 text-xs">안드로이드 및 iOS 하이브리드 앱 패키징</h4>
+                                    <span
+                                        class="bg-red-100 text-red-800 text-[10px] font-bold px-2 py-0.5 rounded border border-red-200">[확인
+                                        필요]</span>
+                                </div>
+                                <p class="text-[11px] text-slate-600 mt-1">웹 리소스를 네이티브 패키지로 하이브리드 이식하여 스토어 출품을 준비하는 웹뷰
+                                    컨테이너 빌드 프로세스.</p>
+                            </div>
+                        </div>
+
+                        <!-- 네이티브 푸시 알림 -->
+                        <div
+                            class="flex items-start space-x-3 p-3 bg-slate-50 rounded-lg border border-slate-100 relative overflow-hidden">
+                            <span class="text-indigo-600 font-bold text-xs mt-1">02</span>
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-2">
+                                    <h4 class="font-bold text-slate-900 text-xs">네이티브 푸시(Push) 발송 모듈 연동</h4>
+                                    <span
+                                        class="bg-red-100 text-red-800 text-[10px] font-bold px-2 py-0.5 rounded border border-red-200">[확인
+                                        필요]</span>
+                                </div>
+                                <p class="text-[11px] text-slate-600 mt-1">사용자 커뮤니티 댓글 알림 및 한인회 긴급 공지 피드 실시간 푸시 토큰 통신
+                                    설계(APNS/FCM 연동).</p>
+                            </div>
+                        </div>
+
+                        <!-- 다국어 번역팩 적용 -->
+                        <div
+                            class="flex items-start space-x-3 p-3 bg-amber-50 rounded-lg border border-amber-200 relative overflow-hidden">
+                            <span class="text-amber-700 font-bold text-xs mt-1">03</span>
+                            <div class="flex-1">
+                                <h4 class="font-bold text-slate-900 text-xs">다국어 번역팩 적용</h4>
+                                <div
+                                    class="bg-white/95 p-3.5 rounded-lg border border-amber-100 mt-2 text-[11px] text-slate-700 leading-relaxed space-y-2 shadow-sm">
+                                    <p class="font-bold text-amber-950 flex items-center">
+                                        <span class="inline-block w-1 h-3 bg-amber-600 rounded-sm mr-1.5"></span>
+                                        번역 범위 선정에 따른 비용 세부 분석 안내
+                                    </p>
+                                    <p class="text-slate-600">
+                                        한국어 및 대만어(번체)를 선택할 수 있도록 설계할 계획입니다.
+                                    </p>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+                                        <div class="bg-slate-50 p-2.5 rounded border border-slate-100">
+                                            <span class="font-bold text-slate-900 block mb-0.5">■ 고정형 텍스트 (APP 내
+                                                UI)</span>
+                                            <p class="text-slate-500 leading-relaxed">자체 구축하는 인터페이스 및 고정 문장 등의 경우 <span
+                                                    class="text-emerald-700 font-semibold bg-emerald-50 px-1 rounded">사전에
+                                                    고정 번역을 탑재할 수 있어 추가 비용이 들어가지 않습니다.</span></p>
+                                        </div>
+                                        <div class="bg-slate-50 p-2.5 rounded border border-slate-100">
+                                            <span class="font-bold text-slate-900 block mb-0.5">■ 유동형 텍스트
+                                                (게시판/댓글)</span>
+                                            <p class="text-slate-500 leading-relaxed">사용자가 임의로 작성하는 본문의 경우 정적 번역이
+                                                불가능하므로, <span
+                                                    class="text-red-700 font-semibold bg-red-50 px-1 rounded">실시간 번역 API
+                                                    호출(번역 엔진 호출)이 유기적으로 연계되어야 하여 추가 유지 비용이 발생할 수 있습니다.</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 4: 체크사항 & 리스크 (요청에 따른 전면 수정) -->
+            <section id="sec-risks" class="tab-section hidden space-y-6">
+                <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+                    <h2 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-4 mb-4">4. 체크사항 및 리스트</h2>
+
+                    <div class="space-y-4">
+                        <!-- 1. 구글 무료 사용 혹은 제한 사용 방법 체크 및 대안 비용 확인 -->
+                        <div class="border border-indigo-100 rounded-lg p-5 bg-indigo-50/40">
+                            <div class="flex items-center space-x-3 text-indigo-800 font-bold text-sm mb-2">
+                                <span class="w-2 h-2 bg-indigo-500 rounded-full"></span>
+                                <span>1. 구글 지도 비용 및 제한적 사용 플랜 검토</span>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed pl-5 font-medium">구글맵 무료 사용 혹은 제한 사용 방법 체크
+                                및 발생할 수 있는 대안 비용 확인이 필요합니다.</p>
+                        </div>
+
+                        <!-- 2. 오픈시 Mobile web 출시 후 APP 출시를 할지 혹은 APP 부터 출시 할지 의사 결정 필요 -->
+                        <div class="border border-emerald-100 rounded-lg p-5 bg-emerald-50/40">
+                            <div class="flex items-center space-x-3 text-emerald-800 font-bold text-sm mb-2">
+                                <span class="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                                <span>2. 초기 런칭 플랫폼 의사 결정</span>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed pl-5 font-medium">오픈 시 Mobile web 출시 후
+                                순차적으로 APP 출시를 할지, 혹은 APP부터 동시 출시할 지에 대한 확고한 의사 결정이 필요합니다.</p>
+                        </div>
+
+                        <!-- 3. 약관 및 한인회 계정 전달 [ Line-naver, 카카오톡, 구글 ] 필요 -->
+                        <div class="border border-amber-100 rounded-lg p-5 bg-amber-50/40">
+                            <div class="flex items-center space-x-3 text-amber-800 font-bold text-sm mb-2">
+                                <span class="w-2 h-2 bg-amber-500 rounded-full"></span>
+                                <span>3. 약관 및 소셜 계정 확보</span>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed pl-5 font-medium">서비스 이용을 위한 공통 약관 및 한인회
+                                마스터 소셜 계정 전달 [ Line-naver, 카카오톡, 구글 ]이 필수적으로 선행되어야 합니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 5: 부서별 Task 관리 -->
+            <section id="sec-tasks" class="tab-section hidden space-y-6">
+                <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-4 mb-4">
+                        <h2 class="text-lg font-bold text-slate-900">5. 부서별 세부 실행 과제 현황</h2>
+                        <span class="text-xs text-slate-500">전달 필요 사항 완료 여부 및 개발 진행 현황을 바로 체크할 수 있습니다.</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                        <!-- 기획 및 운영 파트 (전달 및 결정 사항) -->
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between border-b border-indigo-200 pb-2">
+                                <h3 class="text-xs font-bold text-indigo-900 uppercase">기획 / 운영 파트 (의사 결정 & 전달)</h3>
+                                <span class="text-[11px] bg-indigo-50 text-indigo-700 px-2 rounded-full font-semibold"
+                                    id="count-pm">0 / 4 완료</span>
+                            </div>
+
+                            <!-- 강조된 전달/결정 필요 사항 -->
+                            <div class="bg-indigo-50/50 p-2 rounded-lg border border-indigo-100 mb-4">
+                                <p class="text-[10px] font-bold text-indigo-800 mb-1 pl-2">■ 필수 체크 및 수급 사항</p>
+                                <label
+                                    class="flex items-start space-x-3 p-2 rounded hover:bg-white cursor-pointer transition">
+                                    <input type="checkbox" onchange="updateProgress('pm')"
+                                        class="task-pm mt-1 rounded text-indigo-600 focus:ring-indigo-500">
+                                    <span class="text-xs text-slate-800 font-bold">[결정] 오픈 시 Mobile web 선 출시 vs APP 동시
+                                        출시 여부 확정</span>
+                                </label>
+                                <label
+                                    class="flex items-start space-x-3 p-2 rounded hover:bg-white cursor-pointer transition">
+                                    <input type="checkbox" onchange="updateProgress('pm')"
+                                        class="task-pm mt-1 rounded text-indigo-600 focus:ring-indigo-500">
+                                    <span class="text-xs text-slate-800 font-bold">[확인] 구글 맵 무료/제한 사용 방법 및 대안 비용
+                                        체크</span>
+                                </label>
+                                <label
+                                    class="flex items-start space-x-3 p-2 rounded hover:bg-white cursor-pointer transition">
+                                    <input type="checkbox" onchange="updateProgress('pm')"
+                                        class="task-pm mt-1 rounded text-indigo-600 focus:ring-indigo-500">
+                                    <span class="text-xs text-slate-800 font-bold">[전달] 이용약관, 개인정보처리방침 및 소셜
+                                        계정(Line-naver, 카톡, 구글) 전달</span>
+                                </label>
+                                <label
+                                    class="flex items-start space-x-3 p-2 rounded hover:bg-white cursor-pointer transition">
+                                    <input type="checkbox" onchange="updateProgress('pm')"
+                                        class="task-pm mt-1 rounded text-indigo-600 focus:ring-indigo-500">
+                                    <span class="text-xs text-slate-800 font-bold">[결정] Happytuk 3종 쿠폰(범용, 개인, 한도) 발행 의사
+                                        결정 필요</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 개발팀 파트 (메뉴별 분할) -->
+                        <div class="space-y-5">
+                            <div class="flex items-center justify-between border-b border-emerald-200 pb-2">
+                                <h3 class="text-xs font-bold text-emerald-950 uppercase">개발팀 파트 (메뉴별 기능 구현)</h3>
+                                <span class="text-[11px] bg-emerald-50 text-emerald-700 px-2 rounded-full font-semibold"
+                                    id="count-dev">0 / 14 완료</span>
+                            </div>
+
+                            <!-- [ 홈 / 메인 ] -->
+                            <div>
+                                <h4
+                                    class="text-[11px] font-bold text-slate-500 mb-1 border-b border-slate-100 pb-1 flex items-center">
+                                    <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full mr-1.5"></span> [ 홈 / 메인 ]</h4>
+                                <div class="space-y-1 pl-1">
+                                    <label
+                                        class="flex items-start space-x-3 p-1.5 rounded hover:bg-slate-50 cursor-pointer transition">
+                                        <input type="checkbox" onchange="updateProgress('dev')"
+                                            class="task-dev mt-0.5 rounded text-emerald-600 focus:ring-emerald-500">
+                                        <span class="text-[11px] text-slate-600 font-medium">[홈] 메인 배너 및 퀵링크 아이콘, 하단 스크롤
+                                            공지 Feed UI 마크업</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- [ 사용자인증/권한 ] -->
+                            <div>
+                                <h4
+                                    class="text-[11px] font-bold text-slate-500 mb-1 border-b border-slate-100 pb-1 flex items-center">
+                                    <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full mr-1.5"></span> [ 사용자인증/권한 ]
+                                </h4>
+                                <div class="space-y-1 pl-1">
+                                    <label
+                                        class="flex items-start space-x-3 p-1.5 rounded hover:bg-slate-50 cursor-pointer transition">
+                                        <input type="checkbox" onchange="updateProgress('dev')"
+                                            class="task-dev mt-0.5 rounded text-emerald-600 focus:ring-emerald-500">
+                                        <span class="text-[11px] text-slate-600 font-medium">[일반회원] 일반 가입 시 약관 추가</span>
+                                    </label>
+                                    <label
+                                        class="flex items-start space-x-3 p-1.5 rounded hover:bg-slate-50 cursor-pointer transition">
+                                        <input type="checkbox" onchange="updateProgress('dev')"
+                                            class="task-dev mt-0.5 rounded text-emerald-600 focus:ring-emerald-500">
+                                        <span class="text-[11px] text-slate-600 font-medium">[정회원] 글쓰기 쿠폰 확인 시 정회원 권한 신청
+                                            - 약관 및 개인정보 동의 폼 추가</span>
+                                    </label>
+                                    <label
+                                        class="flex items-start space-x-3 p-1.5 rounded hover:bg-slate-50 cursor-pointer transition">
+                                        <input type="checkbox" onchange="updateProgress('dev')"
+                                            class="task-dev mt-0.5 rounded text-emerald-600 focus:ring-emerald-500">
+                                        <span class="text-[11px] text-slate-600 font-medium">[제휴업체] Mypage 내에서 제휴 업체 등록
+                                            폼 및 신청</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- [ 제휴(쿠폰 Map) ] -->
+                            <div>
+                                <h4
+                                    class="text-[11px] font-bold text-slate-500 mb-1 border-b border-slate-100 pb-1 flex items-center">
+                                    <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full mr-1.5"></span> [ 제휴(쿠폰 Map) ]
+                                </h4>
+                                <div class="space-y-1 pl-1">
+                                    <label
+                                        class="flex items-start space-x-3 p-1.5 rounded hover:bg-slate-50 cursor-pointer transition">
+                                        <input type="checkbox" onchange="updateProgress('dev')"
+                                            class="task-dev mt-0.5 rounded text-emerald-600 focus:ring-emerald-500">
+                                        <span class="text-[11px] text-slate-600 font-medium">[DB/로직] Happytuk 3종 쿠폰(범용,
+                                            개인, 한도) 처리 스키마 및 발급 제어</span>
+                                    </label>
+                                    <label
+                                        class="flex items-start space-x-3 p-1.5 rounded hover:bg-slate-50 cursor-pointer transition">
+                                        <input type="checkbox" onchange="updateProgress('dev')"
+                                            class="task-dev mt-0.5 rounded text-emerald-600 focus:ring-emerald-500">
+                                        <span class="text-[11px] text-slate-600 font-medium">[기능] 오프라인 가맹점주 PIN 연동 입력 매칭
+                                            및 승인 모듈 프론트</span>
+                                    </label>
+                                    <label
+                                        class="flex items-start space-x-3 p-1.5 rounded hover:bg-slate-50 cursor-pointer transition">
+                                        <input type="checkbox" onchange="updateProgress('dev')"
+                                            class="task-dev mt-0.5 rounded text-emerald-600 focus:ring-emerald-500">
+                                        <span class="text-[11px] text-slate-600 font-medium">[지도] 비용 최소화 방안 검토 필요 및 제휴
+                                            업체 가중치 소팅</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- [ 커뮤니티 ] -->
+                            <div>
+                                <h4
+                                    class="text-[11px] font-bold text-slate-500 mb-1 border-b border-slate-100 pb-1 flex items-center">
+                                    <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full mr-1.5"></span> [ 커뮤니티 ]</h4>
+                                <div class="space-y-1 pl-1">
+                                    <label
+                                        class="flex items-start space-x-3 p-1.5 rounded hover:bg-slate-50 cursor-pointer transition">
+                                        <input type="checkbox" onchange="updateProgress('dev')"
+                                            class="task-dev mt-0.5 rounded text-emerald-600 focus:ring-emerald-500">
+                                        <span class="text-[11px] text-slate-600 font-medium">[게시판] 공지사항, News 추가 기존
+                                            커뮤니티와 병합</span>
+                                    </label>
+                                    <label
+                                        class="flex items-start space-x-3 p-1.5 rounded hover:bg-slate-50 cursor-pointer transition">
+                                        <input type="checkbox" onchange="updateProgress('dev')"
+                                            class="task-dev mt-0.5 rounded text-emerald-600 focus:ring-emerald-500">
+                                        <span class="text-[11px] text-slate-600 font-medium">[외부 연동] 대만 KOTRA 및 타이완 투데이
+                                            뉴스 외부 RSS 스크래핑 파서</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- [ 마이페이지 ] -->
+                            <div>
+                                <h4
+                                    class="text-[11px] font-bold text-slate-500 mb-1 border-b border-slate-100 pb-1 flex items-center">
+                                    <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full mr-1.5"></span> [ 마이페이지 ]</h4>
+                                <div class="space-y-1 pl-1">
+                                    <label
+                                        class="flex items-start space-x-3 p-1.5 rounded hover:bg-slate-50 cursor-pointer transition">
+                                        <input type="checkbox" onchange="updateProgress('dev')"
+                                            class="task-dev mt-0.5 rounded text-emerald-600 focus:ring-emerald-500">
+                                        <span class="text-[11px] text-slate-600 font-medium">[마이페이지] 개인 정보 수정, 찜한 쿠폰 목록,
+                                            내가 쓴 글/댓글 조회 기능</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- [ 어드민 ] -->
+                            <div>
+                                <h4
+                                    class="text-[11px] font-bold text-slate-500 mb-1 border-b border-slate-100 pb-1 flex items-center">
+                                    <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full mr-1.5"></span> [ 어드민 ]</h4>
+                                <div class="space-y-1 pl-1">
+                                    <label
+                                        class="flex items-start space-x-3 p-1.5 rounded hover:bg-slate-50 cursor-pointer transition">
+                                        <input type="checkbox" onchange="updateProgress('dev')"
+                                            class="task-dev mt-0.5 rounded text-emerald-600 focus:ring-emerald-500">
+                                        <span class="text-[11px] text-slate-600 font-medium">[제휴 업체 관리] 등록, 수정, 승인 등 기능
+                                            구현</span>
+                                    </label>
+                                    <label
+                                        class="flex items-start space-x-3 p-1.5 rounded hover:bg-slate-50 cursor-pointer transition">
+                                        <input type="checkbox" onchange="updateProgress('dev')"
+                                            class="task-dev mt-0.5 rounded text-emerald-600 focus:ring-emerald-500">
+                                        <span class="text-[11px] text-slate-600 font-medium">[쿠폰 관리] 등록요청 확인/승인 및 자체 쿠폰
+                                            등록/수정</span>
+                                    </label>
+                                    <label
+                                        class="flex items-start space-x-3 p-1.5 rounded hover:bg-slate-50 cursor-pointer transition">
+                                        <input type="checkbox" onchange="updateProgress('dev')"
+                                            class="task-dev mt-0.5 rounded text-emerald-600 focus:ring-emerald-500">
+                                        <span class="text-[11px] text-slate-600 font-medium">[CMS] 게시물 관리(비공개, 계정 제재 등)
+                                            및 메인 화면 관리(영역별 데이터 설정)</span>
+                                    </label>
+                                    <label
+                                        class="flex items-start space-x-3 p-1.5 rounded hover:bg-slate-50 cursor-pointer transition">
+                                        <input type="checkbox" onchange="updateProgress('dev')"
+                                            class="task-dev mt-0.5 rounded text-emerald-600 focus:ring-emerald-500">
+                                        <span class="text-[11px] text-slate-600 font-medium">[회원 관리] 등급 승인 요청 리스트 확인 및
+                                            회원 정보 조회/수정</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-12 py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-400">
+            © 2026 대만 한인회 웹앱 통합 개발 테스크포스팀. 본 문서는 한인회의 의견 및 1차 회의 결과를 병합하여 산출되었습니다.
+        </div>
+    </footer>
+
+    <!-- Tab Logic -->
+    <script>
+        function switchTab(tabId) {
+            // Hide all sections
+            document.querySelectorAll('.tab-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            // Show selected section
+            document.getElementById('sec-' + tabId).classList.remove('hidden');
+
+            // Reset buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('text-indigo-600', 'bg-indigo-50');
+                btn.classList.add('text-slate-600', 'hover:text-slate-900', 'hover:bg-slate-50');
+            });
+            // Highlight selected button
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.remove('text-slate-600', 'hover:text-slate-900', 'hover:bg-slate-50');
+            activeBtn.classList.add('text-indigo-600', 'bg-indigo-50');
+        }
+
+        function updateProgress(type) {
+            const tasks = document.querySelectorAll('.task-' + type);
+            const completed = Array.from(tasks).filter(task => task.checked).length;
+            const countSpan = document.getElementById('count-' + type);
+
+            if (type === 'pm') {
+                countSpan.textContent = `${completed} / ${tasks.length} 완료`;
+                if (completed === tasks.length) {
+                    countSpan.className = "text-[11px] bg-indigo-100 text-indigo-800 px-2 rounded-full font-bold animate-pulse";
+                } else {
+                    countSpan.className = "text-[11px] bg-indigo-50 text-indigo-700 px-2 rounded-full font-semibold";
+                }
+            } else if (type === 'dev') {
+                countSpan.textContent = `${completed} / ${tasks.length} 완료`;
+                if (completed === tasks.length) {
+                    countSpan.className = "text-[11px] bg-emerald-100 text-emerald-800 px-2 rounded-full font-bold animate-pulse";
+                } else {
+                    countSpan.className = "text-[11px] bg-emerald-50 text-emerald-700 px-2 rounded-full font-semibold";
+                }
+            }
+        }
+
+        // Initialize counts
+        window.onload = function () {
+            updateProgress('pm');
+            updateProgress('dev');
+        }
+    </script>
+</body>
+
+</html>

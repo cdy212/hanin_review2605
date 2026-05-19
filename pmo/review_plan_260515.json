@@ -1,0 +1,81 @@
+{
+  "status": "pending",
+  "sourceMeetings": {
+    "baseline": "260513.md",
+    "opinion": "260515_한인회.md"
+  },
+  "purpose": "260515 한인회 의견을 기존 260513 기준안에 바로 반영하지 않고, 차이점을 협의/확정/보류/2차범위로 판정하기 위한 검토표입니다.",
+  "decisionOptions": [
+    "confirm",
+    "defer",
+    "discuss",
+    "phase2",
+    "reject"
+  ],
+  "items": [
+    {
+      "id": "review-bottom-tab-structure",
+      "category": "하단 탭",
+      "baseline": "홈 / 제휴(쿠폰 Map) / 커뮤니티 / 마이페이지",
+      "opinion": "홈 / 쿠폰 / 커뮤니티 / 마이페이지",
+      "decisionNeeded": "제휴(쿠폰 Map) 구조를 유지할지, 쿠폰 탭으로 단순화할지 결정",
+      "recommendedDecision": "discuss",
+      "applyPolicy": "승인 전 작업 Issue 발행 금지"
+    },
+    {
+      "id": "review-signup-steps",
+      "category": "회원가입",
+      "baseline": "2단계 정보 입력 시점과 항목 결정 필요",
+      "opinion": "1단계 간편가입, 2단계 기본정보, 3단계 선택정보, 4단계 약관동의",
+      "decisionNeeded": "가입 단계와 필수/선택 수집 항목 확정",
+      "recommendedDecision": "discuss",
+      "applyPolicy": "회원가입 관련 FRONT/BACK Issue 발행 전 확정 필요"
+    },
+    {
+      "id": "review-member-roles",
+      "category": "권한 구조",
+      "baseline": "일반회원 / 정회원 / 업체회원 / 관리자",
+      "opinion": "비회원 / 일반회원 / 업체회원 / 관리자 및 초기 버전 일반회원/정회원/업체회원/관리자",
+      "decisionNeeded": "비회원 포함 여부, 일반회원과 정회원 차이, 업체회원/관리자 권한 범위 확정",
+      "recommendedDecision": "discuss",
+      "applyPolicy": "권한 구조 확정 전 관리자/쿠폰/커뮤니티 Issue 발행 보류"
+    },
+    {
+      "id": "review-coupon-registration",
+      "category": "쿠폰",
+      "baseline": "업체가 쿠폰 발급, 오프라인 승인 비밀번호로 사용",
+      "opinion": "쿠폰 상세, 업체 상세, 쿠폰 등록 페이지, 승인 상태까지 구체화",
+      "decisionNeeded": "쿠폰 등록 주체와 승인 프로세스, 1차 MVP 포함 여부 결정",
+      "recommendedDecision": "discuss",
+      "applyPolicy": "쿠폰 기능 Issue는 검토 상태 유지"
+    },
+    {
+      "id": "review-community-policy",
+      "category": "커뮤니티",
+      "baseline": "소식 / 중고거래 / 구인구직 / 공지 / 코트라 경제뉴스",
+      "opinion": "전체 / 자유 / 질문 / 사고팔기 / 구인구직 / 공지, 글쓰기/댓글/신고/관리자 삭제",
+      "decisionNeeded": "게시판 카테고리와 글쓰기/댓글/신고/관리 정책 확정",
+      "recommendedDecision": "discuss",
+      "applyPolicy": "커뮤니티 상세 기능은 확정 전 발행 보류"
+    },
+    {
+      "id": "review-mypage-scope",
+      "category": "마이페이지",
+      "baseline": "찜한 쿠폰, 나의 활동, 고객센터/설정",
+      "opinion": "개인정보 수정, 내가 쓴 글/댓글, 쿠폰 등록/제보, 사용내역, 1:1 문의, 회원탈퇴",
+      "decisionNeeded": "1차 MVP에 포함할 마이페이지 하위 기능 결정",
+      "recommendedDecision": "discuss",
+      "applyPolicy": "마이페이지 추가 범위는 확정 전 발행 보류"
+    },
+    {
+      "id": "review-mvp-scope",
+      "category": "MVP 범위",
+      "baseline": "1차/2차 범위가 명확히 분리되지 않음",
+      "opinion": "1차: 로그인/회원가입, 홈, 쿠폰, 커뮤니티, 마이페이지 주요 기능. 2차: 위치 추천, 히스토리, 업체 등록, 관리자 승인, 푸시, 다국어",
+      "decisionNeeded": "1차 MVP 범위와 2차 범위를 재확정",
+      "recommendedDecision": "discuss",
+      "applyPolicy": "MVP 범위 확정 전 신규 대형 Issue 발행 금지"
+    }
+  ],
+  "nextAction": "승인자는 각 항목을 confirm/defer/discuss/phase2/reject 중 하나로 판정한 뒤, confirm 항목만 pmo/state.json 및 pmo/apply_plan.json에 반영합니다."
+}

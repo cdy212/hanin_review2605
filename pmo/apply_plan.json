@@ -1,0 +1,97 @@
+{
+  "approvalState": "blocked_pending_review",
+  "reviewGate": {
+    "status": "pending",
+    "reason": "260515 한인회 의견이 기존 260513 기준안과 다른 부분이 있어, 확정 전 FRONT/BACK Issue 발행을 보류합니다.",
+    "sourceMeeting": "260515_한인회.md",
+    "reviewPlan": "pmo/review_plan_260515.json",
+    "comparisonDoc": "doc/meeting_compare_260513_vs_260515.md"
+  },
+  "reviewRepo": {
+    "purpose": "회의록, dashboard, 승인 전 초안 관리"
+  },
+  "workRepos": {
+    "front": {
+      "purpose": "프론트엔드 실제 작업 Issue/PR 관리",
+      "repo": ""
+    },
+    "back": {
+      "purpose": "백엔드/API/관리자 실제 작업 Issue/PR 관리",
+      "repo": ""
+    }
+  },
+  "items": [
+    {
+      "id": "todo-admin-backoffice-partner",
+      "sourceMeeting": "auto",
+      "title": "[P0][BACK] 백오피스 관리자 기능 및 제휴업체 기능 체크",
+      "targetRepo": "back",
+      "priority": "P0",
+      "type": "todo",
+      "owner": "승인자/개발팀",
+      "status": "draft",
+      "body": "쿠폰 등록 승인, 회원 관리, 홈페이지 운영 관리 범위와 접근 권한을 확정합니다.",
+      "acceptanceCriteria": []
+    },
+    {
+      "id": "todo-coupon-review",
+      "sourceMeeting": "auto",
+      "title": "[P0][FRONT+BACK] 쿠폰기능 검토",
+      "targetRepo": "front+back",
+      "priority": "P0",
+      "type": "todo",
+      "owner": "기획/개발팀",
+      "status": "draft",
+      "body": "업체회원 쿠폰 등록, 오프라인 승인 비밀번호, 사용자 쿠폰 사용 흐름을 검토합니다.",
+      "acceptanceCriteria": []
+    },
+    {
+      "id": "todo-main-design-update",
+      "sourceMeeting": "auto",
+      "title": "[P0][FRONT] 메인화면 디자인 수정",
+      "targetRepo": "front",
+      "priority": "P0",
+      "type": "todo",
+      "owner": "디자인/개발팀",
+      "status": "draft",
+      "body": "결정 시안 기준으로 메인 화면과 하단 공지 스크롤 처리 수정 범위를 정리합니다.",
+      "acceptanceCriteria": []
+    },
+    {
+      "id": "todo-google-map-check",
+      "sourceMeeting": "auto",
+      "title": "[P1][BACK] 구글 지도 비용 및 업체 정보 확인",
+      "targetRepo": "back",
+      "priority": "P1",
+      "type": "todo",
+      "owner": "개발팀",
+      "status": "draft",
+      "body": "지도 사용 비용, 업체 정보 추출 가능 여부, 제휴맵 소팅 방식 검토 결과를 정리합니다.",
+      "acceptanceCriteria": []
+    },
+    {
+      "id": "todo-server-domain-check",
+      "sourceMeeting": "auto",
+      "title": "[P1][BACK] 서버/도메인 사양 확인",
+      "targetRepo": "back",
+      "priority": "P1",
+      "type": "todo",
+      "owner": "개발팀",
+      "status": "draft",
+      "body": "현 배포 환경과 향후 운영 사양을 확인하고 필요한 변경 여부를 보고합니다.",
+      "acceptanceCriteria": []
+    },
+    {
+      "id": "todo-webpush-review",
+      "sourceMeeting": "auto",
+      "title": "[P2][FRONT+BACK] 웹푸쉬 적용 가능성 검토",
+      "targetRepo": "front+back",
+      "priority": "P2",
+      "type": "todo",
+      "owner": "개발팀",
+      "status": "draft",
+      "body": "공지, 쿠폰, 커뮤니티 알림에 웹푸쉬를 적용할 필요와 구현 부담을 검토합니다.",
+      "acceptanceCriteria": []
+    }
+  ]
+}

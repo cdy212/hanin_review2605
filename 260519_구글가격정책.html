@@ -1,0 +1,1184 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Google Maps/Places 비용 정책 및 업체 검색 개발 방식 권고</title>
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --paper: #ffffff;
+      --paper-soft: #f9fafb;
+      --ink: #17202a;
+      --muted: #5b6573;
+      --line: #d9dee7;
+      --line-strong: #c3cad6;
+      --blue: #2563eb;
+      --blue-soft: #e9f0ff;
+      --green: #15803d;
+      --green-soft: #e9f7ee;
+      --amber: #b45309;
+      --amber-soft: #fff4df;
+      --red: #b91c1c;
+      --red-soft: #fff0f0;
+      --slate: #334155;
+      --slate-soft: #eef2f7;
+      --shadow: 0 18px 50px rgba(23, 32, 42, 0.08);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", "Apple SD Gothic Neo", Arial, sans-serif;
+      line-height: 1.65;
+      letter-spacing: 0;
+    }
+
+    a {
+      color: var(--blue);
+      text-decoration: none;
+      overflow-wrap: anywhere;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+    }
+
+    .top-tabs {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .tab-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 36px;
+      padding: 7px 13px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--slate);
+      font-size: 13px;
+      font-weight: 750;
+      white-space: nowrap;
+      box-shadow: 0 6px 18px rgba(23, 32, 42, 0.05);
+    }
+
+    .tab-link.active {
+      border-color: #b8c9fb;
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    .hero {
+      background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 34px;
+      margin-bottom: 20px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--blue);
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: 34px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin: 0;
+      max-width: 880px;
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 22px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 5px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--slate);
+      font-size: 13px;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .toc {
+      position: sticky;
+      top: 16px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: 0 8px 24px rgba(23, 32, 42, 0.05);
+    }
+
+    .toc strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .toc a {
+      display: block;
+      padding: 7px 0;
+      color: var(--muted);
+      font-size: 13px;
+      border-top: 1px solid #f0f2f5;
+    }
+
+    .toc a:first-of-type {
+      border-top: 0;
+    }
+
+    main {
+      min-width: 0;
+    }
+
+    section {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 26px;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 24px rgba(23, 32, 42, 0.04);
+    }
+
+    h2 {
+      margin: 0 0 16px;
+      font-size: 23px;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 24px 0 12px;
+      font-size: 18px;
+      line-height: 1.4;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0 0 14px;
+    }
+
+    ul, ol {
+      margin: 0 0 14px 22px;
+      padding: 0;
+    }
+
+    li {
+      margin: 6px 0;
+    }
+
+    code {
+      background: #eef2f7;
+      border: 1px solid #dfe5ee;
+      border-radius: 5px;
+      padding: 1px 5px;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.92em;
+    }
+
+    pre {
+      margin: 12px 0 4px;
+      padding: 14px;
+      background: #111827;
+      color: #edf2f7;
+      border-radius: var(--radius);
+      overflow-x: auto;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    pre code {
+      background: transparent;
+      border: 0;
+      padding: 0;
+      color: inherit;
+    }
+
+    .callout {
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      padding: 16px;
+      margin: 12px 0 18px;
+      background: var(--blue-soft);
+      border-color: #b9cdfc;
+    }
+
+    .callout strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .callout.warning {
+      background: var(--amber-soft);
+      border-color: #f3ce8b;
+    }
+
+    .callout.danger {
+      background: var(--red-soft);
+      border-color: #f1b5b5;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 18px 0 6px;
+    }
+
+    .summary-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px;
+      background: var(--paper-soft);
+    }
+
+    .summary-card strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--ink);
+      font-size: 15px;
+    }
+
+    .summary-card p {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    .badge.good {
+      color: var(--green);
+      background: var(--green-soft);
+      border: 1px solid #b8e2c4;
+    }
+
+    .badge.warn {
+      color: var(--amber);
+      background: var(--amber-soft);
+      border: 1px solid #f3ce8b;
+    }
+
+    .badge.bad {
+      color: var(--red);
+      background: var(--red-soft);
+      border: 1px solid #f2b8b8;
+    }
+
+    .badge.neutral {
+      color: var(--slate);
+      background: var(--slate-soft);
+      border: 1px solid #cfd8e6;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin: 16px 0 4px;
+    }
+
+    .flow-card {
+      position: relative;
+      min-height: 120px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      padding: 14px;
+    }
+
+    .flow-card.recommend {
+      border-color: #9bd3ac;
+      background: #f4fbf6;
+    }
+
+    .flow-card.caution {
+      border-color: #e9bd75;
+      background: #fff9ed;
+    }
+
+    .flow-card.danger {
+      border-color: #eeb0b0;
+      background: #fff7f7;
+    }
+
+    .flow-card span {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 750;
+      text-transform: uppercase;
+    }
+
+    .flow-card strong {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 16px;
+      line-height: 1.35;
+    }
+
+    .flow-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      margin: 12px 0 18px;
+      background: #fff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 12px 13px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      background: #f0f4fa;
+      color: #253044;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    tr:nth-child(even) td {
+      background: #fbfcfe;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    td:nth-child(3),
+    td:nth-child(4),
+    th:nth-child(3),
+    th:nth-child(4) {
+      white-space: nowrap;
+    }
+
+    .option-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin: 14px 0;
+    }
+
+    .option-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      background: #fff;
+    }
+
+    .option-card header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .option-card h3 {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .option-card p {
+      margin-bottom: 10px;
+      color: var(--muted);
+    }
+
+    .budget-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 12px 0 18px;
+    }
+
+    .budget-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      background: #fff;
+    }
+
+    .budget-card strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 15px;
+    }
+
+    .budget-card .amount {
+      font-size: 28px;
+      line-height: 1.2;
+      font-weight: 850;
+      color: var(--blue);
+      margin-bottom: 6px;
+    }
+
+    .budget-card p {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 0;
+    }
+
+    .source-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .source-item {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 12px;
+      background: var(--paper-soft);
+      font-size: 13px;
+    }
+
+    .source-item strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .footer {
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
+      margin-top: 22px;
+    }
+
+    @media (max-width: 980px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .toc {
+        position: static;
+      }
+
+      .summary-grid,
+      .flow,
+      .budget-grid,
+      .option-grid,
+      .source-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        padding: 18px 12px 42px;
+      }
+
+      .top-tabs {
+        justify-content: stretch;
+      }
+
+      .tab-link {
+        justify-content: center;
+        flex: 1 1 auto;
+      }
+
+      .hero,
+      section {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+
+      h2 {
+        font-size: 20px;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .page {
+        max-width: none;
+        padding: 0;
+      }
+
+      .toc {
+        display: none;
+      }
+
+      .top-tabs {
+        display: none;
+      }
+
+      .layout {
+        display: block;
+      }
+
+      .hero,
+      section {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+
+      a {
+        color: #000;
+        text-decoration: underline;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <nav class="top-tabs" aria-label="관련 문서 이동">
+      <a class="tab-link active" href="260519_구글가격정책.html">비용 정책 브리프</a>
+      <a class="tab-link" href="260519_구글가격정책_산정로직.html">구글 가격 정책</a>
+    </nav>
+
+    <header class="hero">
+      <div class="eyebrow">Cost Policy · Architecture Recommendation</div>
+      <h1>Google Maps/Places 비용 정책 및 업체 검색 개발 방식 권고</h1>
+      <p class="subtitle">업체 검색, 이미지, 영업시간, 지도 view를 서비스별로 나눠 Web과 APP 비용 정책을 비교하고, 실제 개발 방향과 예산안을 정리한 실행용 HTML 시안입니다.</p>
+      <div class="meta">
+        <span class="chip">Review Date: 2026-05-19</span>
+        <span class="chip">Source: Google 공식 문서, OSMF, Leaflet</span>
+        <span class="chip">Category: Product / Cost / Architecture</span>
+      </div>
+    </header>
+
+    <div class="layout">
+      <nav class="toc" aria-label="문서 목차">
+        <strong>목차</strong>
+        <a href="#summary">1. 핵심 결론</a>
+        <a href="#pricing">2. 서비스별 가격 정책</a>
+        <a href="#device">3. 기기별 정책</a>
+        <a href="#options">4. 개발 방식 옵션</a>
+        <a href="#place-id">5. Map ID 판단</a>
+        <a href="#budget">6. 예산안</a>
+        <a href="#recommendation">7. 추천 개발 방식</a>
+        <a href="#rules">8. 구현 규칙</a>
+        <a href="#sources">9. 검증 출처</a>
+      </nav>
+
+      <main>
+        <section id="summary">
+          <h2>1. 핵심 결론</h2>
+          <div class="callout">
+            <strong>최종 추천</strong>
+            내부 DB 리스트 우선, 관리자 등록, <code>Place ID</code> 저장, Google Maps URL 외부 이동 방식이 가장 비용 통제가 쉽습니다. Web 첫 화면에 Google Map을 바로 띄우거나, 앱에서 사용자가 자유롭게 업체 검색 API를 호출하는 구조는 비용 예측이 어렵습니다.
+          </div>
+
+          <div class="summary-grid">
+            <div class="summary-card">
+              <strong>Web</strong>
+              <p>지도 view를 바로 보여주면 <code>Dynamic Maps</code> map load 비용이 발생합니다. 기본은 리스트, 지도는 클릭 후 전환이 안전합니다.</p>
+            </div>
+            <div class="summary-card">
+              <strong>APP</strong>
+              <p>네이티브 <code>Maps SDK</code> 지도 자체보다 Places 검색, 상세, 사진, 영업시간 호출 비용이 리스크입니다.</p>
+            </div>
+            <div class="summary-card">
+              <strong>저장 키</strong>
+              <p><code>Map ID</code>가 아니라 업체 식별용 <code>Place ID</code>를 저장해야 합니다. Place ID는 저장 및 재사용 가능하되 12개월 refresh 권장입니다.</p>
+            </div>
+          </div>
+
+          <div class="flow" aria-label="추천 의사결정 흐름">
+            <div class="flow-card recommend">
+              <span>Step 1</span>
+              <strong>내부 DB 리스트</strong>
+              <p>사용자 기본 화면은 내부 업체 리스트로 시작합니다.</p>
+            </div>
+            <div class="flow-card recommend">
+              <span>Step 2</span>
+              <strong>관리자 등록</strong>
+              <p>업체 정보는 관리자 또는 업체 신청 기반으로 검수합니다.</p>
+            </div>
+            <div class="flow-card recommend">
+              <span>Step 3</span>
+              <strong>Place ID 저장</strong>
+              <p>위치 연결에는 Google <code>Place ID</code>만 저장합니다.</p>
+            </div>
+            <div class="flow-card recommend">
+              <span>Step 4</span>
+              <strong>외부 Maps URL</strong>
+              <p>지도 렌더링 대신 Google Maps 앱/웹으로 이동합니다.</p>
+            </div>
+            <div class="flow-card caution">
+              <span>Conditional</span>
+              <strong>지도 보기 전환</strong>
+              <p>지도 UX가 꼭 필요할 때만 lazy-load로 제공합니다.</p>
+            </div>
+            <div class="flow-card danger">
+              <span>Avoid</span>
+              <strong>Google Map 즉시 표시</strong>
+              <p>Web page view마다 Dynamic Maps 비용이 발생합니다.</p>
+            </div>
+            <div class="flow-card danger">
+              <span>Avoid</span>
+              <strong>사용자 자유 검색</strong>
+              <p>반복 검색, bot, 오타 입력으로 Places 비용이 커질 수 있습니다.</p>
+            </div>
+            <div class="flow-card caution">
+              <span>Control</span>
+              <strong>Quota와 제한</strong>
+              <p>검색을 열어야 한다면 서버 프록시와 횟수 제한이 필요합니다.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="pricing">
+          <h2>2. 서비스별 가격 정책</h2>
+          <p>단위는 Google Maps Platform 글로벌 USD 가격표이며, 2026-05-19 확인 기준입니다.</p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>서비스</th>
+                  <th>Google 기능/SKU</th>
+                  <th>Web 비용 정책</th>
+                  <th>APP 비용 정책</th>
+                  <th>비용 리스크</th>
+                  <th>권고</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>업체명 검색, ID만 필요</td>
+                  <td>Text Search Essentials (IDs Only)</td>
+                  <td>무료 사용량 Unlimited</td>
+                  <td>동일</td>
+                  <td><span class="badge good">낮음</span> ID만 반환되어 목록 표시에는 부족</td>
+                  <td>관리자/등록 플로우에서 Place ID 확보용으로 사용</td>
+                </tr>
+                <tr>
+                  <td>업체 목록 검색, 이름/주소/위치 표시</td>
+                  <td>Text Search Pro</td>
+                  <td>월 5,000건 무료, 이후 $32/1,000건부터</td>
+                  <td>동일</td>
+                  <td><span class="badge warn">중간</span> 사용자 검색이 열리면 빠르게 증가</td>
+                  <td>사용자 자유 검색 비권장. 관리자/제한 검색만</td>
+                </tr>
+                <tr>
+                  <td>평점/영업시간/전화/웹사이트 포함 목록</td>
+                  <td>Text Search Enterprise</td>
+                  <td>월 1,000건 무료, 이후 $35/1,000건부터</td>
+                  <td>동일</td>
+                  <td><span class="badge bad">높음</span> 목록 조회마다 Enterprise 과금</td>
+                  <td>목록에는 Google 영업정보 표시 금지. 내부 DB 값 사용</td>
+                </tr>
+                <tr>
+                  <td>업체 상세</td>
+                  <td>Place Details Pro/Enterprise</td>
+                  <td>Pro: 월 5,000건 무료 후 $17/1,000건, Enterprise: 월 1,000건 무료 후 $20/1,000건</td>
+                  <td>동일</td>
+                  <td><span class="badge warn">중간</span> 클릭 수가 늘면 누적</td>
+                  <td>필요 시 관리자 검수/갱신용으로 제한</td>
+                </tr>
+                <tr>
+                  <td>영업시간 정보</td>
+                  <td>Text Search Enterprise 또는 Place Details Enterprise</td>
+                  <td>월 1,000건 무료, 이후 $20~$35/1,000건 구간</td>
+                  <td>동일</td>
+                  <td><span class="badge bad">높음</span> 목록에 붙이면 고비용</td>
+                  <td>관리자/업체 직접 입력값 저장 권장</td>
+                </tr>
+                <tr>
+                  <td>이미지/사진</td>
+                  <td>Place Details Photos</td>
+                  <td>월 1,000건 무료, 이후 $7/1,000건부터</td>
+                  <td>동일</td>
+                  <td><span class="badge bad">높음</span> 목록 카드 20개에 사진 붙이면 폭증</td>
+                  <td>Google 사진 사용 금지. 자체 업로드/CDN 사용</td>
+                </tr>
+                <tr>
+                  <td>Web 지도 view</td>
+                  <td>Dynamic Maps</td>
+                  <td>월 10,000 map load 무료, 이후 $7/1,000 load부터</td>
+                  <td>해당 없음</td>
+                  <td><span class="badge bad">높음</span> 페이지 진입마다 과금</td>
+                  <td>기본 리스트, 지도는 사용자 클릭 후 lazy-load</td>
+                </tr>
+                <tr>
+                  <td>APP 네이티브 지도 view</td>
+                  <td>Maps SDK</td>
+                  <td>해당 없음</td>
+                  <td>가격표상 무료 사용량 Unlimited</td>
+                  <td><span class="badge warn">중간</span> 지도 자체보다 Places 호출이 리스크</td>
+                  <td>지도만 표시 가능. 업체 검색은 서버 통제</td>
+                </tr>
+                <tr>
+                  <td>정적 지도 썸네일</td>
+                  <td>Static Maps</td>
+                  <td>월 10,000건 무료, 이후 $2/1,000건부터</td>
+                  <td>동일하게 URL/API 사용 시 발생</td>
+                  <td><span class="badge warn">중간</span> Dynamic Maps보다 저렴하지만 여전히 호출 비용</td>
+                  <td>꼭 필요할 때만 썸네일</td>
+                </tr>
+                <tr>
+                  <td>외부 Google Maps 이동</td>
+                  <td>Maps URLs</td>
+                  <td>API key 불필요</td>
+                  <td>API key 불필요</td>
+                  <td><span class="badge good">낮음</span> 앱/웹 밖으로 이탈</td>
+                  <td><code>query_place_id</code> 포함 링크 권장</td>
+                </tr>
+                <tr>
+                  <td>오픈소스 지도 view</td>
+                  <td>Leaflet + OSM 기반 타일</td>
+                  <td>Google 과금 없음</td>
+                  <td>웹뷰/네이티브 구현에 따라 Google 과금 없음</td>
+                  <td><span class="badge warn">중간</span> OSM 공식 타일 서버는 SLA 없음, 과도 사용 차단 가능</td>
+                  <td>MVP/저비용 지도에는 가능하나 production은 타일 정책 준수 또는 타일 호스팅 검토</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="device">
+          <h2>3. 기기별 가격 정책 요약</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>구분</th>
+                  <th>Web</th>
+                  <th>Android/iOS APP</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>기본 리스트</td>
+                  <td>내부 DB 사용 시 Google 비용 없음</td>
+                  <td>내부 DB 사용 시 Google 비용 없음</td>
+                </tr>
+                <tr>
+                  <td>Google 업체 검색 API</td>
+                  <td>Text Search/Place Details/Photos 호출당 과금</td>
+                  <td>동일</td>
+                </tr>
+                <tr>
+                  <td>지도 view</td>
+                  <td>Google Maps JavaScript 렌더링 시 <code>Dynamic Maps</code> 과금</td>
+                  <td>기본 네이티브 Maps SDK는 가격표상 no-cost SKU</td>
+                </tr>
+                <tr>
+                  <td>지도 외부 이동</td>
+                  <td>Maps URLs 사용 시 API key 불필요</td>
+                  <td>Maps URLs 사용 시 Google Maps 앱 또는 브라우저로 이동</td>
+                </tr>
+                <tr>
+                  <td>주요 리스크</td>
+                  <td>페이지 진입만으로 map load 비용 발생</td>
+                  <td>사용자가 반복 검색하면 Places API 비용 발생</td>
+                </tr>
+                <tr>
+                  <td>비용 통제 핵심</td>
+                  <td>리스트 우선, 지도 lazy-load, 외부 링크</td>
+                  <td>서버 프록시, 관리자 등록, 사용자 검색 횟수 제한</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="options">
+          <h2>4. 개발 방식 옵션 검토</h2>
+          <div class="option-grid">
+            <article class="option-card">
+              <header>
+                <h3>Option A. 내부 리스트 + Place ID + Google Maps URL 외부 이동</h3>
+                <span class="badge good">1순위</span>
+              </header>
+              <p>업체명, 카테고리, 지역, 소개, 영업시간, 이미지는 내부 DB에 저장하고, 위치 이동용 <code>place_id</code>만 저장합니다.</p>
+              <ul>
+                <li>일반 조회 시 Google 호출 없음</li>
+                <li>관리자 등록/검수 때만 제한적으로 발생</li>
+                <li>일반 사용자 조회 기준 비용은 $0에 가까움</li>
+              </ul>
+              <pre><code>https://www.google.com/maps/search/?api=1&amp;query={업체명}&amp;query_place_id={PLACE_ID}</code></pre>
+            </article>
+
+            <article class="option-card">
+              <header>
+                <h3>Option B. 리스트 우선 + 클릭 시 Google Map 전환</h3>
+                <span class="badge warn">2순위</span>
+              </header>
+              <p>기본은 내부 리스트, <code>지도 보기</code> 탭/버튼 클릭 시 Google Maps JavaScript를 로드합니다.</p>
+              <ul>
+                <li>실제 지도 전환 사용자에게만 Web Dynamic Maps 과금</li>
+                <li>지도 UX가 서비스 핵심일 때 적합</li>
+                <li>월간 map view 예산과 quota가 필요</li>
+              </ul>
+            </article>
+
+            <article class="option-card">
+              <header>
+                <h3>Option C. Google Map 금지 + OpenStreetMap/Leaflet</h3>
+                <span class="badge neutral">조건부</span>
+              </header>
+              <p>지도 view가 꼭 필요한 저비용 MVP라면 Web은 Leaflet, 지도 데이터/타일은 OSM 기반으로 검토합니다.</p>
+              <ul>
+                <li>Google 비용 없음</li>
+                <li>OSM 공식 타일 서버는 SLA 없음</li>
+                <li>production은 타일 제공업체 또는 자체 호스팅 검토</li>
+              </ul>
+            </article>
+
+            <article class="option-card">
+              <header>
+                <h3>Option D. 사용자 업체 자유 검색</h3>
+                <span class="badge bad">비권장</span>
+              </header>
+              <p>사용자가 검색할 때마다 Text Search, Details, Photos 비용이 발생합니다. 반복 사용과 bot으로 비용 예측이 어렵습니다.</p>
+              <ul>
+                <li>로그인 사용자만 허용</li>
+                <li>일/월 검색 횟수 제한</li>
+                <li>서버 프록시, API key 비노출, quota hard cap 필요</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section id="place-id">
+          <h2>5. “Map ID만 저장” 안에 대한 판단</h2>
+          <div class="callout warning">
+            <strong>정정 포인트</strong>
+            업체 위치 연결을 위해 저장해야 할 값은 <code>Map ID</code>가 아니라 <code>Place ID</code>입니다.
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>용어</th>
+                  <th>의미</th>
+                  <th>저장/활용 판단</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Map ID</td>
+                  <td>Google Cloud에서 지도 스타일/설정과 연결되는 지도 식별자</td>
+                  <td><span class="badge bad">업체 식별용 아님</span></td>
+                </tr>
+                <tr>
+                  <td>Place ID</td>
+                  <td>Google Places 데이터베이스의 장소 식별자</td>
+                  <td><span class="badge good">업체 위치 연결용으로 저장 가능</span></td>
+                </tr>
+                <tr>
+                  <td>googleMapsUri</td>
+                  <td>Place Details에서 받을 수 있는 Google Maps URL</td>
+                  <td>URL 자체가 Google 제공 콘텐츠일 수 있으므로 가능하면 Place ID로 URL 조립</td>
+                </tr>
+                <tr>
+                  <td>내부 업체 ID</td>
+                  <td>서비스 DB의 업체 record ID</td>
+                  <td><span class="badge good">반드시 별도 유지</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>권장 DB 필드</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>필드</th>
+                  <th>출처</th>
+                  <th>저장 권고</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><code>vendor_id</code></td><td>내부 생성</td><td>필수</td></tr>
+                <tr><td><code>vendor_name</code></td><td>관리자/업체 입력</td><td>필수</td></tr>
+                <tr><td><code>category</code></td><td>내부 분류</td><td>필수</td></tr>
+                <tr><td><code>area_label</code></td><td>내부/관리자 입력</td><td>필수</td></tr>
+                <tr><td><code>description</code></td><td>관리자/업체 입력</td><td>선택</td></tr>
+                <tr><td><code>opening_hours_text</code></td><td>관리자/업체 입력</td><td>선택</td></tr>
+                <tr><td><code>phone</code></td><td>관리자/업체 입력</td><td>선택</td></tr>
+                <tr><td><code>image_url</code></td><td>자체 업로드/CDN</td><td>선택</td></tr>
+                <tr><td><code>google_place_id</code></td><td>Google Place ID</td><td>선택, 저장 가능</td></tr>
+                <tr><td><code>place_id_refreshed_at</code></td><td>내부 관리</td><td>선택, 12개월 refresh 관리</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="callout danger">
+            <strong>저장하지 않는 편이 좋은 값</strong>
+            Google에서 받은 평점, 리뷰 수, 리뷰 본문, Google Places 사진 원본 또는 재호스팅 이미지, Google에서 받은 영업시간/전화번호/웹사이트를 장기 저장하는 구조입니다.
+          </div>
+        </section>
+
+        <section id="budget">
+          <h2>6. 예산안</h2>
+          <div class="budget-grid">
+            <div class="budget-card">
+              <strong>추천 MVP</strong>
+              <div class="amount">$0~$250</div>
+              <p>내부 DB 리스트, 자체 이미지, 관리자 입력, Maps URLs 외부 이동 기준입니다.</p>
+            </div>
+            <div class="budget-card">
+              <strong>지도 전환 제공</strong>
+              <div class="amount">$300~$1,000</div>
+              <p>지도 보기 lazy-load와 월 quota를 함께 운영하는 기준입니다.</p>
+            </div>
+            <div class="budget-card">
+              <strong>사용자 업체 검색 허용</strong>
+              <div class="amount">$1,500+</div>
+              <p>Text Search 사용량이 열리는 구조라 별도 예산 승인과 제한 장치가 필요합니다.</p>
+            </div>
+          </div>
+
+          <h3>6.1 추천 MVP 예산</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>구분</th>
+                  <th>월 예상 비용</th>
+                  <th>전제</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>사용자 리스트 조회</td><td>$0</td><td>내부 DB 검색</td></tr>
+                <tr><td>업체 상세 페이지</td><td>$0</td><td>내부 DB 값 사용</td></tr>
+                <tr><td>이미지</td><td>$0 Google 비용</td><td>자체 업로드/CDN 비용 별도</td></tr>
+                <tr><td>영업시간</td><td>$0 Google 비용</td><td>관리자/업체 입력</td></tr>
+                <tr><td>위치 이동</td><td>$0 Google 비용</td><td>Maps URLs 외부 이동</td></tr>
+                <tr><td>관리자 Place ID 등록</td><td>$0~소액</td><td>IDs Only 위주, 필요 시 제한적 Text Search</td></tr>
+                <tr><td>Web map view</td><td>$0</td><td>기본 제공하지 않음</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>6.2 지도 전환 제공 예산</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>월 지도 전환 수</th>
+                  <th>Web Dynamic Maps 예상 비용</th>
+                  <th>비고</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>10,000</td><td>$0</td><td>무료 구간</td></tr>
+                <tr><td>50,000</td><td>약 $280</td><td>Dynamic Maps 무료 10,000건 차감</td></tr>
+                <tr><td>100,000</td><td>약 $630</td><td>기존 산정 기준</td></tr>
+                <tr><td>500,000</td><td>약 $2,870</td><td>지도 사용률이 높으면 유의</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>6.3 사용자 업체 검색 허용 예산</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>월 검색 수</th>
+                  <th>최소 목록 검색(Text Search Pro)</th>
+                  <th>실사용 카드(Text Search Enterprise)</th>
+                  <th>판단</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>10,000</td><td>$160</td><td>$315</td><td>제한 기능이면 가능</td></tr>
+                <tr><td>50,000</td><td>$1,440</td><td>$1,715</td><td>비영리 크레딧만으로 부족</td></tr>
+                <tr><td>100,000</td><td>$3,040</td><td>$3,465</td><td>유료 예산 없으면 위험</td></tr>
+                <tr><td>500,000</td><td>$13,280</td><td>$14,665</td><td>일반 MVP에는 부적합</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="recommendation">
+          <h2>7. 최종 추천 개발 방식</h2>
+          <h3>1차 MVP</h3>
+          <ol>
+            <li>업체 검색은 내부 DB 검색으로만 제공합니다.</li>
+            <li>업체 등록은 관리자 또는 업체 신청 기반으로 받습니다.</li>
+            <li>관리자 화면에서만 Google Place ID 조회/검수 기능을 제공합니다.</li>
+            <li>저장은 <code>Place ID</code>와 관리자/업체가 직접 입력한 업체 정보 중심으로 합니다.</li>
+            <li>리스트와 상세 화면에는 Google 평점, Google 리뷰, Google 사진, Google 영업시간을 기본 표시하지 않습니다.</li>
+            <li>위치 이동은 Google Maps URL 외부 이동 버튼으로 제공합니다.</li>
+            <li>Web 첫 화면에 Google Map view를 렌더링하지 않습니다.</li>
+          </ol>
+
+          <h3>2차 기능</h3>
+          <ol>
+            <li>지도 UX가 필요하면 리스트 화면에 <code>지도 보기</code> 버튼을 추가하고 lazy-load합니다.</li>
+            <li>지도 view 사용량을 월 quota로 제한합니다.</li>
+            <li>사용자가 업체를 제안할 때는 검색 횟수 제한을 둡니다.</li>
+            <li>업체 제안은 곧바로 공개하지 않고 관리자 승인 후 내부 DB에 반영합니다.</li>
+            <li>OSM/Leaflet 지도는 Google 비용 제거용으로 검토하되, production에서는 공식 OSM 타일 서버 의존을 피합니다.</li>
+          </ol>
+        </section>
+
+        <section id="rules">
+          <h2>8. 개발 구현 규칙</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>영역</th>
+                  <th>규칙</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>API Key</td><td>클라이언트에서 Places API key 직접 호출 금지. 서버 프록시 사용</td></tr>
+                <tr><td>Rate limit</td><td>사용자/조직/IP/일 단위 검색 횟수 제한</td></tr>
+                <tr><td>Quota</td><td>Google Cloud Console에서 SKU별 quota 및 budget alert 설정</td></tr>
+                <tr><td>캐싱</td><td>Google Places 콘텐츠 장기 저장 금지. Place ID만 저장 가능</td></tr>
+                <tr><td>이미지</td><td>Google 사진 API 대신 자체 업로드</td></tr>
+                <tr><td>영업시간</td><td>Google API 표시 대신 관리자/업체 입력값</td></tr>
+                <tr><td>지도</td><td>기본 리스트, 지도는 클릭 후 로드 또는 외부 URL 이동</td></tr>
+                <tr><td>로그</td><td>관리자 검색/Place ID 등록/사용자 검색 시도 로그 저장</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="sources">
+          <h2>9. 검증된 출처</h2>
+          <div class="source-list">
+            <div class="source-item">
+              <strong>Google Maps Platform 가격표</strong>
+              <a href="https://developers.google.com/maps/billing-and-pricing/pricing">https://developers.google.com/maps/billing-and-pricing/pricing</a>
+            </div>
+            <div class="source-item">
+              <strong>Google Maps Platform SKU 상세</strong>
+              <a href="https://developers.google.com/maps/billing-and-pricing/sku-details">https://developers.google.com/maps/billing-and-pricing/sku-details</a>
+            </div>
+            <div class="source-item">
+              <strong>Maps URLs 공식 문서</strong>
+              <a href="https://developers.google.com/maps/documentation/urls/get-started">https://developers.google.com/maps/documentation/urls/get-started</a>
+            </div>
+            <div class="source-item">
+              <strong>Place IDs 공식 문서</strong>
+              <a href="https://developers.google.com/maps/documentation/places/web-service/place-id">https://developers.google.com/maps/documentation/places/web-service/place-id</a>
+            </div>
+            <div class="source-item">
+              <strong>Google Maps 비용관리</strong>
+              <a href="https://developers.google.com/maps/billing-and-pricing/manage-costs">https://developers.google.com/maps/billing-and-pricing/manage-costs</a>
+            </div>
+            <div class="source-item">
+              <strong>비영리 지원 프로그램</strong>
+              <a href="https://developers.google.com/maps/billing-and-pricing/public-programs">https://developers.google.com/maps/billing-and-pricing/public-programs</a>
+            </div>
+            <div class="source-item">
+              <strong>OSM 타일 정책</strong>
+              <a href="https://operations.osmfoundation.org/policies/tiles/">https://operations.osmfoundation.org/policies/tiles/</a>
+            </div>
+            <div class="source-item">
+              <strong>Leaflet 공식 사이트</strong>
+              <a href="https://leafletjs.com/">https://leafletjs.com/</a>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>10. 사용 도구</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>단계</th>
+                  <th>계획 도구</th>
+                  <th>실제 사용 도구</th>
+                  <th>상태/비고</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>초동 수집</td><td>You.com MCP</td><td>기본 웹 검색</td><td>MCP 미연결로 대체</td></tr>
+                <tr><td>심층 분석</td><td>Exa MCP</td><td>공식 문서 직접 확인</td><td>MCP 미연결로 대체</td></tr>
+                <tr><td>공식 검증</td><td>Context7 / 공식 문서</td><td>Google Developers, Google Cloud, OSMF, Leaflet 공식 문서</td><td>확인됨</td></tr>
+                <tr><td>링크 검수</td><td>URL Audit</td><td>웹 열람으로 본문 접근 확인</td><td>확인됨</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <p class="footer">Generated from the Obsidian research note. Last reviewed: 2026-05-19.</p>
+  </div>
+</body>
+</html>

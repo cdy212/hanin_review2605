@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Google 가격 정책 비용 산정 로직</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --paper: #ffffff;
+      --paper-soft: #f8fafc;
+      --ink: #17202a;
+      --muted: #5e6877;
+      --line: #d9dee8;
+      --blue: #2563eb;
+      --blue-soft: #eaf1ff;
+      --green: #15803d;
+      --green-soft: #e9f7ee;
+      --amber: #b45309;
+      --amber-soft: #fff5df;
+      --red: #b91c1c;
+      --red-soft: #fff0f0;
+      --slate: #334155;
+      --shadow: 0 18px 50px rgba(23, 32, 42, 0.08);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", "Apple SD Gothic Neo", Arial, sans-serif;
+      line-height: 1.65;
+      letter-spacing: 0;
+    }
+
+    a {
+      color: var(--blue);
+      text-decoration: none;
+      overflow-wrap: anywhere;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 28px 20px 64px;
+    }
+
+    .top-tabs {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .tab-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 36px;
+      padding: 7px 13px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--slate);
+      font-size: 13px;
+      font-weight: 750;
+      white-space: nowrap;
+      box-shadow: 0 6px 18px rgba(23, 32, 42, 0.05);
+    }
+
+    .tab-link.active {
+      border-color: #b8c9fb;
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    .hero {
+      background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 34px;
+      margin-bottom: 18px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      margin-bottom: 12px;
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 34px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      max-width: 900px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 22px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 5px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--slate);
+      font-size: 13px;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .summary-card,
+    section {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+      box-shadow: 0 8px 24px rgba(23, 32, 42, 0.04);
+    }
+
+    .summary-card {
+      min-height: 132px;
+      padding: 16px;
+    }
+
+    .summary-card strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 15px;
+    }
+
+    .summary-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    section {
+      padding: 26px;
+      margin-bottom: 18px;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 23px;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 24px 0 12px;
+      font-size: 18px;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0 0 14px;
+    }
+
+    code {
+      background: #eef2f7;
+      border: 1px solid #dfe5ee;
+      border-radius: 5px;
+      padding: 1px 5px;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.92em;
+    }
+
+    .callout {
+      border: 1px solid #b9cdfc;
+      border-radius: var(--radius);
+      background: var(--blue-soft);
+      padding: 16px;
+      margin: 12px 0 18px;
+    }
+
+    .callout.warning {
+      border-color: #f3ce8b;
+      background: var(--amber-soft);
+    }
+
+    .callout strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      margin: 12px 0 18px;
+    }
+
+    table {
+      width: 100%;
+      min-width: 980px;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      padding: 12px 13px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f0f4fa;
+      color: #253044;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    tr:nth-child(even) td {
+      background: #fbfcfe;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .num {
+      text-align: right;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .formula {
+      min-width: 320px;
+    }
+
+    .source {
+      min-width: 220px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .badge.good {
+      color: var(--green);
+      background: var(--green-soft);
+      border: 1px solid #b8e2c4;
+    }
+
+    .badge.warn {
+      color: var(--amber);
+      background: var(--amber-soft);
+      border: 1px solid #f3ce8b;
+    }
+
+    .badge.bad {
+      color: var(--red);
+      background: var(--red-soft);
+      border: 1px solid #f2b8b8;
+    }
+
+    .logic-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .logic-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-soft);
+      padding: 16px;
+    }
+
+    .logic-card strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 15px;
+    }
+
+    .logic-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .decision-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: decision;
+    }
+
+    .decision-list li {
+      position: relative;
+      min-height: 58px;
+      padding: 14px 16px 14px 58px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-soft);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .decision-list li::before {
+      counter-increment: decision;
+      content: counter(decision);
+      position: absolute;
+      left: 16px;
+      top: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .decision-list strong {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--ink);
+      font-size: 15px;
+    }
+
+    .source-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .source-item {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 12px;
+      background: var(--paper-soft);
+      font-size: 13px;
+    }
+
+    .source-item strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .footer {
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
+      margin-top: 22px;
+    }
+
+    @media (max-width: 980px) {
+      .summary-grid,
+      .logic-grid,
+      .source-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        padding: 18px 12px 42px;
+      }
+
+      .top-tabs {
+        justify-content: stretch;
+      }
+
+      .tab-link {
+        justify-content: center;
+        width: 100%;
+      }
+
+      .hero,
+      section {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+
+      h2 {
+        font-size: 20px;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .page {
+        max-width: none;
+        padding: 0;
+      }
+
+      .top-tabs {
+        display: none;
+      }
+
+      .hero,
+      section,
+      .summary-card {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+
+      a {
+        color: #000;
+        text-decoration: underline;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <nav class="top-tabs" aria-label="관련 문서 이동">
+      <a class="tab-link" href="260519_구글가격정책.html">원본 브리프</a>
+      <a class="tab-link active" href="260519_구글가격정책_산정로직.html">구글 가격 정책</a>
+    </nav>
+
+    <header class="hero">
+      <div class="eyebrow">Google Pricing Calculation</div>
+      <h1>Google Maps/Places 비용 산정 로직</h1>
+      <div class="meta">
+        <span class="chip">Review Date: 2026-05-19</span>
+        <span class="chip">Unit: USD / month</span>
+        <span class="chip">Tax / FX excluded</span>
+        <span class="chip">Source: Google official pricing docs</span>
+      </div>
+    </header>
+
+    <section>
+      <h2>1. 개발팀 작업 진행 방식 결론</h2>
+      <ol class="decision-list">
+        <li>
+          <strong>기본 화면은 내부 DB 기반 업체 리스트로 구현</strong>
+          사용자가 업체를 조회할 때 Google Places API를 실시간 호출하지 않고, 서비스 DB에 저장된 업체명, 카테고리, 지역, 소개 정보를 먼저 보여줍니다.
+        </li>
+        <li>
+          <strong>업체 등록은 관리자 또는 업체 신청 후 승인 방식으로 처리</strong>
+          Google 검색 결과를 사용자 화면에서 바로 노출하지 않고, 관리자 검수 또는 업체 신청 데이터를 내부 DB에 확정 저장합니다.
+        </li>
+        <li>
+          <strong>업체 위치 연결값은 Map ID가 아니라 Place ID를 저장</strong>
+          업체 식별과 Google Maps 이동에는 <code>Place ID</code>를 사용하고, 서비스 내부 식별자는 별도 <code>vendor_id</code>로 관리합니다.
+        </li>
+        <li>
+          <strong>지도는 화면 내 렌더링보다 Google Maps URL 외부 이동을 우선 적용</strong>
+          MVP에서는 Web 첫 화면에 Google Map을 바로 띄우지 않고, 위치 버튼 클릭 시 Google Maps 앱 또는 웹으로 이동하도록 구현합니다.
+        </li>
+        <li>
+          <strong>이미지, 영업시간, 전화번호는 자체 입력값을 사용</strong>
+          Google Places Photos, 영업시간, 전화번호를 목록/상세에서 매번 호출하지 않고, 관리자 또는 업체가 입력한 값을 기준 데이터로 사용합니다.
+        </li>
+        <li>
+          <strong>Google API는 관리자 등록/검수 화면에서만 제한적으로 사용</strong>
+          Place ID 조회, 위치 검수 등 운영자용 기능에 한정해 호출하고, 일반 사용자의 자유 검색 기능은 MVP 범위에서 제외합니다.
+        </li>
+        <li>
+          <strong>지도 보기 기능은 2차 기능으로 분리</strong>
+          실제 사용성 검증 후 필요할 때만 리스트 화면에 지도 보기 버튼을 추가하고, 클릭 시점에만 Google Map을 로드합니다.
+        </li>
+        <li>
+          <strong>사용자 업체 제안은 로그인, 횟수 제한, 관리자 승인 플로우가 갖춰진 뒤 진행</strong>
+          반복 검색, 오타 검색, 자동화 접근으로 비용이 커질 수 있으므로 검색 기능 개방은 별도 예산 승인 후 적용합니다.
+        </li>
+      </ol>
+    </section>
+
+    <div class="summary-grid">
+      <article class="summary-card">
+        <strong>무료 사용량 반영</strong>
+        <p>아래 금액은 SKU별 <code>Free Usage Cap</code>을 먼저 차감한 후 유료 호출분만 계산했습니다.</p>
+      </article>
+      <article class="summary-card">
+        <strong>$200 기본 크레딧</strong>
+        <p>2025-03-01 이후 기존 월 $200 크레딧은 SKU별 무료 사용량 방식으로 대체되어 별도 차감하지 않았습니다.</p>
+      </article>
+    </div>
+
+    <section>
+      <h2>2. 비용 산정 기준</h2>
+      <div class="callout">
+        <strong>판단</strong>
+        현재 문서의 핵심 비용 수치는 Google Maps Platform의 무료 사용량 cap을 먼저 차감한 뒤 유료 호출분만 계산한 값입니다.
+      </div>
+      <div class="logic-grid">
+        <div class="logic-card">
+          <strong>산정 기준</strong>
+          <p><code>월 예상 비용 = max(월 호출량 - 무료 사용량, 0) / 1,000 * SKU 단가</code>를 기본으로 사용했습니다.</p>
+        </div>
+        <div class="logic-card">
+          <strong>복합 시나리오</strong>
+          <p>Web처럼 검색과 지도 view가 함께 발생하면 <code>Places 비용 + Dynamic Maps 비용</code>을 합산했습니다.</p>
+        </div>
+        <div class="logic-card">
+          <strong>주의 사항</strong>
+          <p>검색 결과 20개 전체에 상세와 사진을 붙이는 구조는 호출량이 <code>검색수 * 20</code>으로 커져 MVP에는 부적합합니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>3. 월 호출량별 비용 산정표</h2>
+      <p>아래 금액은 Google 공식 가격표 기준이며, 세금과 환율은 제외했습니다.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>사용 패턴</th>
+              <th>월 10,000회</th>
+              <th>월 50,000회</th>
+              <th>월 100,000회</th>
+              <th>판단</th>
+              <th>실제 비용산정 로직</th>
+              <th>비용 출처안</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Web 목록 검색만</td>
+              <td class="num">$160</td>
+              <td class="num">$1,720</td>
+              <td class="num">$3,670</td>
+              <td><span class="badge warn">주의</span><br>지도 view 포함 시 누적</td>
+              <td class="formula"><code>Text Search Pro</code> 무료 5,000회 차감 후 $32/1,000회 + <code>Dynamic Maps</code> 무료 10,000회 차감 후 $7/1,000 map load.<br>예: 50,000회 = 45,000/1,000*$32 + 40,000/1,000*$7 = $1,720</td>
+              <td class="source">Google 가격표: Places API Text Search Pro, Maps Dynamic Maps</td>
+            </tr>
+            <tr>
+              <td>APP 목록 검색만</td>
+              <td class="num">$160</td>
+              <td class="num">$1,440</td>
+              <td class="num">$3,040</td>
+              <td><span class="badge warn">주의</span><br>Places 검색 비용 발생</td>
+              <td class="formula"><code>Text Search Pro</code>만 반영. 무료 5,000회 차감 후 $32/1,000회.<br>예: 50,000회 = 45,000/1,000*$32 = $1,440</td>
+              <td class="source">Google 가격표: Places API Text Search Pro</td>
+            </tr>
+            <tr>
+              <td>Web 실사용 업체 카드</td>
+              <td class="num">$315</td>
+              <td class="num">$1,995</td>
+              <td class="num">$4,095</td>
+              <td><span class="badge bad">높음</span><br>평점/영업시간/전화 포함 시 증가</td>
+              <td class="formula"><code>Text Search Enterprise</code> 무료 1,000회 차감 후 $35/1,000회 + <code>Dynamic Maps</code> 무료 10,000회 차감 후 $7/1,000 map load.<br>예: 50,000회 = 49,000/1,000*$35 + 40,000/1,000*$7 = $1,995</td>
+              <td class="source">Google 가격표: Places API Text Search Enterprise, Maps Dynamic Maps</td>
+            </tr>
+            <tr>
+              <td>APP 실사용 업체 카드</td>
+              <td class="num">$315</td>
+              <td class="num">$1,715</td>
+              <td class="num">$3,465</td>
+              <td><span class="badge bad">높음</span><br>동일하게 Places 비용 발생</td>
+              <td class="formula"><code>Text Search Enterprise</code>만 반영. 무료 1,000회 차감 후 $35/1,000회.<br>예: 50,000회 = 49,000/1,000*$35 = $1,715</td>
+              <td class="source">Google 가격표: Places API Text Search Enterprise</td>
+            </tr>
+            <tr>
+              <td>목록 20개 상세+사진 전부 호출</td>
+              <td class="num">약 $4,993</td>
+              <td class="num">약 $21,133</td>
+              <td class="num">약 $31,183</td>
+              <td><span class="badge bad">기각 권고</span><br>검색수보다 상세/사진 호출량이 훨씬 큼</td>
+              <td class="formula">최악 케이스: 검색 1회당 목록 20개 모두 <code>Place Details Enterprise</code>와 <code>Place Details Photos</code> 호출 + Web 기준 <code>Text Search Pro</code>와 <code>Dynamic Maps</code> 포함. 상세/사진은 월 <code>20*N</code>건으로 계산하고, SKU별 무료 cap과 볼륨 단가를 순차 적용.<br>예: 10,000회 = Text Search Pro $160 + Dynamic Maps $0 + Place Details Enterprise 200,000건 $3,580 + Photos 200,000건 $1,253 = 약 $4,993</td>
+              <td class="source">Google 가격표: Text Search Pro, Dynamic Maps, Place Details Enterprise, Place Details Photos. 필드별 과금은 Places field mask 문서</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>4. 주요 SKU 단가와 무료 사용량</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>SKU</th>
+              <th>무료 사용량</th>
+              <th>초기 유료 단가</th>
+              <th>산정에 사용한 용도</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Places API Text Search Pro</td>
+              <td class="num">월 5,000회</td>
+              <td class="num">$32 / 1,000회</td>
+              <td>업체명, 주소, 위치 등 목록 검색</td>
+            </tr>
+            <tr>
+              <td>Places API Text Search Enterprise</td>
+              <td class="num">월 1,000회</td>
+              <td class="num">$35 / 1,000회</td>
+              <td>평점, 전화번호, 영업시간 등 실사용 카드 정보</td>
+            </tr>
+            <tr>
+              <td>Dynamic Maps</td>
+              <td class="num">월 10,000 map load</td>
+              <td class="num">$7 / 1,000 map load</td>
+              <td>Web 화면에서 Google Map을 렌더링하는 경우</td>
+            </tr>
+            <tr>
+              <td>Places API Place Details Enterprise</td>
+              <td class="num">월 1,000회</td>
+              <td class="num">$20 / 1,000회</td>
+              <td>업체 상세 정보 호출</td>
+            </tr>
+            <tr>
+              <td>Places API Place Details Photos</td>
+              <td class="num">월 1,000회</td>
+              <td class="num">$7 / 1,000회</td>
+              <td>Google Places 사진 호출</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout warning">
+        <strong>보수적 해석</strong>
+        무료 사용량은 SKU별로 적용되지만, 실제 청구는 연결된 billing account의 월간 사용량 집계와 볼륨 구간에 따라 달라질 수 있습니다. 운영 전에는 Google Pricing Calculator로 최종 재확인이 필요합니다.
+      </div>
+    </section>
+
+    <section>
+      <h2>5. 비용 출처</h2>
+      <div class="source-list">
+        <div class="source-item">
+          <strong>가격 개요 및 무료 사용량 cap</strong>
+          <a href="https://developers.google.com/maps/billing-and-pricing/overview">https://developers.google.com/maps/billing-and-pricing/overview</a>
+        </div>
+        <div class="source-item">
+          <strong>Google Maps Platform 가격표</strong>
+          <a href="https://developers.google.com/maps/billing-and-pricing/pricing">https://developers.google.com/maps/billing-and-pricing/pricing</a>
+        </div>
+        <div class="source-item">
+          <strong>SKU 상세</strong>
+          <a href="https://developers.google.com/maps/billing-and-pricing/sku-details">https://developers.google.com/maps/billing-and-pricing/sku-details</a>
+        </div>
+        <div class="source-item">
+          <strong>Places 필드별 과금</strong>
+          <a href="https://developers.google.com/maps/documentation/places/web-service/data-fields">https://developers.google.com/maps/documentation/places/web-service/data-fields</a>
+        </div>
+        <div class="source-item">
+          <strong>비용관리</strong>
+          <a href="https://developers.google.com/maps/billing-and-pricing/manage-costs">https://developers.google.com/maps/billing-and-pricing/manage-costs</a>
+        </div>
+      </div>
+    </section>
+
+    <p class="footer">Generated from 260519_구글가격정책_simple.md. Last reviewed: 2026-05-19.</p>
+  </div>
+</body>
+</html>
