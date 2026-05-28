@@ -1,0 +1,2876 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AutoERD — SQL로 ERD 자동 생성 | 무료 DB 다이어그램 도구</title>
+  <meta name="description" content="SQL DDL을 붙여넣으면 즉시 인터랙티브 ERD 다이어그램이 생성됩니다. MySQL, PostgreSQL, MariaDB 지원. 완전 무료." />
+  <meta name="keywords"
+    content="ERD, ERD 생성기, SQL DDL, DB 다이어그램, MySQL ERD, PostgreSQL ERD, MariaDB ERD, database diagram" />
+  <meta name="robots" content="index,follow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="AutoERD — SQL로 ERD 자동 생성" />
+  <meta property="og:description" content="CREATE TABLE SQL을 붙여넣으면 FK 관계를 감지해 인터랙티브 ERD 다이어그램을 생성합니다." />
+  <meta property="og:site_name" content="AutoERD" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+    :root {
+      --bg: #f8f9fa;
+      --bg2: #ffffff;
+      --bg3: #e9ecef;
+      --border: #dee2e6;
+      --border-bright: #adb5bd;
+      --text: #000000;
+      --text-muted: #333333;
+      --text-dim: #555555;
+      --accent: #0000ff;        /* 파랑: 녹색 대체 */
+      --accent-hover: #0000cc;
+      --blue: #0000ff;
+      --blue-hover: #0000cc;
+      --purple: #cc0000;        /* 빨강: UQ/에러 */
+      --pk-color: #cc0000;      /* PK — 빨강 */
+      --fk-color: #0000ff;      /* FK — 파랑 */
+      --card-bg: #ffffff;
+      --card-border: #dee2e6;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ── LANDING PAGE ── */
+    #landing {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ad-placeholder {
+      background: linear-gradient(90deg, #e9ecef, #f1f3f5, #e9ecef);
+      background-size: 200% 100%;
+      animation: shimmer 2s infinite;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-dim);
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      border: 1px dashed var(--border-bright);
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: 200% 0;
+      }
+
+      100% {
+        background-position: -200% 0;
+      }
+    }
+
+    /* Site Header (Merged with Ad) */
+    .site-header {
+      padding: 12px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg2);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      gap: 20px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 20px;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: #0000ff;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 900;
+      color: #fff;
+    }
+
+    .logo span {
+      color: #0000ff;
+    }
+
+    .badge-free {
+      font-size: 11px;
+      padding: 3px 10px;
+      background: rgba(0, 0, 255, 0.08);
+      color: #0000ff;
+      border: 1px solid rgba(0, 0, 255, 0.25);
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    .header-ad {
+      flex: 1;
+      max-width: 600px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    /* Hero */
+    .hero {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px 30px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(13, 110, 253, 0.08);
+      border: 1px solid rgba(13, 110, 253, 0.2);
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-size: clamp(26px, 4vw, 44px);
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+
+    .hero p {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 580px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .hero p strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* CLI Copy Guide Box */
+    .cli-guide-container {
+      width: 100%;
+      max-width: 880px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      text-align: left;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .cli-guide-header {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .cli-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 12px;
+    }
+
+    .cli-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      position: relative;
+    }
+
+    .cli-card-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cli-cmd-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 10px;
+    }
+
+    .cli-cmd {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #0d6efd;
+      overflow-x: auto;
+      white-space: nowrap;
+      flex: 1;
+      width: 100%;
+    }
+
+    .btn-copy {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px 4px;
+      border-radius: 4px;
+      transition: all 0.15s;
+    }
+
+    .btn-copy:hover {
+      color: var(--text);
+      background: var(--bg3);
+    }
+
+    .btn-copy.copied {
+      color: #0000ff !important;
+    }
+
+    /* Features */
+    .features {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .feature-chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .feature-chip .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #0000ff;
+    }
+
+    /* Input Area */
+    .input-section {
+      width: 100%;
+      max-width: 880px;
+      margin: 0 auto;
+    }
+
+    .input-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    /* Fullscreen Mode Style */
+    .input-card.fullscreen-mode {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      bottom: 16px;
+      width: calc(100vw - 32px);
+      height: calc(100vh - 32px);
+      z-index: 1000;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      border-color: var(--blue);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .input-card.fullscreen-mode #sql-input {
+      flex: 1;
+      height: 100%;
+      min-height: 0;
+      resize: none;
+    }
+
+    .input-card:focus-within:not(.fullscreen-mode) {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1), 0 4px 18px rgba(0, 0, 0, 0.06);
+    }
+
+    .input-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 18px;
+      background: var(--bg3);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .input-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .db-tabs {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .db-tab {
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .db-tab.active {
+      background: rgba(13, 110, 253, 0.08);
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+
+    .db-tab:hover:not(.active) {
+      background: var(--bg3);
+    }
+
+    .btn-fullscreen-toggle {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s;
+      margin-left: 10px;
+    }
+
+    .btn-fullscreen-toggle:hover {
+      background: var(--bg3);
+      color: var(--text);
+    }
+
+    #sql-input {
+      width: 100%;
+      min-height: 220px;
+      background: transparent;
+      border: none;
+      outline: none;
+      padding: 16px 18px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--text);
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    #sql-input::placeholder {
+      color: var(--text-dim);
+      opacity: 0.8;
+    }
+
+    .input-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 18px;
+      background: var(--bg3);
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .input-hint {
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    .input-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .btn-clear {
+      padding: 8px 20px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 38px;
+    }
+
+    .btn-clear:hover {
+      background: var(--bg3);
+      color: var(--text);
+    }
+
+    .btn-generate {
+      padding: 8px 24px;
+      background: #0000ff; /* 중요 기능 버튼만 블루 음영 처리 */
+      border: 1px solid #0000ff;
+      border-radius: 6px;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+      height: 38px;
+      box-shadow: 0 2px 6px rgba(0, 0, 255, 0.25);
+    }
+
+    .btn-generate:hover {
+      background: #0000cc;
+      border-color: #0000cc;
+      transform: translateY(-1px);
+    }
+
+    .btn-generate:active {
+      transform: translateY(0);
+    }
+
+    /* Sample Buttons */
+    .sample-section {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .sample-label {
+      font-size: 12px;
+      color: var(--text-dim);
+      font-weight: 600;
+    }
+
+    .sample-btn {
+      padding: 6px 14px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sample-btn:hover {
+      border-color: var(--blue);
+      color: var(--blue);
+      background: rgba(13, 110, 253, 0.05);
+    }
+
+    .privacy-text {
+      margin-top: 8px;
+      color: #000000 !important;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .ddl-guide {
+      margin-top: 14px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      text-align: left;
+    }
+
+    .ddl-guide summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 13px 16px;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--bg3);
+    }
+
+    .ddl-guide summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .ddl-guide summary::after {
+      content: '+';
+      color: var(--text-dim);
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .ddl-guide[open] summary::after {
+      content: '-';
+    }
+
+    .ddl-guide-body {
+      padding: 16px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .ddl-guide-intro {
+      color: var(--text-muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .ddl-guide code {
+      color: #e6edf3;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      background: rgba(110, 118, 129, 0.14);
+      border: 1px solid rgba(110, 118, 129, 0.22);
+      border-radius: 4px;
+      padding: 1px 4px;
+    }
+
+    .ddl-guide-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .ddl-guide-item {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: rgba(13, 17, 23, 0.45);
+      overflow: hidden;
+    }
+
+    .ddl-guide-item h3 {
+      padding: 10px 12px;
+      color: var(--text);
+      font-size: 13px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(31, 111, 235, 0.08);
+    }
+
+    .ddl-guide-item pre {
+      margin: 0;
+      padding: 12px;
+      overflow-x: auto;
+      color: #e6edf3;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      line-height: 1.6;
+      white-space: pre;
+    }
+
+    .ddl-guide-tip {
+      color: var(--text-dim);
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    /* ── ERD VIEW ── */
+    #erd-view {
+      display: none;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .erd-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 300;
+      height: 52px;
+      background: rgba(13, 17, 23, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+    }
+
+    .erd-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-back {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-back:hover {
+      background: var(--bg3);
+      color: var(--text);
+      border-color: var(--border-bright);
+    }
+
+    .erd-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .erd-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .erd-stat {
+      font-size: 12px;
+      color: var(--text-muted);
+      background: var(--bg2);
+      padding: 3px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+
+    .btn-export {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: rgba(31, 111, 235, 0.1);
+      border: 1px solid rgba(31, 111, 235, 0.3);
+      border-radius: 8px;
+      color: #388bfd;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-export:hover {
+      background: rgba(31, 111, 235, 0.2);
+    }
+
+    .btn-export.secondary {
+      background: transparent;
+      border-color: var(--border);
+      color: var(--text-muted);
+    }
+
+    .btn-export.secondary:hover {
+      background: var(--bg3);
+      color: var(--text);
+      border-color: var(--border-bright);
+    }
+
+    /* Ad placements in ERD view */
+    .erd-layout {
+      position: fixed;
+      top: 52px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+    }
+
+    .ad-side {
+      width: 160px;
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 8px;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .ad-side-label {
+      font-size: 9px;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .ad-side-block {
+      width: 144px;
+      height: 300px;
+      border-radius: 6px;
+    }
+
+    .ad-side-note {
+      color: var(--text-dim);
+      font-size: 10px;
+      line-height: 1.5;
+      text-align: center;
+      padding: 0 4px;
+    }
+
+    .erd-main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .result-ad-strip {
+      min-height: 70px;
+      background: rgba(22, 27, 34, 0.96);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 10px 16px;
+      flex-shrink: 0;
+    }
+
+    .result-ad-label {
+      color: var(--text-dim);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    /* Canvas */
+    #canvas-wrap {
+      flex: 1;
+      min-height: 0;
+      position: relative;
+      overflow: hidden;
+      cursor: grab;
+      background-image: radial-gradient(circle, #30363d 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    #canvas-wrap:active {
+      cursor: grabbing;
+    }
+
+    #erd-canvas {
+      position: absolute;
+      transform-origin: 0 0;
+      user-select: none;
+    }
+
+    #svg-lines {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      overflow: visible;
+      z-index: 2;
+    }
+
+    /* Group panels */
+    .erd-group {
+      position: absolute;
+      border-radius: 16px;
+      border: 2px dashed transparent;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .group-header {
+      position: absolute;
+      top: 14px;
+      left: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .group-bar {
+      width: 4px;
+      height: 28px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .group-name {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      display: block;
+    }
+
+    .group-name-en {
+      font-size: 10px;
+      font-weight: 500;
+      opacity: 0.55;
+      display: block;
+      margin-top: 1px;
+    }
+
+    /* Table Cards */
+    .erd-table {
+      position: absolute;
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 10px;
+      min-width: 220px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      transition: box-shadow 0.2s, border-color 0.2s, transform 0.15s;
+      cursor: move;
+      z-index: 3;
+    }
+
+    .erd-table:hover {
+      border-color: var(--border-bright);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(56, 139, 253, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .table-header {
+      padding: 10px 14px;
+      border-radius: 9px 9px 0 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1.5px solid var(--border);
+    }
+
+    .table-name {
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.01em;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .table-tag {
+      margin-left: auto;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 5px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .table-fields {
+      padding: 4px 0;
+    }
+
+    .field-row {
+      padding: 4px 14px;
+      display: grid;
+      grid-template-columns: 24px 1fr auto;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      transition: background 0.1s;
+    }
+
+    .field-row:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .field-row:last-child {
+      border-radius: 0 0 9px 9px;
+    }
+
+    .field-key {
+      font-size: 9px;
+      font-weight: 800;
+      text-align: center;
+      color: var(--text-dim);
+    }
+
+    .field-key.pk {
+      color: var(--pk-color);
+    }
+
+    .field-key.fk {
+      color: var(--fk-color);
+    }
+
+    .field-key.uq {
+      color: #bc8cff;
+    }
+
+    .field-name {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text);
+      font-size: 11px;
+    }
+
+    .field-name.pk-name {
+      color: var(--pk-color);
+      font-weight: 700;
+    }
+
+    .field-name.fk-name {
+      color: var(--fk-color);
+    }
+
+    .field-type {
+      font-size: 10px;
+      color: var(--text-dim);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Themes */
+    .theme-blue .table-header {
+      background: rgba(31, 111, 235, 0.12);
+      border-bottom-color: rgba(31, 111, 235, 0.2);
+    }
+
+    .theme-blue .table-name {
+      color: #388bfd;
+    }
+
+    .theme-blue .table-tag {
+      background: rgba(31, 111, 235, 0.15);
+      color: #388bfd;
+      border: 1px solid rgba(31, 111, 235, 0.3);
+    }
+
+    .theme-green .table-header {
+      background: rgba(204, 0, 0, 0.08);
+      border-bottom-color: rgba(204, 0, 0, 0.18);
+    }
+
+    .theme-green .table-name {
+      color: #cc0000;
+    }
+
+    .theme-green .table-tag {
+      background: rgba(204, 0, 0, 0.1);
+      color: #cc0000;
+      border: 1px solid rgba(204, 0, 0, 0.25);
+    }
+
+    .theme-orange .table-header {
+      background: rgba(210, 153, 34, 0.12);
+      border-bottom-color: rgba(210, 153, 34, 0.2);
+    }
+
+    .theme-orange .table-name {
+      color: #d29922;
+    }
+
+    .theme-orange .table-tag {
+      background: rgba(210, 153, 34, 0.15);
+      color: #d29922;
+      border: 1px solid rgba(210, 153, 34, 0.3);
+    }
+
+    .theme-purple .table-header {
+      background: rgba(124, 58, 237, 0.12);
+      border-bottom-color: rgba(124, 58, 237, 0.2);
+    }
+
+    .theme-purple .table-name {
+      color: #bc8cff;
+    }
+
+    .theme-purple .table-tag {
+      background: rgba(124, 58, 237, 0.15);
+      color: #bc8cff;
+      border: 1px solid rgba(124, 58, 237, 0.3);
+    }
+
+    .theme-gray .table-header {
+      background: rgba(139, 148, 158, 0.1);
+      border-bottom-color: rgba(139, 148, 158, 0.15);
+    }
+
+    .theme-gray .table-name {
+      color: var(--text-muted);
+    }
+
+    .theme-gray .table-tag {
+      background: rgba(139, 148, 158, 0.1);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+
+    /* Controls */
+    .controls {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 300;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .ctrl-btn {
+      width: 38px;
+      height: 38px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      transition: all 0.15s;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .ctrl-btn:hover {
+      background: var(--bg3);
+      border-color: var(--border-bright);
+      color: var(--text);
+    }
+
+    .ctrl-btn:active {
+      transform: scale(0.93);
+    }
+
+    /* Legend */
+    .legend {
+      position: fixed;
+      bottom: 24px;
+      left: 180px;
+      z-index: 300;
+      background: rgba(22, 27, 34, 0.95);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 11px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .legend-title {
+      font-weight: 700;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-size: 9px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+      color: var(--text-muted);
+      font-size: 11px;
+    }
+
+    .legend-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .legend-line {
+      width: 24px;
+      height: 2px;
+      border-radius: 2px;
+    }
+
+    .legend-sep {
+      height: 1px;
+      background: var(--border);
+      margin: 7px 0;
+    }
+
+    /* Ad bottom (in ERD view, after generation) */
+    .ad-bottom-erd {
+      position: fixed;
+      bottom: 0;
+      left: 160px;
+      right: 0;
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Error / empty states */
+    .parse-error {
+      position: fixed;
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 500;
+      background: rgba(248, 81, 73, 0.1);
+      border: 1px solid rgba(248, 81, 73, 0.4);
+      border-radius: 10px;
+      padding: 12px 20px;
+      color: #f85149;
+      font-size: 13px;
+      font-weight: 600;
+      display: none;
+      max-width: 520px;
+      text-align: center;
+    }
+
+    /* Loading */
+    .generating-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(13, 17, 23, 0.85);
+      backdrop-filter: blur(4px);
+      z-index: 999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--border);
+      border-top-color: #238636;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .rel-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      text-anchor: middle;
+      font-weight: 700;
+    }
+
+    /* Footer in landing */
+    .landing-footer {
+      text-align: center;
+      padding: 24px;
+      color: var(--text-dim);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Ad bottom landing */
+    .ad-banner-bottom-land {
+      width: 100%;
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 0;
+    }
+
+    /* ERD 견본 이미지 섹션 */
+    .erd-preview-section {
+      width: 100%;
+      background: var(--bg2);
+      border-top: 2px solid #0000ff;
+      padding: 40px 24px 48px;
+    }
+
+    .erd-preview-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .erd-preview-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .erd-preview-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 10px;
+      background: #0000ff;
+      color: #ffffff;
+      border-radius: 20px;
+      letter-spacing: 0.04em;
+    }
+
+    .erd-preview-label strong {
+      font-size: 18px;
+      font-weight: 700;
+      color: #000000;
+    }
+
+    .erd-preview-desc {
+      font-size: 13px;
+      color: #333333;
+      margin-bottom: 20px;
+    }
+
+    .erd-preview-frame {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .erd-preview-img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    @media (max-width: 900px) {
+      .site-header {
+        padding: 16px 20px;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .hero {
+        padding: 40px 16px 32px;
+      }
+
+      .hero p {
+        font-size: 14px;
+      }
+
+      .input-header,
+      .input-footer,
+      .erd-header {
+        align-items: flex-start;
+        flex-direction: column;
+        height: auto;
+        gap: 10px;
+      }
+
+      .erd-header {
+        position: static;
+        padding: 12px 16px;
+      }
+
+      .erd-meta {
+        flex-wrap: wrap;
+      }
+
+      .erd-layout {
+        position: static;
+        height: calc(100vh - 116px);
+      }
+
+      .ad-side {
+        display: none;
+      }
+
+      .result-ad-strip {
+        min-height: 58px;
+        padding: 8px;
+      }
+
+      .result-ad-label {
+        display: none;
+      }
+
+      .result-ad-strip .ad-placeholder,
+      .ad-banner-top .ad-placeholder,
+      .ad-banner-bottom-land .ad-placeholder {
+        width: min(100%, 320px) !important;
+      }
+
+      .legend {
+        left: 12px;
+        bottom: 12px;
+        max-width: calc(100vw - 88px);
+      }
+
+      .controls {
+        right: 12px;
+        bottom: 12px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .hero h1 {
+        font-size: 30px;
+      }
+
+      .features,
+      .sample-section,
+      .db-tabs {
+        justify-content: flex-start;
+      }
+
+      #sql-input {
+        min-height: 240px;
+        font-size: 12px;
+      }
+
+      .ddl-guide-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .erd-title {
+        font-size: 13px;
+      }
+
+      .btn-export,
+      .btn-back {
+        min-height: 36px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ════════════════════════════════════
+       LANDING PAGE
+  ═════════════════════════════════════ -->
+  <div id="landing">
+
+    <!-- Header (Logo + Ad Merged) -->
+    <header class="site-header">
+      <div class="header-left">
+        <a href="#" class="logo">
+          <div class="logo-icon">ER</div>
+          Auto<span>ERD</span>
+        </a>
+        <span class="badge-free">100% 무료</span>
+      </div>
+
+      <!-- Top Ad Banner (728x90) Merged into Header -->
+      <div class="header-ad">
+        <!-- Google AdSense: 실서비스시 아래 코드로 교체
+        <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px"
+             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+             data-ad-slot="XXXXXXXXXX"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        -->
+        <div class="ad-placeholder" style="width:100%; max-width:468px; height:50px;">
+          광고 영역 — Google AdSense
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+      <!-- 1. SQL DDL 입력을 가장 상단에 배치 -->
+      <div class="input-section" style="margin-bottom: 30px;">
+        <div class="input-card" id="input-card-container">
+          <div class="input-header">
+            <div class="input-title">
+              SQL DDL 입력
+            </div>
+            <div class="db-tabs">
+              <button class="db-tab active" onclick="selectDB(this,'mysql')">MySQL</button>
+              <button class="db-tab" onclick="selectDB(this,'pgsql')">PostgreSQL</button>
+              <button class="db-tab" onclick="selectDB(this,'maria')">MariaDB</button>
+              <button class="btn-fullscreen-toggle" onclick="toggleFullscreenInput()" id="fullscreen-btn"
+                title="전체화면">전체화면</button>
+            </div>
+          </div>
+          <textarea id="sql-input" spellcheck="false" onfocus="onInputFocus()" placeholder="CREATE TABLE users (
+  id         BIGINT      PRIMARY KEY AUTO_INCREMENT,
+  username   VARCHAR(50) NOT NULL UNIQUE,
+  email      VARCHAR(100) NOT NULL,
+  created_at DATETIME    DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE posts (
+  id         BIGINT PRIMARY KEY AUTO_INCREMENT,
+  user_id    BIGINT NOT NULL,
+  title      VARCHAR(255) NOT NULL,
+  content    TEXT,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+-- 여기에 SQL DDL을 붙여넣으세요..."></textarea>
+          <div class="input-footer">
+            <span class="input-hint">REFERENCES 또는 FOREIGN KEY 구문을 포함하면 관계선이 자동 생성됩니다</span>
+            <div class="input-actions">
+              <button class="btn-clear" onclick="clearInput()">초기화</button>
+              <button class="btn-generate" onclick="generateERD()">
+                ERD 생성
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. 그 아래에 설명을 배치 -->
+      <h1>DB 스키마를 붙여넣으면 ERD가 자동으로 완성</h1>
+      <p style="margin-bottom: 8px;">
+        CREATE TABLE SQL을 입력하면 FK 관계를 자동 감지하여 인터랙티브 ERD 다이어그램을 즉시 생성합니다.
+      </p>
+      <p class="privacy-text" style="margin-bottom: 24px;">
+        입력된 DDL 정보는 사용자 브라우저 내에서만 즉시 처리되어 안전하게 보장됩니다.
+      </p>
+
+      <!-- 샘플 SQL 선택 버튼 배치 -->
+      <div class="sample-section" style="margin-bottom: 32px;">
+        <span class="sample-label">샘플 SQL:</span>
+        <button class="sample-btn" onclick="loadSample('blog')">블로그</button>
+        <button class="sample-btn" onclick="loadSample('shop')">쇼핑몰</button>
+        <button class="sample-btn" onclick="loadSample('community')">커뮤니티</button>
+        <button class="sample-btn" onclick="loadSample('auth')">인증/권한</button>
+      </div>
+
+      <!-- 3. 추출 명령어(CLI 가이드 박스)를 바로 아래에 배치 -->
+      <div class="cli-guide-container">
+        <div class="cli-guide-header">
+          <strong>DB 스키마 DDL 간편 추출 명령어</strong>
+        </div>
+        <div class="cli-grid">
+          <div class="cli-card">
+            <div class="cli-card-title">
+              <span>MySQL / MariaDB</span>
+            </div>
+            <div class="cli-cmd-wrapper">
+              <div class="cli-cmd" id="cmd-mysql">mysqldump -u root -p --no-data db_name > schema.sql</div>
+              <button class="btn-copy" onclick="copyToClipboard('cmd-mysql', this)" title="명령어 복사">복사</button>
+            </div>
+          </div>
+          <div class="cli-card">
+            <div class="cli-card-title">
+              <span>PostgreSQL</span>
+            </div>
+            <div class="cli-cmd-wrapper">
+              <div class="cli-cmd" id="cmd-postgres">pg_dump -U postgres -d db_name --schema-only > schema.sql</div>
+              <button class="btn-copy" onclick="copyToClipboard('cmd-postgres', this)" title="명령어 복사">복사</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Ad Banner -->
+    <div class="ad-banner-bottom-land">
+      <!-- AdSense 교체 영역 -->
+      <div class="ad-placeholder" style="width:728px;height:50px;">
+        광고 영역 — Google AdSense (728×90)
+      </div>
+    </div>
+
+    <!-- 견본 ERD 이미지 섹션 -->
+    <section class="erd-preview-section">
+      <div class="erd-preview-inner">
+        <div class="erd-preview-label">
+          <span class="erd-preview-badge">견본</span>
+          <strong>생성된 ERD 다이어그램 예시</strong>
+        </div>
+        <p class="erd-preview-desc">SQL DDL을 입력하면 아래와 같은 인터랙티브 ERD 다이어그램이 자동 생성됩니다.</p>
+        <div class="erd-preview-frame">
+          <img src="image.png" alt="ERD 다이어그램 견본 — AutoERD 자동 생성 예시" class="erd-preview-img" />
+        </div>
+      </div>
+    </section>
+
+    <footer class="landing-footer">
+      AutoERD · 완전 무료 · SQL → ERD 자동 생성 · 회원가입 불필요
+    </footer>
+  </div>
+
+  <!-- ════════════════════════════════════
+       ERD VIEW
+  ═════════════════════════════════════ -->
+  <div id="erd-view">
+
+    <!-- ERD Header -->
+    <div class="erd-header">
+      <div class="erd-header-left">
+        <button class="btn-back" onclick="backToLanding()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+          돌아가기
+        </button>
+        <span class="erd-title" id="erd-title">DB ERD 다이어그램</span>
+      </div>
+      <div class="erd-meta">
+        <span class="erd-stat" id="stat-tables">0 테이블</span>
+        <span class="erd-stat" id="stat-relations">0 관계</span>
+        <button class="btn-export" onclick="exportPNG()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          PNG 저장
+        </button>
+        <button class="btn-export secondary" onclick="exportSVG()">
+          SVG 저장
+        </button>
+      </div>
+    </div>
+
+    <!-- Parse Error -->
+    <div class="parse-error" id="parse-error">SQL을 파싱할 수 없습니다. CREATE TABLE 구문을 확인해주세요.</div>
+
+    <!-- ERD Layout -->
+    <div class="erd-layout">
+      <!-- Side Ad (160x600) -->
+      <div class="ad-side">
+        <span class="ad-side-label">Advertisements</span>
+        <!-- AdSense 교체 영역 -->
+        <div class="ad-placeholder ad-side-block">
+          <span style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:10px;">AdSense 160×300</span>
+        </div>
+        <p class="ad-side-note">ERD 조작 영역과 분리되어 표시됩니다.</p>
+      </div>
+
+      <div class="erd-main">
+        <div class="result-ad-strip" id="result-ad-strip">
+          <span class="result-ad-label">Advertisements</span>
+          <div class="ad-placeholder" style="width:728px;height:50px;">
+            광고 영역 — Google AdSense (728×90)
+          </div>
+        </div>
+
+        <!-- Canvas -->
+        <div id="canvas-wrap">
+          <div id="erd-canvas">
+            <svg id="svg-lines" width="6000" height="5000"></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="legend">
+      <div class="legend-title">컬럼 키</div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--pk-color);"></div>PK — 기본키
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--fk-color);"></div>FK — 외래키
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#cc0000;"></div>UQ — 유니크
+      </div>
+      <div class="legend-sep"></div>
+      <div class="legend-title">관계선</div>
+      <div class="legend-item">
+        <div class="legend-line" style="background:#0000ff;"></div>N:1 ManyToOne
+      </div>
+      <div class="legend-item">
+        <div class="legend-line" style="background:#880088;border-top:2px dashed #880088;height:0;"></div>M:N
+      </div>
+      <div class="legend-item">
+        <div class="legend-line" style="background:#cc0000;"></div>Self-ref
+      </div>
+    </div>
+
+    <!-- Zoom Controls -->
+    <div class="controls">
+      <button class="ctrl-btn" id="zoomIn" title="확대">＋</button>
+      <button class="ctrl-btn" id="zoomOut" title="축소">－</button>
+      <button class="ctrl-btn" id="resetView" title="초기화">⊙</button>
+    </div>
+
+    <!-- Bottom Ad in ERD view -->
+    <div class="ad-bottom-erd" style="display:none;" id="erd-bottom-ad">
+      <div class="ad-placeholder" style="width:600px;height:50px;">
+        광고 영역 — Google AdSense (728×90)
+      </div>
+    </div>
+  </div>
+
+  <!-- Generating Overlay -->
+  <div class="generating-overlay" id="generating-overlay">
+    <div class="spinner"></div>
+    <span style="color:var(--text-muted);font-size:14px;font-weight:500;">ERD 생성 중...</span>
+  </div>
+
+  <script>
+    /* ══════════════════════════════════════════════════════════
+       SAMPLE SQL DATA
+    ══════════════════════════════════════════════════════════ */
+    const SAMPLES = {
+      blog: `CREATE TABLE users (
+  id         BIGINT PRIMARY KEY AUTO_INCREMENT,
+  username   VARCHAR(50) NOT NULL UNIQUE,
+  email      VARCHAR(100) NOT NULL UNIQUE,
+  password   VARCHAR(255) NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE categories (
+  id    INT PRIMARY KEY AUTO_INCREMENT,
+  name  VARCHAR(100) NOT NULL,
+  slug  VARCHAR(100) NOT NULL UNIQUE
+);
+
+CREATE TABLE posts (
+  id          BIGINT PRIMARY KEY AUTO_INCREMENT,
+  user_id     BIGINT NOT NULL,
+  category_id INT NOT NULL,
+  title       VARCHAR(255) NOT NULL,
+  content     TEXT,
+  published   BOOLEAN DEFAULT FALSE,
+  created_at  DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (category_id) REFERENCES categories(id)
+);
+
+CREATE TABLE comments (
+  id         BIGINT PRIMARY KEY AUTO_INCREMENT,
+  post_id    BIGINT NOT NULL,
+  user_id    BIGINT NOT NULL,
+  parent_id  BIGINT,
+  content    TEXT NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (post_id) REFERENCES posts(id),
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (parent_id) REFERENCES comments(id)
+);
+
+CREATE TABLE tags (
+  id   INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE post_tags (
+  post_id BIGINT NOT NULL,
+  tag_id  INT NOT NULL,
+  PRIMARY KEY (post_id, tag_id),
+  FOREIGN KEY (post_id) REFERENCES posts(id),
+  FOREIGN KEY (tag_id) REFERENCES tags(id)
+);`,
+
+      shop: `CREATE TABLE customers (
+  id         BIGINT PRIMARY KEY AUTO_INCREMENT,
+  name       VARCHAR(100) NOT NULL,
+  email      VARCHAR(150) NOT NULL UNIQUE,
+  phone      VARCHAR(20),
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE products (
+  id          BIGINT PRIMARY KEY AUTO_INCREMENT,
+  name        VARCHAR(255) NOT NULL,
+  description TEXT,
+  price       DECIMAL(10,2) NOT NULL,
+  stock_qty   INT DEFAULT 0,
+  category_id INT NOT NULL,
+  FOREIGN KEY (category_id) REFERENCES categories(id)
+);
+
+CREATE TABLE categories (
+  id        INT PRIMARY KEY AUTO_INCREMENT,
+  name      VARCHAR(100) NOT NULL,
+  parent_id INT,
+  FOREIGN KEY (parent_id) REFERENCES categories(id)
+);
+
+CREATE TABLE orders (
+  id          BIGINT PRIMARY KEY AUTO_INCREMENT,
+  customer_id BIGINT NOT NULL,
+  status      VARCHAR(20) DEFAULT 'pending',
+  total_amt   DECIMAL(12,2) NOT NULL,
+  ordered_at  DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (customer_id) REFERENCES customers(id)
+);
+
+CREATE TABLE order_items (
+  id         BIGINT PRIMARY KEY AUTO_INCREMENT,
+  order_id   BIGINT NOT NULL,
+  product_id BIGINT NOT NULL,
+  qty        INT NOT NULL,
+  unit_price DECIMAL(10,2) NOT NULL,
+  FOREIGN KEY (order_id) REFERENCES orders(id),
+  FOREIGN KEY (product_id) REFERENCES products(id)
+);
+
+CREATE TABLE reviews (
+  id          BIGINT PRIMARY KEY AUTO_INCREMENT,
+  product_id  BIGINT NOT NULL,
+  customer_id BIGINT NOT NULL,
+  rating      TINYINT NOT NULL,
+  content     TEXT,
+  FOREIGN KEY (product_id) REFERENCES products(id),
+  FOREIGN KEY (customer_id) REFERENCES customers(id)
+);`,
+
+      community: `CREATE TABLE users (
+  id           BIGINT PRIMARY KEY AUTO_INCREMENT,
+  username     VARCHAR(50) NOT NULL UNIQUE,
+  email        VARCHAR(100) NOT NULL,
+  profile_img  VARCHAR(255),
+  created_at   DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE boards (
+  id   INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(100) NOT NULL,
+  slug VARCHAR(100) NOT NULL UNIQUE
+);
+
+CREATE TABLE posts (
+  id         BIGINT PRIMARY KEY AUTO_INCREMENT,
+  board_id   INT NOT NULL,
+  user_id    BIGINT NOT NULL,
+  title      VARCHAR(255) NOT NULL,
+  content    TEXT,
+  view_count BIGINT DEFAULT 0,
+  like_count BIGINT DEFAULT 0,
+  deleted    BOOLEAN DEFAULT FALSE,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (board_id) REFERENCES boards(id),
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE comments (
+  id        BIGINT PRIMARY KEY AUTO_INCREMENT,
+  post_id   BIGINT NOT NULL,
+  user_id   BIGINT NOT NULL,
+  parent_id BIGINT,
+  content   TEXT NOT NULL,
+  deleted   BOOLEAN DEFAULT FALSE,
+  FOREIGN KEY (post_id) REFERENCES posts(id),
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (parent_id) REFERENCES comments(id)
+);
+
+CREATE TABLE post_likes (
+  id      BIGINT PRIMARY KEY AUTO_INCREMENT,
+  post_id BIGINT NOT NULL,
+  user_id BIGINT NOT NULL,
+  UNIQUE KEY uq_post_like (post_id, user_id),
+  FOREIGN KEY (post_id) REFERENCES posts(id),
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE bookmarks (
+  id      BIGINT PRIMARY KEY AUTO_INCREMENT,
+  post_id BIGINT NOT NULL,
+  user_id BIGINT NOT NULL,
+  FOREIGN KEY (post_id) REFERENCES posts(id),
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);`,
+
+      auth: `CREATE TABLE users (
+  id         BIGINT PRIMARY KEY AUTO_INCREMENT,
+  email      VARCHAR(150) NOT NULL UNIQUE,
+  password   VARCHAR(255),
+  provider   VARCHAR(30),
+  is_active  BOOLEAN DEFAULT TRUE,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE roles (
+  id   INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE permissions (
+  id       INT PRIMARY KEY AUTO_INCREMENT,
+  name     VARCHAR(100) NOT NULL UNIQUE,
+  resource VARCHAR(100),
+  action   VARCHAR(50)
+);
+
+CREATE TABLE user_roles (
+  user_id BIGINT NOT NULL,
+  role_id INT NOT NULL,
+  PRIMARY KEY (user_id, role_id),
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (role_id) REFERENCES roles(id)
+);
+
+CREATE TABLE role_permissions (
+  role_id       INT NOT NULL,
+  permission_id INT NOT NULL,
+  PRIMARY KEY (role_id, permission_id),
+  FOREIGN KEY (role_id) REFERENCES roles(id),
+  FOREIGN KEY (permission_id) REFERENCES permissions(id)
+);
+
+CREATE TABLE sessions (
+  id         VARCHAR(128) PRIMARY KEY,
+  user_id    BIGINT NOT NULL,
+  ip_address VARCHAR(45),
+  user_agent TEXT,
+  expires_at DATETIME NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE audit_logs (
+  id         BIGINT PRIMARY KEY AUTO_INCREMENT,
+  user_id    BIGINT,
+  action     VARCHAR(100) NOT NULL,
+  resource   VARCHAR(100),
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);`
+    };
+
+    /* ══════════════════════════════════════════════════════════
+       SQL PARSER
+    ══════════════════════════════════════════════════════════ */
+    function cleanIdentifier(value) {
+      return (value || '')
+        .trim()
+        .replace(/^[`"\[]|[`"\]]$/g, '')
+        .split('.')
+        .map(part => part.replace(/^[`"\[]|[`"\]]$/g, ''))
+        .pop();
+    }
+
+    function splitTopLevel(value, delimiter = ',') {
+      const parts = [];
+      let current = '';
+      let depth = 0;
+      let quote = null;
+
+      for (let i = 0; i < value.length; i++) {
+        const ch = value[i];
+        const prev = value[i - 1];
+
+        if (quote) {
+          current += ch;
+          if (ch === quote && prev !== '\\') quote = null;
+          continue;
+        }
+
+        if (ch === '\'' || ch === '"' || ch === '`') {
+          quote = ch;
+          current += ch;
+          continue;
+        }
+
+        if (ch === '(') depth++;
+        if (ch === ')') depth = Math.max(0, depth - 1);
+
+        if (ch === delimiter && depth === 0) {
+          if (current.trim()) parts.push(current.trim());
+          current = '';
+          continue;
+        }
+
+        current += ch;
+      }
+
+      if (current.trim()) parts.push(current.trim());
+      return parts;
+    }
+
+    function extractCreateTableBlocks(sql) {
+      const blocks = [];
+      const createRegex = /CREATE\s+(?:TEMPORARY\s+)?TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?((?:[`"]?\w+[`"]?\.)?[`"]?\w+[`"]?)/gim;
+      let match;
+
+      while ((match = createRegex.exec(sql)) !== null) {
+        const tableName = cleanIdentifier(match[1]);
+        const openIndex = sql.indexOf('(', createRegex.lastIndex);
+        if (openIndex === -1) continue;
+
+        let depth = 0;
+        let quote = null;
+        let closeIndex = -1;
+
+        for (let i = openIndex; i < sql.length; i++) {
+          const ch = sql[i];
+          const prev = sql[i - 1];
+
+          if (quote) {
+            if (ch === quote && prev !== '\\') quote = null;
+            continue;
+          }
+
+          if (ch === '\'' || ch === '"' || ch === '`') {
+            quote = ch;
+            continue;
+          }
+
+          if (ch === '(') depth++;
+          if (ch === ')') depth--;
+
+          if (depth === 0) {
+            closeIndex = i;
+            break;
+          }
+        }
+
+        if (closeIndex === -1) continue;
+        blocks.push({ tableName, body: sql.slice(openIndex + 1, closeIndex) });
+        createRegex.lastIndex = closeIndex + 1;
+      }
+
+      return blocks;
+    }
+
+    function parseSQL(sql) {
+      const tables = [];
+      const relations = [];
+
+      // Normalize: remove comments
+      let clean = sql
+        .replace(/--[^\n]*/g, '')
+        .replace(/\/\*[\s\S]*?\*\//g, '')
+        .replace(/\r\n/g, '\n')
+        .replace(/\r/g, '\n');
+
+      extractCreateTableBlocks(clean).forEach(({ tableName, body }) => {
+
+        const fields = [];
+        const items = splitTopLevel(body);
+
+        const pendingPKs = [];
+        const pendingUQs = [];
+        const pendingFKs = [];
+
+        items.forEach(rawItem => {
+          const line = rawItem.trim().replace(/,$/, '');
+          if (!line) return;
+
+          // Skip non-relationship indexes. UNIQUE constraints are handled below.
+          if (/^(INDEX|KEY)\s/i.test(line) && !/FOREIGN/i.test(line)) return;
+
+          // Table-level PRIMARY KEY
+          const pkTableMatch = line.match(/^PRIMARY\s+KEY\s*\(([^)]+)\)/i);
+          if (pkTableMatch) {
+            pendingPKs.push(...splitTopLevel(pkTableMatch[1]).map(cleanIdentifier));
+            return;
+          }
+
+          // Table-level FOREIGN KEY
+          const fkMatch = line.match(/^(?:CONSTRAINT\s+[`"]?\w+[`"]?\s+)?FOREIGN\s+KEY\s*\(([^)]+)\)\s+REFERENCES\s+((?:[`"]?\w+[`"]?\.)?[`"]?\w+[`"]?)\s*\(([^)]+)\)/i);
+          if (fkMatch) {
+            const fromCols = splitTopLevel(fkMatch[1]).map(cleanIdentifier);
+            const toTable = cleanIdentifier(fkMatch[2]);
+            pendingFKs.push({ fromCols, toTable });
+            return;
+          }
+
+          // UNIQUE KEY at table level
+          const uqMatch = line.match(/^UNIQUE\s+(?:KEY|INDEX)?\s*(?:[`"]?\w+[`"]?\s*)?\(([^)]+)\)/i);
+          if (uqMatch && !line.toUpperCase().includes('FOREIGN')) {
+            pendingUQs.push(...splitTopLevel(uqMatch[1]).map(cleanIdentifier));
+            return;
+          }
+
+          // Column definition
+          const colMatch = line.match(/^[`"]?(\w+)[`"]?\s+(.+)$/i);
+          if (!colMatch) return;
+
+          const colName = colMatch[1].toUpperCase() === 'PRIMARY' || colMatch[1].toUpperCase() === 'UNIQUE'
+            || colMatch[1].toUpperCase() === 'INDEX' || colMatch[1].toUpperCase() === 'KEY'
+            || colMatch[1].toUpperCase() === 'FOREIGN' || colMatch[1].toUpperCase() === 'CONSTRAINT'
+            ? null : colMatch[1];
+
+          if (!colName) return;
+
+          const colRest = colMatch[2].trim();
+          const colType = colRest
+            .split(/\s+(?=PRIMARY\b|NOT\b|NULL\b|UNIQUE\b|DEFAULT\b|REFERENCES\b|CHECK\b|CONSTRAINT\b|COLLATE\b|COMMENT\b|GENERATED\b|AUTO_INCREMENT\b|IDENTITY\b)/i)[0]
+            .trim();
+          const isPK = /PRIMARY\s+KEY/i.test(line) || /AUTO_INCREMENT/i.test(line) && /PRIMARY/i.test(line);
+          const isUQ = /\bUNIQUE\b/i.test(line);
+          const isNN = /NOT\s+NULL/i.test(line);
+
+          // Inline REFERENCES (some dialects)
+          const inlineRef = line.match(/REFERENCES\s+((?:[`"]?\w+[`"]?\.)?[`"]?\w+[`"]?)/i);
+          let isFKInline = false;
+          let refTableInline = null;
+          if (inlineRef) {
+            isFKInline = true;
+            refTableInline = cleanIdentifier(inlineRef[1]);
+            pendingFKs.push({ fromCols: [colName], toTable: refTableInline });
+          }
+
+          const field = {
+            name: colName,
+            type: colType.toUpperCase(),
+            pk: isPK,
+            fk: isFKInline,
+            uq: isUQ && !isPK,
+            nn: isNN,
+            refTable: refTableInline,
+            key: isPK ? 'PK' : isFKInline ? 'FK' : isUQ ? 'UQ' : ''
+          };
+
+          fields.push(field);
+        });
+
+        pendingPKs.forEach(pkCol => {
+          const existing = fields.find(f => f.name === pkCol);
+          if (existing) { existing.pk = true; existing.uq = false; existing.key = 'PK'; }
+        });
+
+        pendingUQs.forEach(col => {
+          const existing = fields.find(f => f.name === col);
+          if (existing && !existing.pk && !existing.fk) { existing.uq = true; existing.key = 'UQ'; }
+        });
+
+        pendingFKs.forEach(({ fromCols, toTable }) => {
+          fromCols.forEach(col => {
+            const existing = fields.find(f => f.name === col);
+            if (existing) { existing.fk = true; existing.uq = false; existing.key = 'FK'; existing.refTable = toTable; }
+          });
+          relations.push({
+            from: tableName,
+            to: toTable,
+            type: tableName === toTable ? 'self' : 'many-one',
+            label: tableName === toTable ? 'self' : 'N:1'
+          });
+        });
+
+        const tablePK = fields.find(f => f.pk)?.name || null;
+        tables.push({ id: tableName, name: tableName, fields, pk: tablePK });
+      });
+
+      // De-duplicate relations
+      const relSet = new Set();
+      const uniqueRelations = relations.filter(r => {
+        const key = `${r.from}→${r.to}→${r.type}`;
+        if (relSet.has(key)) return false;
+        relSet.add(key);
+        return true;
+      });
+
+      return { tables, relations: uniqueRelations };
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       AUTO-GROUP TABLES
+    ══════════════════════════════════════════════════════════ */
+    const THEME_PALETTE = ['blue', 'green', 'orange', 'purple', 'gray'];
+    const COLORS = {
+      blue: { color: '#0000ff', bgColor: 'rgba(0,0,255,0.05)', borderColor: 'rgba(0,0,255,0.18)', barColor: '#0000ff' },
+      green: { color: '#cc0000', bgColor: 'rgba(204,0,0,0.05)', borderColor: 'rgba(204,0,0,0.18)', barColor: '#cc0000' },
+      orange: { color: '#cc6600', bgColor: 'rgba(204,102,0,0.05)', borderColor: 'rgba(204,102,0,0.18)', barColor: '#cc6600' },
+      purple: { color: '#880088', bgColor: 'rgba(136,0,136,0.05)', borderColor: 'rgba(136,0,136,0.18)', barColor: '#880088' },
+      gray: { color: '#333333', bgColor: 'rgba(80,80,80,0.04)', borderColor: 'rgba(80,80,80,0.16)', barColor: '#333333' },
+    };
+
+    function autoGroup(tables) {
+      // Build adjacency: find connected components
+      const adjMap = {};
+      tables.forEach(t => { adjMap[t.id] = new Set(); });
+
+      tables.forEach(t => {
+        t.fields.forEach(f => {
+          if (f.fk && f.refTable && adjMap[f.refTable]) {
+            adjMap[t.id].add(f.refTable);
+            adjMap[f.refTable].add(t.id);
+          }
+        });
+      });
+
+      // Simple union-find grouping
+      const visited = new Set();
+      const components = [];
+
+      function dfs(tableId, comp) {
+        if (visited.has(tableId)) return;
+        visited.add(tableId);
+        comp.push(tableId);
+        (adjMap[tableId] || new Set()).forEach(nbr => dfs(nbr, comp));
+      }
+
+      tables.forEach(t => {
+        if (!visited.has(t.id)) {
+          const comp = [];
+          dfs(t.id, comp);
+          components.push(comp);
+        }
+      });
+
+      // Assign theme + name to each component
+      const groups = components.map((members, i) => ({
+        id: `grp_${i}`,
+        name: members.length === 1 ? members[0] : guessGroupName(members),
+        nameEn: members.join(', ').substring(0, 30),
+        members,
+        theme: THEME_PALETTE[i % THEME_PALETTE.length],
+        ...COLORS[THEME_PALETTE[i % THEME_PALETTE.length]]
+      }));
+
+      return groups;
+    }
+
+    function guessGroupName(members) {
+      // Find common prefix
+      if (members.length === 0) return 'Group';
+      const prefixes = members.map(m => m.split('_')[0]);
+      const common = prefixes[0];
+      if (prefixes.every(p => p === common)) return common.charAt(0).toUpperCase() + common.slice(1);
+      return members[0].charAt(0).toUpperCase() + members[0].slice(1) + ' 그룹';
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       AUTO LAYOUT
+    ══════════════════════════════════════════════════════════ */
+    function autoLayout(tables, groups) {
+      const CARD_W = 240, CARD_H_BASE = 80, FIELD_H = 24;
+      const GUTTER = 60, GROUP_PAD = { t: 56, r: 28, b: 28, l: 28 };
+
+      let groupX = 60;
+
+      groups.forEach(g => {
+        const members = g.members.map(mid => tables.find(t => t.id === mid)).filter(Boolean);
+        const COLS = members.length <= 2 ? members.length : Math.ceil(Math.sqrt(members.length));
+
+        let col = 0, row = 0;
+        let maxRowH = Array(Math.ceil(members.length / COLS)).fill(0);
+
+        members.forEach((t, i) => {
+          col = i % COLS;
+          row = Math.floor(i / COLS);
+          const cardH = CARD_H_BASE + t.fields.length * FIELD_H;
+          maxRowH[row] = Math.max(maxRowH[row], cardH);
+        });
+
+        let rowOffsets = [0];
+        for (let r = 0; r < maxRowH.length - 1; r++) {
+          rowOffsets.push(rowOffsets[r] + maxRowH[r] + GUTTER);
+        }
+
+        let innerW = COLS * CARD_W + (COLS - 1) * GUTTER;
+        let innerH = rowOffsets[rowOffsets.length - 1] + maxRowH[maxRowH.length - 1];
+
+        const gpX = groupX + GROUP_PAD.l;
+        const gpY = 60 + GROUP_PAD.t;
+
+        members.forEach((t, i) => {
+          col = i % COLS;
+          row = Math.floor(i / COLS);
+          t.x = gpX + col * (CARD_W + GUTTER);
+          t.y = gpY + rowOffsets[row];
+          t.theme = g.theme;
+        });
+
+        g._x = groupX;
+        g._y = 60;
+        g._w = innerW + GROUP_PAD.l + GROUP_PAD.r;
+        g._h = innerH + GROUP_PAD.t + GROUP_PAD.b;
+
+        groupX += g._w + GUTTER;
+      });
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       RENDER ERD
+    ══════════════════════════════════════════════════════════ */
+    const tableEls = {};
+    let parsedData = null;
+
+    function renderERD(data) {
+      const canvas = document.getElementById('erd-canvas');
+      const svg = document.getElementById('svg-lines');
+
+      // Clear
+      canvas.innerHTML = '';
+      canvas.appendChild(svg);
+      svg.innerHTML = '';
+      Object.keys(tableEls).forEach(k => delete tableEls[k]);
+
+      const { tables, relations, groups } = data;
+
+      // Group panels
+      groups.forEach(g => {
+        const div = document.createElement('div');
+        div.className = 'erd-group';
+        div.style.left = g._x + 'px';
+        div.style.top = g._y + 'px';
+        div.style.width = g._w + 'px';
+        div.style.height = g._h + 'px';
+        div.style.background = g.bgColor;
+        div.style.borderColor = g.borderColor;
+        div.innerHTML = `<div class="group-header">
+          <div class="group-bar" style="background:${g.barColor};"></div>
+          <div>
+            <span class="group-name" style="color:${g.color};">${g.name}</span>
+            <span class="group-name-en" style="color:${g.color};">${g.nameEn}</span>
+          </div>
+        </div>`;
+        canvas.appendChild(div);
+      });
+
+      // Table cards
+      tables.forEach(t => {
+        const div = document.createElement('div');
+        div.className = `erd-table theme-${t.theme || 'gray'}`;
+        div.style.left = (t.x || 60) + 'px';
+        div.style.top = (t.y || 60) + 'px';
+        div.id = 'tbl-' + t.id;
+
+        const fieldsHTML = t.fields.map(f => {
+          const kc = f.pk ? 'pk' : f.fk ? 'fk' : f.uq ? 'uq' : '';
+          const nc = f.pk ? 'pk-name' : f.fk ? 'fk-name' : '';
+          const kt = f.pk ? 'PK' : f.fk ? 'FK' : f.uq ? 'UQ' : '';
+          return `<div class="field-row">
+            <span class="field-key ${kc}">${kt}</span>
+            <span class="field-name ${nc}">${f.name}</span>
+            <span class="field-type">${f.type}</span>
+          </div>`;
+        }).join('');
+
+        const tagLabel = t.fields.some(f => f.pk) ? 'TABLE' : 'VIEW';
+        div.innerHTML = `
+          <div class="table-header">
+            <div>
+              <div class="table-name">${t.name}</div>
+              <div style="font-size:10px;color:var(--text-dim);margin-top:2px;">${t.fields.length} columns</div>
+            </div>
+            <span class="table-tag">${tagLabel}</span>
+          </div>
+          <div class="table-fields">${fieldsHTML}</div>`;
+
+        canvas.appendChild(div);
+        tableEls[t.id] = div;
+        makeDraggable(div, t);
+      });
+
+      // Draw lines after layout
+      requestAnimationFrame(() => drawLines(relations, tables));
+    }
+
+    /* ── Draw Relation Lines ── */
+    function drawLines(relations, tables) {
+      const svg = document.getElementById('svg-lines');
+      svg.innerHTML = '';
+
+      relations.forEach(rel => {
+        const fromEl = tableEls[rel.from];
+        const toEl = tableEls[rel.to];
+        if (!fromEl || !toEl) return;
+
+        const fromT = tables.find(t => t.id === rel.from);
+        const toT = tables.find(t => t.id === rel.to);
+
+        const fx = (fromT.x || 0) + fromEl.offsetWidth / 2;
+        const fy = (fromT.y || 0) + fromEl.offsetHeight / 2;
+        const tx = (toT.x || 0) + toEl.offsetWidth / 2;
+        const ty = (toT.y || 0) + toEl.offsetHeight / 2;
+
+        const isSelf = rel.type === 'self';
+        const color = isSelf ? '#cc0000' : rel.type === 'many-many' ? '#880088' : '#0000ff';
+        const dash = rel.type === 'many-many' ? '6,3' : isSelf ? '4,3' : '';
+
+        let pathD;
+        if (isSelf) {
+          const bx = fx + fromEl.offsetWidth / 2 + 40;
+          pathD = `M${fx},${fy - 20} C${bx},${fy - 40} ${bx},${fy + 40} ${fx},${fy + 20}`;
+        } else {
+          const cp1x = fx + (tx - fx) * 0.45;
+          const cp2x = tx - (tx - fx) * 0.45;
+          pathD = `M${fx},${fy} C${cp1x},${fy} ${cp2x},${ty} ${tx},${ty}`;
+        }
+
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', pathD);
+        path.setAttribute('fill', 'none');
+        path.setAttribute('stroke', color);
+        path.setAttribute('stroke-width', '1.8');
+        path.setAttribute('stroke-opacity', '0.65');
+        if (dash) path.setAttribute('stroke-dasharray', dash);
+        svg.appendChild(path);
+
+        // Label
+        if (rel.label && !isSelf) {
+          const mx = (fx + tx) / 2;
+          const my = (fy + ty) / 2 - 8;
+          const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          text.setAttribute('x', mx);
+          text.setAttribute('y', my);
+          text.setAttribute('class', 'rel-label');
+          text.setAttribute('fill', color);
+          text.setAttribute('fill-opacity', '0.7');
+          text.textContent = rel.label;
+          svg.appendChild(text);
+        }
+      });
+    }
+
+    /* ── Draggable Tables ── */
+    function makeDraggable(el, tableData) {
+      let isDragging = false, ox = 0, oy = 0;
+
+      el.addEventListener('mousedown', e => {
+        if (e.target.closest('.field-row')) return;
+        isDragging = true;
+        ox = e.clientX - el.offsetLeft;
+        oy = e.clientY - el.offsetTop;
+        el.style.zIndex = 100;
+        el.style.transform = 'translateY(-3px)';
+        e.preventDefault();
+      });
+
+      document.addEventListener('mousemove', e => {
+        if (!isDragging) return;
+        const scale = currentScale;
+        const nx = (e.clientX - ox) / scale + el.offsetLeft - (e.clientX - ox) / scale;
+        // simpler:
+        const wrap = document.getElementById('canvas-wrap');
+        const rect = wrap.getBoundingClientRect();
+        tableData.x = (e.clientX - rect.left) / scale - ox / scale;
+        tableData.y = (e.clientY - rect.top) / scale - oy / scale;
+        el.style.left = tableData.x + 'px';
+        el.style.top = tableData.y + 'px';
+        requestAnimationFrame(() => drawLines(parsedData.relations, parsedData.tables));
+      });
+
+      document.addEventListener('mouseup', () => {
+        if (isDragging) {
+          isDragging = false;
+          el.style.zIndex = 3;
+          el.style.transform = '';
+        }
+      });
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       PAN & ZOOM
+    ══════════════════════════════════════════════════════════ */
+    let currentScale = 1, panX = 0, panY = 0;
+    let isPanning = false, lastPX = 0, lastPY = 0;
+
+    function applyTransform() {
+      document.getElementById('erd-canvas').style.transform =
+        `translate(${panX}px,${panY}px) scale(${currentScale})`;
+    }
+
+    const wrap = document.getElementById('canvas-wrap');
+
+    wrap.addEventListener('mousedown', e => {
+      if (e.target === wrap || e.target === document.getElementById('erd-canvas')) {
+        isPanning = true;
+        lastPX = e.clientX;
+        lastPY = e.clientY;
+      }
+    });
+
+    document.addEventListener('mousemove', e => {
+      if (!isPanning) return;
+      panX += e.clientX - lastPX;
+      panY += e.clientY - lastPY;
+      lastPX = e.clientX;
+      lastPY = e.clientY;
+      applyTransform();
+    });
+
+    document.addEventListener('mouseup', () => { isPanning = false; });
+
+    wrap.addEventListener('wheel', e => {
+      e.preventDefault();
+      const delta = e.deltaY > 0 ? 0.9 : 1.1;
+      currentScale = Math.max(0.2, Math.min(3, currentScale * delta));
+      applyTransform();
+    }, { passive: false });
+
+    document.getElementById('zoomIn').onclick = () => {
+      currentScale = Math.min(3, currentScale * 1.15);
+      applyTransform();
+    };
+    document.getElementById('zoomOut').onclick = () => {
+      currentScale = Math.max(0.2, currentScale * 0.87);
+      applyTransform();
+    };
+    document.getElementById('resetView').onclick = () => {
+      currentScale = 1; panX = 0; panY = 0;
+      applyTransform();
+    };
+
+    /* ══════════════════════════════════════════════════════════
+       UI ACTIONS
+    ══════════════════════════════════════════════════════════ */
+    let selectedDB = 'mysql';
+
+    function selectDB(btn, db) {
+      document.querySelectorAll('.db-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedDB = db;
+    }
+
+    function loadSample(type) {
+      document.getElementById('sql-input').value = SAMPLES[type] || '';
+    }
+
+    function clearInput() {
+      document.getElementById('sql-input').value = '';
+    }
+
+    function generateERD() {
+      const sql = document.getElementById('sql-input').value.trim();
+      if (!sql) {
+        document.getElementById('sql-input').focus();
+        return;
+      }
+
+      const overlay = document.getElementById('generating-overlay');
+      overlay.style.display = 'flex';
+
+      setTimeout(() => {
+        try {
+          const result = parseSQL(sql);
+
+          if (result.tables.length === 0) {
+            overlay.style.display = 'none';
+            const err = document.getElementById('parse-error');
+            err.style.display = 'block';
+            setTimeout(() => { err.style.display = 'none'; }, 4000);
+            return;
+          }
+
+          const groups = autoGroup(result.tables);
+          autoLayout(result.tables, groups);
+          result.groups = groups;
+          parsedData = result;
+
+          // Show ERD view
+          document.getElementById('landing').style.display = 'none';
+          document.getElementById('erd-view').style.display = 'flex';
+
+          // Reset transform
+          currentScale = 1; panX = 60; panY = 20;
+          applyTransform();
+
+          renderERD(result);
+
+          // Update stats
+          document.getElementById('stat-tables').textContent = `${result.tables.length} 테이블`;
+          document.getElementById('stat-relations').textContent = `${result.relations.length} 관계`;
+          document.getElementById('erd-title').textContent = `DB ERD — ${result.tables.length}개 테이블`;
+
+        } catch (e) {
+          console.error(e);
+          const err = document.getElementById('parse-error');
+          err.textContent = '⚠️ 파싱 오류: ' + e.message;
+          err.style.display = 'block';
+          setTimeout(() => { err.style.display = 'none'; }, 5000);
+        }
+
+        overlay.style.display = 'none';
+      }, 300);
+    }
+
+    function backToLanding() {
+      document.getElementById('erd-view').style.display = 'none';
+      document.getElementById('landing').style.display = 'flex';
+    }
+
+    /* 📋 CLI 명령어 복사 기능 */
+    function copyToClipboard(elementId, btn) {
+      const text = document.getElementById(elementId).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '복사됨';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.innerHTML = '복사';
+          btn.classList.remove('copied');
+        }, 1500);
+      }).catch(err => {
+        console.error('클립보드 복사 실패:', err);
+      });
+    }
+
+    /* DDL 입력창 전체화면 토글 */
+    function toggleFullscreenInput() {
+      const card = document.getElementById('input-card-container');
+      const btn = document.getElementById('fullscreen-btn');
+      if (card.classList.contains('fullscreen-mode')) {
+        card.classList.remove('fullscreen-mode');
+        btn.innerHTML = '전체화면';
+      } else {
+        card.classList.add('fullscreen-mode');
+        btn.innerHTML = '축소';
+        document.getElementById('sql-input').focus();
+      }
+    }
+
+    /* 인풋 포커스 시 동적 전체화면 변경 */
+    function onInputFocus() {
+      const card = document.getElementById('input-card-container');
+      if (!card.classList.contains('fullscreen-mode')) {
+        card.classList.add('fullscreen-mode');
+        document.getElementById('fullscreen-btn').innerHTML = '축소';
+      }
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       EXPORT PNG / SVG (화이트 테마 색상 반영)
+    ══════════════════════════════════════════════════════════ */
+    function getExportModel() {
+      if (!parsedData) throw new Error('먼저 ERD를 생성해주세요.');
+
+      const padding = 56;
+      const tableMeta = parsedData.tables.map(t => {
+        const el = tableEls[t.id];
+        const longestName = Math.max(t.name.length, ...t.fields.map(f => f.name.length + f.type.length));
+        const width = Math.max(240, Math.min(420, 160 + longestName * 6));
+        const height = el?.offsetHeight || (58 + t.fields.length * 24);
+        return { table: t, width, height, x: t.x || 60, y: t.y || 60 };
+      });
+
+      const groupMeta = (parsedData.groups || []).map(g => ({
+        group: g,
+        x: g._x || 20,
+        y: g._y || 20,
+        width: g._w || 320,
+        height: g._h || 220
+      }));
+
+      const all = [
+        ...tableMeta.map(m => ({ x: m.x, y: m.y, width: m.width, height: m.height })),
+        ...groupMeta
+      ];
+      const minX = Math.min(...all.map(m => m.x), 0) - padding;
+      const minY = Math.min(...all.map(m => m.y), 0) - padding;
+      const maxX = Math.max(...all.map(m => m.x + m.width), 900) + padding;
+      const maxY = Math.max(...all.map(m => m.y + m.height), 560) + padding;
+
+      return {
+        tables: tableMeta,
+        groups: groupMeta,
+        relations: parsedData.relations,
+        offsetX: -minX,
+        offsetY: -minY,
+        width: maxX - minX,
+        height: maxY - minY
+      };
+    }
+
+    function downloadBlob(blob, filename) {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function roundedRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    function drawExportCanvas(ctx, model, scale = 1) {
+      ctx.scale(scale, scale);
+      ctx.fillStyle = '#f8f9fa'; // Light theme background
+      ctx.fillRect(0, 0, model.width, model.height);
+
+      ctx.strokeStyle = '#dee2e6'; // Light grid dots
+      ctx.lineWidth = 1;
+      for (let x = 0; x < model.width; x += 24) {
+        for (let y = 0; y < model.height; y += 24) {
+          ctx.beginPath();
+          ctx.arc(x, y, 1, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      }
+
+      model.groups.forEach(({ group: g, x, y, width, height }) => {
+        const gx = x + model.offsetX;
+        const gy = y + model.offsetY;
+        ctx.save();
+        ctx.globalAlpha = 0.75;
+        ctx.fillStyle = g.bgColor || 'rgba(108,117,125,0.06)';
+        roundedRect(ctx, gx, gy, width, height, 16);
+        ctx.fill();
+        ctx.strokeStyle = g.borderColor || 'rgba(108,117,125,0.18)';
+        ctx.setLineDash([8, 6]);
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.restore();
+        ctx.fillStyle = g.color || '#495057';
+        ctx.font = '700 13px Inter, Arial, sans-serif';
+        ctx.fillText(g.name || 'Group', gx + 22, gy + 34);
+      });
+
+      const tableMap = new Map(model.tables.map(m => [m.table.id, m]));
+      model.relations.forEach(rel => {
+        const from = tableMap.get(rel.from);
+        const to = tableMap.get(rel.to);
+        if (!from || !to) return;
+
+        const fx = from.x + model.offsetX + from.width / 2;
+        const fy = from.y + model.offsetY + from.height / 2;
+        const tx = to.x + model.offsetX + to.width / 2;
+        const ty = to.y + model.offsetY + to.height / 2;
+        const isSelf = rel.type === 'self';
+        const color = isSelf ? '#cc0000' : rel.type === 'many-many' ? '#880088' : '#0000ff';
+
+        ctx.save();
+        ctx.strokeStyle = color;
+        ctx.globalAlpha = 0.75;
+        ctx.lineWidth = 2;
+        if (isSelf || rel.type === 'many-many') ctx.setLineDash([6, 4]);
+        ctx.beginPath();
+        if (isSelf) {
+          const bx = fx + from.width / 2 + 40;
+          ctx.moveTo(fx, fy - 20);
+          ctx.bezierCurveTo(bx, fy - 40, bx, fy + 40, fx, fy + 20);
+        } else {
+          const cp1x = fx + (tx - fx) * 0.45;
+          const cp2x = tx - (tx - fx) * 0.45;
+          ctx.moveTo(fx, fy);
+          ctx.bezierCurveTo(cp1x, fy, cp2x, ty, tx, ty);
+        }
+        ctx.stroke();
+        ctx.restore();
+      });
+
+      model.tables.forEach(({ table: t, x, y, width, height }) => {
+        const tx = x + model.offsetX;
+        const ty = y + model.offsetY;
+        const theme = COLORS[t.theme || 'gray'] || COLORS.gray;
+
+        ctx.save();
+        ctx.shadowColor = 'rgba(0,0,0,0.06)';
+        ctx.shadowBlur = 12;
+        ctx.fillStyle = '#ffffff'; // White table card
+        roundedRect(ctx, tx, ty, width, height, 10);
+        ctx.fill();
+        ctx.restore();
+
+        ctx.strokeStyle = '#dee2e6';
+        ctx.lineWidth = 1.5;
+        roundedRect(ctx, tx, ty, width, height, 10);
+        ctx.stroke();
+
+        ctx.fillStyle = theme.bgColor;
+        roundedRect(ctx, tx, ty, width, 54, 10);
+        ctx.fill();
+        ctx.fillRect(tx, ty + 44, width, 10);
+
+        ctx.fillStyle = theme.color;
+        ctx.font = '700 14px JetBrains Mono, Consolas, monospace';
+        ctx.fillText(t.name, tx + 14, ty + 24);
+        ctx.fillStyle = '#868e96';
+        ctx.font = '10px Inter, Arial, sans-serif';
+        ctx.fillText(`${t.fields.length} columns`, tx + 14, ty + 40);
+
+        let rowY = ty + 76;
+        t.fields.forEach(f => {
+          const key = f.pk ? 'PK' : f.fk ? 'FK' : f.uq ? 'UQ' : '';
+          ctx.fillStyle = f.pk ? '#cc0000' : f.fk ? '#0000ff' : f.uq ? '#cc0000' : '#555555';
+          ctx.font = '800 9px Inter, Arial, sans-serif';
+          ctx.fillText(key, tx + 14, rowY);
+          ctx.fillStyle = f.pk ? '#cc0000' : f.fk ? '#0000ff' : '#000000';
+          ctx.font = '11px JetBrains Mono, Consolas, monospace';
+          ctx.fillText(f.name, tx + 46, rowY);
+          ctx.fillStyle = '#868e96';
+          ctx.textAlign = 'right';
+          ctx.fillText(f.type, tx + width - 14, rowY);
+          ctx.textAlign = 'left';
+          rowY += 24;
+        });
+      });
+    }
+
+    async function exportPNG() {
+      const btn = document.querySelector('.btn-export');
+      const original = btn.innerHTML;
+      btn.textContent = 'PNG 저장 중...';
+
+      try {
+        const model = getExportModel();
+        const scale = 2;
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.ceil(model.width * scale);
+        canvas.height = Math.ceil(model.height * scale);
+        const ctx = canvas.getContext('2d');
+        drawExportCanvas(ctx, model, scale);
+
+        canvas.toBlob(blob => {
+          if (blob) downloadBlob(blob, 'autoerd_diagram.png');
+          btn.innerHTML = original;
+        }, 'image/png');
+      } catch (e) {
+        alert(e.message);
+        btn.innerHTML = original;
+      }
+    }
+
+    function escapeXML(value) {
+      return String(value).replace(/[&<>"']/g, ch => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&apos;'
+      }[ch]));
+    }
+
+    function exportSVG() {
+      try {
+        const model = getExportModel();
+        const rows = [];
+        rows.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${model.width}" height="${model.height}" viewBox="0 0 ${model.width} ${model.height}">`);
+        rows.push(`<rect width="100%" height="100%" fill="#f8f9fa"/>`);
+
+        const tableMap = new Map(model.tables.map(m => [m.table.id, m]));
+        model.relations.forEach(rel => {
+          const from = tableMap.get(rel.from);
+          const to = tableMap.get(rel.to);
+          if (!from || !to) return;
+          const fx = from.x + model.offsetX + from.width / 2;
+          const fy = from.y + model.offsetY + from.height / 2;
+          const tx = to.x + model.offsetX + to.width / 2;
+          const ty = to.y + model.offsetY + to.height / 2;
+          const isSelf = rel.type === 'self';
+          const color = isSelf ? '#cc0000' : rel.type === 'many-many' ? '#880088' : '#0000ff';
+          const d = isSelf
+            ? `M${fx},${fy - 20} C${fx + from.width / 2 + 40},${fy - 40} ${fx + from.width / 2 + 40},${fy + 40} ${fx},${fy + 20}`
+            : `M${fx},${fy} C${fx + (tx - fx) * 0.45},${fy} ${tx - (tx - fx) * 0.45},${ty} ${tx},${ty}`;
+          rows.push(`<path d="${d}" fill="none" stroke="${color}" stroke-width="2" stroke-opacity="0.75" stroke-dasharray="${isSelf ? '6 4' : ''}"/>`);
+        });
+
+        model.tables.forEach(({ table: t, x, y, width, height }) => {
+          const tx = x + model.offsetX;
+          const ty = y + model.offsetY;
+          const theme = COLORS[t.theme || 'gray'] || COLORS.gray;
+          rows.push(`<rect x="${tx}" y="${ty}" width="${width}" height="${height}" rx="10" fill="#ffffff" stroke="#dee2e6" stroke-width="1.5"/>`);
+          rows.push(`<rect x="${tx}" y="${ty}" width="${width}" height="54" rx="10" fill="${theme.bgColor}"/>`);
+          rows.push(`<text x="${tx + 14}" y="${ty + 25}" fill="${theme.color}" font-size="14" font-weight="700" font-family="monospace">${escapeXML(t.name)}</text>`);
+          rows.push(`<text x="${tx + 14}" y="${ty + 41}" fill="#868e96" font-size="10" font-family="Arial">${t.fields.length} columns</text>`);
+          let rowY = ty + 76;
+          t.fields.forEach(f => {
+            const key = f.pk ? 'PK' : f.fk ? 'FK' : f.uq ? 'UQ' : '';
+            const keyColor = f.pk ? '#cc0000' : f.fk ? '#0000ff' : f.uq ? '#cc0000' : '#555555';
+            rows.push(`<text x="${tx + 14}" y="${rowY}" fill="${keyColor}" font-size="9" font-weight="800" font-family="Arial">${key}</text>`);
+            rows.push(`<text x="${tx + 46}" y="${rowY}" fill="${f.pk ? '#cc0000' : f.fk ? '#0000ff' : '#000000'}" font-size="11" font-family="monospace">${escapeXML(f.name)}</text>`);
+            rows.push(`<text x="${tx + width - 14}" y="${rowY}" fill="#555555" font-size="11" font-family="monospace" text-anchor="end">${escapeXML(f.type)}</text>`);
+            rowY += 24;
+          });
+        });
+        rows.push('</svg>');
+
+        downloadBlob(new Blob([rows.join('\n')], { type: 'image/svg+xml;charset=utf-8' }), 'autoerd_diagram.svg');
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       KEYBOARD SHORTCUT & WINDOW UTILS
+    ══════════════════════════════════════════════════════════ */
+    document.addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        generateERD();
+      }
+      if (e.key === 'Escape') {
+        const card = document.getElementById('input-card-container');
+        if (card.classList.contains('fullscreen-mode')) {
+          card.classList.remove('fullscreen-mode');
+          document.getElementById('fullscreen-btn').innerHTML = '전체화면';
+        }
+      }
+    });
+  </script>
+
+</body>
+
+</html>

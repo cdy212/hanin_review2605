@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>소개 — AutoERD | SQL DDL로 ERD 자동 생성 무료 도구</title>
+  <meta name="description" content="AutoERD는 SQL CREATE TABLE 구문을 붙여넣으면 즉시 인터랙티브 ERD 다이어그램을 생성하는 무료 온라인 도구입니다. MySQL, PostgreSQL, MariaDB를 지원합니다." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://autoerd.pages.dev/about.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="소개 — AutoERD" />
+  <meta property="og:description" content="SQL DDL로 ERD를 자동 생성하는 무료 도구 AutoERD를 소개합니다." />
+  <meta property="og:url" content="https://autoerd.pages.dev/about.html" />
+  <meta property="og:image" content="https://autoerd.pages.dev/og-image.png" />
+  <meta property="og:site_name" content="AutoERD" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+    :root {
+      --bg: #0d1117;
+      --bg2: #161b22;
+      --bg3: #1c2128;
+      --border: #30363d;
+      --border-bright: #484f58;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --text-dim: #6e7681;
+      --accent: #238636;
+      --accent-hover: #2ea043;
+      --blue: #1f6feb;
+      --blue-hover: #388bfd;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    /* Header */
+    .site-header {
+      padding: 18px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #238636, #388bfd);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 900;
+      color: #fff;
+    }
+
+    .logo span { color: #388bfd; }
+
+    nav a {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+    nav a:hover { color: var(--text); }
+
+    /* Page Content */
+    .page-wrap {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 60px 24px 100px;
+    }
+
+    .page-eyebrow {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #388bfd;
+      margin-bottom: 14px;
+    }
+
+    .page-title {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #e6edf3 40%, #8b949e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .page-lead {
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 620px;
+      line-height: 1.75;
+      margin-bottom: 48px;
+    }
+
+    /* Section */
+    .section {
+      margin-bottom: 48px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section p {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.75;
+      margin-bottom: 12px;
+    }
+
+    .section p:last-child { margin-bottom: 0; }
+
+    /* Feature Grid */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 6px;
+    }
+
+    .feature-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .feature-card:hover {
+      border-color: var(--border-bright);
+      transform: translateY(-2px);
+    }
+
+    .feature-icon {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .feature-card h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .feature-card p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* Tech Stack */
+    .tech-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .tech-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .tech-chip .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #388bfd;
+    }
+
+    /* FAQ */
+    .faq-item {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+
+    .faq-q {
+      padding: 16px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .faq-q:hover { background: var(--bg3); }
+
+    .faq-a {
+      padding: 0 20px 16px;
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* CTA */
+    .cta-box {
+      background: linear-gradient(135deg, rgba(35,134,54,0.1), rgba(31,111,235,0.1));
+      border: 1px solid rgba(35,134,54,0.25);
+      border-radius: 14px;
+      padding: 32px;
+      text-align: center;
+      margin-top: 48px;
+    }
+
+    .cta-box h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .cta-box p {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    .btn-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      background: linear-gradient(135deg, #238636, #2ea043);
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      box-shadow: 0 2px 12px rgba(35,134,54,0.35);
+    }
+
+    .btn-cta:hover {
+      background: linear-gradient(135deg, #2ea043, #3fb950);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(35,134,54,0.4);
+    }
+
+    /* Footer */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 24px 40px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-dim);
+      background: var(--bg);
+    }
+
+    .site-footer a {
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .site-footer a:hover { color: var(--text-muted); }
+
+    @media (max-width: 600px) {
+      .site-header { padding: 14px 20px; }
+      .page-wrap { padding: 40px 16px 80px; }
+      .feature-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">ER</div>
+      Auto<span>ERD</span>
+    </a>
+    <nav style="display:flex;align-items:center;gap:20px;">
+      <a href="about.html" style="color:var(--text);">소개</a>
+      <a href="privacy.html">개인정보처리방침</a>
+      <a href="terms.html">이용약관</a>
+      <span style="font-size:11px;padding:2px 10px;background:rgba(35,134,54,0.15);color:#2ea043;border:1px solid rgba(35,134,54,0.3);border-radius:20px;font-weight:600;">✦ 100% 무료</span>
+    </nav>
+  </header>
+
+  <main class="page-wrap">
+
+    <div class="page-eyebrow">AutoERD 소개</div>
+    <h1 class="page-title">SQL 한 줄이면<br>ERD가 완성됩니다</h1>
+    <p class="page-lead">
+      AutoERD는 <strong style="color:var(--text);">SQL DDL(CREATE TABLE)</strong>을 붙여넣으면 즉시 인터랙티브 ERD 다이어그램을 생성하는 완전 무료 온라인 도구입니다.
+      설치 없이, 회원가입 없이, 지금 바로 사용할 수 있습니다.
+    </p>
+
+    <!-- 만든 이유 -->
+    <div class="section">
+      <div class="section-title">왜 만들었나요?</div>
+      <p>
+        데이터베이스 설계 작업을 할 때마다 ERD 도구를 찾아 설치하고, 계정을 만들고, 테이블을 하나씩 드래그하는 반복 작업이 번거로웠습니다.
+        이미 작성된 SQL DDL이 있는데 왜 ERD를 처음부터 그려야 할까요?
+      </p>
+      <p>
+        AutoERD는 이 문제를 해결하기 위해 만들어졌습니다. <code style="font-family:'JetBrains Mono',monospace;font-size:13px;background:rgba(110,118,129,0.14);border:1px solid rgba(110,118,129,0.22);border-radius:4px;padding:1px 6px;color:var(--text);">CREATE TABLE</code> SQL을 붙여넣으면 FK 관계를 자동으로 감지하고, 인터랙티브 ERD 다이어그램을 즉시 생성합니다. PNG나 SVG로 내보내기도 가능합니다.
+      </p>
+    </div>
+
+    <!-- 주요 기능 -->
+    <div class="section">
+      <div class="section-title">주요 기능</div>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>즉시 ERD 생성</h3>
+          <p>SQL을 붙여넣고 버튼 하나로 인터랙티브 ERD 다이어그램을 즉시 생성합니다.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔗</div>
+          <h3>FK 관계 자동 감지</h3>
+          <p>FOREIGN KEY 및 REFERENCES 구문을 자동으로 파싱해 관계선을 그립니다.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🗂️</div>
+          <h3>그룹 자동 분류</h3>
+          <p>테이블을 비즈니스 도메인별로 자동 분류해 복잡한 스키마도 한눈에 파악합니다.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🖱️</div>
+          <h3>드래그 & 줌</h3>
+          <p>테이블을 자유롭게 드래그하고, 마우스 휠로 확대/축소할 수 있습니다.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📥</div>
+          <h3>PNG / SVG 내보내기</h3>
+          <p>완성된 ERD를 PNG 이미지 또는 SVG 벡터 파일로 즉시 다운로드합니다.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🛡️</div>
+          <h3>프라이버시 보호</h3>
+          <p>입력한 SQL은 브라우저에서만 처리됩니다. 서버에 저장되지 않습니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 지원 DB -->
+    <div class="section">
+      <div class="section-title">지원 데이터베이스</div>
+      <p>다음 데이터베이스의 DDL 문법을 지원합니다.</p>
+      <div class="tech-list" style="margin-top:14px;">
+        <span class="tech-chip"><span class="dot" style="background:#e48e00;"></span>MySQL</span>
+        <span class="tech-chip"><span class="dot" style="background:#336791;"></span>PostgreSQL</span>
+        <span class="tech-chip"><span class="dot" style="background:#c0765a;"></span>MariaDB</span>
+      </div>
+      <p style="margin-top:14px;">PRIMARY KEY, FOREIGN KEY, UNIQUE KEY, NOT NULL, 복합 PK/FK, 스키마명 포함 테이블, 인라인 REFERENCES 등 다양한 DDL 문법 패턴을 파싱합니다.</p>
+    </div>
+
+    <!-- 기술 스택 -->
+    <div class="section">
+      <div class="section-title">기술 스택</div>
+      <p>AutoERD는 서버가 없는 완전한 정적 사이트입니다. 모든 처리는 브라우저에서 이루어집니다.</p>
+      <div class="tech-list" style="margin-top:14px;">
+        <span class="tech-chip"><span class="dot"></span>순수 HTML / CSS / JavaScript</span>
+        <span class="tech-chip"><span class="dot"></span>Cloudflare Pages 배포</span>
+        <span class="tech-chip"><span class="dot"></span>백엔드 없음 (Serverless)</span>
+        <span class="tech-chip"><span class="dot"></span>Google Fonts (Inter, JetBrains Mono)</span>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="section">
+      <div class="section-title">자주 묻는 질문</div>
+
+      <div class="faq-item">
+        <div class="faq-q">정말 무료인가요? 숨겨진 비용이 있나요?</div>
+        <div class="faq-a">완전히 무료입니다. 회원가입도 필요 없습니다. 서비스는 광고로 운영됩니다. 광고를 제거하고 싶다면 브라우저 광고 차단 확장 프로그램을 사용하세요.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">입력한 SQL이 서버에 저장되나요?</div>
+        <div class="faq-a">아니요. AutoERD는 서버 없이 동작하는 순수 클라이언트 사이드 도구입니다. 입력한 SQL DDL은 브라우저에서만 처리되며, 외부 서버로 전송되거나 저장되지 않습니다.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">어떤 SQL 문법을 지원하나요?</div>
+        <div class="faq-a">CREATE TABLE 구문을 기반으로 MySQL, PostgreSQL, MariaDB의 대부분의 DDL 패턴을 지원합니다. PRIMARY KEY, FOREIGN KEY, UNIQUE, NOT NULL, 복합 PK/FK, 스키마명 포함 테이블명 등을 파싱합니다.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">내 DB에서 DDL을 어떻게 추출하나요?</div>
+        <div class="faq-a">메인 화면 하단의 "DB에서 DDL 추출하는 방법 보기"를 클릭하면 MySQL, MariaDB, PostgreSQL 별 추출 명령어를 확인할 수 있습니다.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">모바일에서도 사용할 수 있나요?</div>
+        <div class="faq-a">네, 모바일 브라우저에서도 사용 가능합니다. 단, 복잡한 ERD는 넓은 화면에서 더 편리하게 작업할 수 있습니다.</div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-box">
+      <h2>지금 바로 ERD를 생성해보세요</h2>
+      <p>설치 없이, 회원가입 없이, SQL 붙여넣기 하나로 완성됩니다.</p>
+      <a href="index.html" class="btn-cta">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        AutoERD 시작하기
+      </a>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    AutoERD &copy; 2026 · 완전 무료 · SQL → ERD 자동 생성
+    <span style="margin:0 8px;color:var(--border);">|</span>
+    <a href="index.html">홈</a>
+    <span style="margin:0 6px;color:var(--border);">·</span>
+    <a href="privacy.html">개인정보처리방침</a>
+    <span style="margin:0 6px;color:var(--border);">·</span>
+    <a href="terms.html">이용약관</a>
+  </footer>
+
+</body>
+</html>

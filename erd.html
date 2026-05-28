@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,19 +9,23 @@
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
     :root {
-      --bg:           #f4f6f9;
-      --surface:      #ffffff;
-      --surface2:     #f0f2f5;
-      --border:       #d0d7de;
-      --border-bright:#a8b1bb;
-      --text:         #1c2128;
-      --text-muted:   #57606a;
-      --text-dim:     #8c959f;
-      --pk-color:     #b08000;
-      --fk-color:     #0969da;
+      --bg: #f4f6f9;
+      --surface: #ffffff;
+      --surface2: #f0f2f5;
+      --border: #d0d7de;
+      --border-bright: #a8b1bb;
+      --text: #1c2128;
+      --text-muted: #57606a;
+      --text-dim: #8c959f;
+      --pk-color: #b08000;
+      --fk-color: #0969da;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       background: var(--bg);
@@ -32,470 +37,743 @@
 
     /* ── Header ── */
     header {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 300;
       height: 56px;
-      background: rgba(255,255,255,0.96);
+      background: rgba(255, 255, 255, 0.96);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       padding: 0 24px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
     }
-    .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 16px; color: var(--text); }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--text);
+    }
+
     .logo-icon {
-      width: 28px; height: 28px;
+      width: 28px;
+      height: 28px;
       background: linear-gradient(135deg, #0969da, #7c3aed);
       border-radius: 6px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 12px; font-weight: 800; color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+      color: #fff;
     }
-    .logo span { color: #0969da; }
-    .header-meta { display: flex; align-items: center; gap: 14px; }
+
+    .logo span {
+      color: #0969da;
+    }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
     .badge {
-      padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;
-      letter-spacing: 0.05em; border: 1px solid;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      border: 1px solid;
     }
-    .badge-blue  { color: #0969da; border-color: rgba(9,105,218,0.3);  background: rgba(9,105,218,0.06); }
-    .badge-green { color: #1a7f37; border-color: rgba(26,127,55,0.3); background: rgba(26,127,55,0.06); }
-    .tbl-count   { color: var(--text-muted); font-size: 13px; }
+
+    .badge-blue {
+      color: #0969da;
+      border-color: rgba(9, 105, 218, 0.3);
+      background: rgba(9, 105, 218, 0.06);
+    }
+
+    .badge-green {
+      color: #1a7f37;
+      border-color: rgba(26, 127, 55, 0.3);
+      background: rgba(26, 127, 55, 0.06);
+    }
+
+    .tbl-count {
+      color: var(--text-muted);
+      font-size: 13px;
+    }
 
     /* ── Controls ── */
     .controls {
-      position: fixed; bottom: 24px; right: 24px; z-index: 300;
-      display: flex; flex-direction: column; gap: 8px;
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 300;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
+
     .ctrl-btn {
-      width: 40px; height: 40px; background: #fff;
-      border: 1px solid var(--border); border-radius: 8px;
-      color: var(--text); cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px; transition: all 0.2s;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      width: 40px;
+      height: 40px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      transition: all 0.2s;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
     }
-    .ctrl-btn:hover { background: var(--surface2); border-color: var(--border-bright); }
-    .ctrl-btn:active { transform: scale(0.94); }
+
+    .ctrl-btn:hover {
+      background: var(--surface2);
+      border-color: var(--border-bright);
+    }
+
+    .ctrl-btn:active {
+      transform: scale(0.94);
+    }
 
     /* ── Legend ── */
     .legend {
-      position: fixed; bottom: 24px; left: 24px; z-index: 300;
-      background: rgba(255,255,255,0.96); backdrop-filter: blur(8px);
-      border: 1px solid var(--border); border-radius: 12px;
-      padding: 14px 18px; font-size: 12px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      z-index: 300;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: 12px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
     }
+
     .legend-title {
-      font-weight: 700; color: var(--text-muted);
-      margin-bottom: 8px; letter-spacing: 0.06em;
-      text-transform: uppercase; font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-size: 10px;
     }
-    .legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; color: var(--text); font-size: 11px; }
-    .legend-line { width: 26px; height: 2px; border-radius: 2px; }
-    .legend-dot  { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
-    .legend-sep  { height: 1px; background: var(--border); margin: 8px 0; }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 5px;
+      color: var(--text);
+      font-size: 11px;
+    }
+
+    .legend-line {
+      width: 26px;
+      height: 2px;
+      border-radius: 2px;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    .legend-sep {
+      height: 1px;
+      background: var(--border);
+      margin: 8px 0;
+    }
 
     /* ── Canvas ── */
     #canvas-wrap {
-      position: fixed; top: 56px; left: 0; right: 0; bottom: 0;
-      overflow: hidden; cursor: grab;
+      position: fixed;
+      top: 56px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow: hidden;
+      cursor: grab;
       background-image: radial-gradient(circle, #c8d0d9 1px, transparent 1px);
       background-size: 24px 24px;
     }
-    #canvas-wrap:active { cursor: grabbing; }
-    #erd-canvas { position: absolute; transform-origin: 0 0; user-select: none; }
+
+    #canvas-wrap:active {
+      cursor: grabbing;
+    }
+
+    #erd-canvas {
+      position: absolute;
+      transform-origin: 0 0;
+      user-select: none;
+    }
 
     /* ── SVG ── */
     #svg-lines {
-      position: absolute; top: 0; left: 0;
-      pointer-events: none; overflow: visible; z-index: 2;
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      overflow: visible;
+      z-index: 2;
     }
 
     /* ── Group Panels ── */
     .erd-group {
-      position: absolute; border-radius: 18px;
+      position: absolute;
+      border-radius: 18px;
       border: 2px dashed transparent;
-      pointer-events: none; z-index: 0;
+      pointer-events: none;
+      z-index: 0;
     }
+
     .group-header {
-      position: absolute; top: 14px; left: 18px;
-      display: flex; align-items: center; gap: 10px;
+      position: absolute;
+      top: 14px;
+      left: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    .group-bar   { width: 4px; height: 30px; border-radius: 2px; flex-shrink: 0; }
-    .group-name  { font-size: 13px; font-weight: 800; letter-spacing: 0.01em; display: block; }
-    .group-name-en { font-size: 10px; font-weight: 500; opacity: 0.6; display: block; margin-top: 1px; }
+
+    .group-bar {
+      width: 4px;
+      height: 30px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .group-name {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      display: block;
+    }
+
+    .group-name-en {
+      font-size: 10px;
+      font-weight: 500;
+      opacity: 0.6;
+      display: block;
+      margin-top: 1px;
+    }
 
     /* ── Table Cards ── */
     .erd-table {
-      position: absolute; background: #fff;
-      border: 1.5px solid var(--border); border-radius: 10px;
+      position: absolute;
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
       min-width: 245px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       transition: box-shadow 0.2s, border-color 0.2s, transform 0.15s;
-      cursor: move; z-index: 3;
+      cursor: move;
+      z-index: 3;
     }
+
     .erd-table:hover {
       border-color: var(--border-bright);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.13), 0 0 0 2px var(--border-bright);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.13), 0 0 0 2px var(--border-bright);
       transform: translateY(-2px);
     }
+
     .table-header {
-      padding: 10px 14px; border-radius: 9px 9px 0 0;
-      display: flex; align-items: center; gap: 8px;
+      padding: 10px 14px;
+      border-radius: 9px 9px 0 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
       border-bottom: 1.5px solid var(--border);
     }
-    .table-name    { font-weight: 700; font-size: 13px; letter-spacing: 0.01em; }
-    .table-sub     { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
-    .table-tag {
-      margin-left: auto; font-size: 9px; font-weight: 700;
-      padding: 2px 7px; border-radius: 6px;
-      letter-spacing: 0.06em; text-transform: uppercase;
+
+    .table-name {
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.01em;
     }
-    .table-fields { padding: 4px 0; }
+
+    .table-sub {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+
+    .table-tag {
+      margin-left: auto;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 6px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .table-fields {
+      padding: 4px 0;
+    }
+
     .field-row {
       padding: 4px 14px;
-      display: grid; grid-template-columns: 22px 1fr auto;
-      align-items: center; gap: 6px; font-size: 12px;
+      display: grid;
+      grid-template-columns: 22px 1fr auto;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
       transition: background 0.1s;
     }
-    .field-row:hover { background: #f5f7fa; }
-    .field-row:last-child { border-radius: 0 0 9px 9px; }
-    .field-key { font-size: 9px; font-weight: 800; text-align: center; color: var(--text-dim); }
-    .field-key.pk { color: var(--pk-color); }
-    .field-key.fk { color: var(--fk-color); }
-    .field-key.uq { color: #7c3aed; }
-    .field-name { font-family: 'JetBrains Mono', monospace; color: var(--text); font-size: 11px; }
-    .field-name.pk-name { color: var(--pk-color); font-weight: 700; }
-    .field-name.fk-name { color: var(--fk-color); }
-    .field-type { font-size: 10px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; }
+
+    .field-row:hover {
+      background: #f5f7fa;
+    }
+
+    .field-row:last-child {
+      border-radius: 0 0 9px 9px;
+    }
+
+    .field-key {
+      font-size: 9px;
+      font-weight: 800;
+      text-align: center;
+      color: var(--text-dim);
+    }
+
+    .field-key.pk {
+      color: var(--pk-color);
+    }
+
+    .field-key.fk {
+      color: var(--fk-color);
+    }
+
+    .field-key.uq {
+      color: #7c3aed;
+    }
+
+    .field-name {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text);
+      font-size: 11px;
+    }
+
+    .field-name.pk-name {
+      color: var(--pk-color);
+      font-weight: 700;
+    }
+
+    .field-name.fk-name {
+      color: var(--fk-color);
+    }
+
+    .field-type {
+      font-size: 10px;
+      color: var(--text-dim);
+      font-family: 'JetBrains Mono', monospace;
+    }
 
     /* ── 테마: 사용자 그룹 → blue ── */
-    .theme-blue .table-header { background: #e8f1fc; border-bottom-color: #bfd4f5; }
-    .theme-blue .table-name   { color: #0550ae; }
-    .theme-blue .table-tag    { background: #dbeafe; color: #0969da; border: 1px solid #93c5fd; }
+    .theme-blue .table-header {
+      background: #e8f1fc;
+      border-bottom-color: #bfd4f5;
+    }
+
+    .theme-blue .table-name {
+      color: #0550ae;
+    }
+
+    .theme-blue .table-tag {
+      background: #dbeafe;
+      color: #0969da;
+      border: 1px solid #93c5fd;
+    }
 
     /* ── 테마: 지역 그룹 → green ── */
-    .theme-green .table-header { background: #e6f4ea; border-bottom-color: #a8d5b0; }
-    .theme-green .table-name   { color: #166534; }
-    .theme-green .table-tag    { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+    .theme-green .table-header {
+      background: #e6f4ea;
+      border-bottom-color: #a8d5b0;
+    }
+
+    .theme-green .table-name {
+      color: #166534;
+    }
+
+    .theme-green .table-tag {
+      background: #dcfce7;
+      color: #15803d;
+      border: 1px solid #86efac;
+    }
 
     /* ── 테마: 게시판 그룹 → orange ── */
-    .theme-orange .table-header { background: #fef3e2; border-bottom-color: #fcd49a; }
-    .theme-orange .table-name   { color: #92400e; }
-    .theme-orange .table-tag    { background: #fef3c7; color: #b45309; border: 1px solid #fcd34d; }
+    .theme-orange .table-header {
+      background: #fef3e2;
+      border-bottom-color: #fcd49a;
+    }
+
+    .theme-orange .table-name {
+      color: #92400e;
+    }
+
+    .theme-orange .table-tag {
+      background: #fef3c7;
+      color: #b45309;
+      border: 1px solid #fcd34d;
+    }
 
     /* ── 테마: 공통 → gray ── */
-    .theme-gray .table-header { background: #f0f2f5; border-bottom-color: #d0d7de; }
-    .theme-gray .table-name   { color: #424a53; }
-    .theme-gray .table-tag    { background: #eaeef2; color: #57606a; border: 1px solid #d0d7de; }
+    .theme-gray .table-header {
+      background: #f0f2f5;
+      border-bottom-color: #d0d7de;
+    }
+
+    .theme-gray .table-name {
+      color: #424a53;
+    }
+
+    .theme-gray .table-tag {
+      background: #eaeef2;
+      color: #57606a;
+      border: 1px solid #d0d7de;
+    }
 
     /* SVG label */
     .rel-label {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 10px; text-anchor: middle; font-weight: 700;
+      font-size: 10px;
+      text-anchor: middle;
+      font-weight: 700;
     }
   </style>
 </head>
+
 <body>
 
-<header>
-  <div class="logo">
-    <div class="logo-icon">KT</div>
-    KoreaTaiwanApi &nbsp;<span>DB Schema ERD</span>
+  <header>
+    <div class="logo">
+      <div class="logo-icon">KT</div>
+      KoreaTaiwanApi &nbsp;<span>DB Schema ERD</span>
+    </div>
+    <div class="header-meta">
+      <span class="tbl-count">총 <strong id="tblCount">0</strong>개 테이블</span>
+      <span class="badge badge-blue">Spring Boot JPA</span>
+      <span class="badge badge-green">MySQL</span>
+    </div>
+  </header>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-title">컬럼 키</div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#b08000;"></div> PK — 기본키
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#0969da;"></div> FK — 외래키
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#7c3aed;"></div> UQ — 유니크
+    </div>
+    <div class="legend-sep"></div>
+    <div class="legend-title">관계선</div>
+    <div class="legend-item">
+      <div class="legend-line" style="border-top:2px solid #1a7f37;"></div> N:1 ManyToOne
+    </div>
+    <div class="legend-item">
+      <div class="legend-line" style="border-top:2px dashed #7c3aed;"></div> M:N ManyToMany
+    </div>
+    <div class="legend-item">
+      <div class="legend-line" style="border-top:2px solid #b35900;"></div> Self-Reference
+    </div>
+    <div class="legend-sep"></div>
+    <div class="legend-title">비즈니스 그룹</div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#0969da;border-radius:50%;"></div> 사용자 관리
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#1a7f37;border-radius:50%;"></div> 지역
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#b35900;border-radius:50%;"></div> 게시판
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#57606a;border-radius:50%;"></div> 공통
+    </div>
   </div>
-  <div class="header-meta">
-    <span class="tbl-count">총 <strong id="tblCount">0</strong>개 테이블</span>
-    <span class="badge badge-blue">Spring Boot JPA</span>
-    <span class="badge badge-green">MySQL</span>
+
+  <!-- Zoom -->
+  <div class="controls">
+    <button class="ctrl-btn" id="zoomIn" title="확대">＋</button>
+    <button class="ctrl-btn" id="zoomOut" title="축소">－</button>
+    <button class="ctrl-btn" id="resetView" title="초기화">⊙</button>
   </div>
-</header>
 
-<!-- Legend -->
-<div class="legend">
-  <div class="legend-title">컬럼 키</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#b08000;"></div> PK — 기본키</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#0969da;"></div> FK — 외래키</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#7c3aed;"></div> UQ — 유니크</div>
-  <div class="legend-sep"></div>
-  <div class="legend-title">관계선</div>
-  <div class="legend-item">
-    <div class="legend-line" style="border-top:2px solid #1a7f37;"></div> N:1 ManyToOne
+  <!-- Canvas -->
+  <div id="canvas-wrap">
+    <div id="erd-canvas">
+      <svg id="svg-lines" width="5000" height="4000"></svg>
+    </div>
   </div>
-  <div class="legend-item">
-    <div class="legend-line" style="border-top:2px dashed #7c3aed;"></div> M:N ManyToMany
-  </div>
-  <div class="legend-item">
-    <div class="legend-line" style="border-top:2px solid #b35900;"></div> Self-Reference
-  </div>
-  <div class="legend-sep"></div>
-  <div class="legend-title">비즈니스 그룹</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#0969da;border-radius:50%;"></div> 사용자 관리</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#1a7f37;border-radius:50%;"></div> 지역</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#b35900;border-radius:50%;"></div> 게시판</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#57606a;border-radius:50%;"></div> 공통</div>
-</div>
 
-<!-- Zoom -->
-<div class="controls">
-  <button class="ctrl-btn" id="zoomIn"    title="확대">＋</button>
-  <button class="ctrl-btn" id="zoomOut"   title="축소">－</button>
-  <button class="ctrl-btn" id="resetView" title="초기화">⊙</button>
-</div>
+  <script>
+    /* ═══════════════════════════════════════════════════════
+       BUSINESS GROUPS
+    ═══════════════════════════════════════════════════════ */
+    const groups = [
+      {
+        id: 'user',
+        name: '사용자 관리',
+        nameEn: 'User Management',
+        color: '#0969da',
+        bgColor: 'rgba(9,105,218,0.045)',
+        borderColor: 'rgba(9,105,218,0.25)',
+        barColor: '#0969da',
+        members: ['user', 'role', 'user_roles'],
+      },
+      {
+        id: 'region',
+        name: '지역',
+        nameEn: 'Region / Geo',
+        color: '#1a7f37',
+        bgColor: 'rgba(26,127,55,0.045)',
+        borderColor: 'rgba(26,127,55,0.25)',
+        barColor: '#1a7f37',
+        members: ['regions', 'user_regions'],
+      },
+      {
+        id: 'board',
+        name: '게시판',
+        nameEn: 'Board / Posts',
+        color: '#b35900',
+        bgColor: 'rgba(179,89,0,0.045)',
+        borderColor: 'rgba(179,89,0,0.25)',
+        barColor: '#b35900',
+        members: ['user_posts_category', 'user_posts', 'user_posts_comment', 'user_posts_bookmark', 'user_posts_actions'],
+      },
+      {
+        id: 'common',
+        name: '공통',
+        nameEn: 'Common',
+        color: '#57606a',
+        bgColor: 'rgba(87,96,106,0.045)',
+        borderColor: 'rgba(87,96,106,0.25)',
+        barColor: '#57606a',
+        members: ['category'],
+      },
+    ];
 
-<!-- Canvas -->
-<div id="canvas-wrap">
-  <div id="erd-canvas">
-    <svg id="svg-lines" width="5000" height="4000"></svg>
-  </div>
-</div>
+    /* ═══════════════════════════════════════════════════════
+       TABLE DATA
+    ═══════════════════════════════════════════════════════ */
+    const tables = [
 
-<script>
-/* ═══════════════════════════════════════════════════════
-   BUSINESS GROUPS
-═══════════════════════════════════════════════════════ */
-const groups = [
-  {
-    id: 'user',
-    name: '사용자 관리',
-    nameEn: 'User Management',
-    color: '#0969da',
-    bgColor: 'rgba(9,105,218,0.045)',
-    borderColor: 'rgba(9,105,218,0.25)',
-    barColor: '#0969da',
-    members: ['user', 'role', 'user_roles'],
-  },
-  {
-    id: 'region',
-    name: '지역',
-    nameEn: 'Region / Geo',
-    color: '#1a7f37',
-    bgColor: 'rgba(26,127,55,0.045)',
-    borderColor: 'rgba(26,127,55,0.25)',
-    barColor: '#1a7f37',
-    members: ['regions', 'user_regions'],
-  },
-  {
-    id: 'board',
-    name: '게시판',
-    nameEn: 'Board / Posts',
-    color: '#b35900',
-    bgColor: 'rgba(179,89,0,0.045)',
-    borderColor: 'rgba(179,89,0,0.25)',
-    barColor: '#b35900',
-    members: ['user_posts_category', 'user_posts', 'user_posts_comment', 'user_posts_bookmark', 'user_posts_actions'],
-  },
-  {
-    id: 'common',
-    name: '공통',
-    nameEn: 'Common',
-    color: '#57606a',
-    bgColor: 'rgba(87,96,106,0.045)',
-    borderColor: 'rgba(87,96,106,0.25)',
-    barColor: '#57606a',
-    members: ['category'],
-  },
-];
+      /* ── 사용자 관리 그룹 ─────────────────────────────── */
+      {
+        id: 'user_roles', name: 'user_roles', label: '사용자-권한 (중간)',
+        theme: 'blue', tag: 'JOIN', x: 380, y: 90,
+        fields: [
+          { key: 'FK', name: 'user_id', type: 'BIGINT', fk: true },
+          { key: 'FK', name: 'role_id', type: 'BIGINT', fk: true },
+        ]
+      },
+      {
+        id: 'user', name: 'user', label: '사용자',
+        theme: 'blue', tag: 'CORE', x: 80, y: 230,
+        fields: [
+          { key: 'PK', name: 'id', type: 'BIGINT', pk: true },
+          { key: '', name: 'username', type: 'VARCHAR(50)', nn: true },
+          { key: '', name: 'email', type: 'VARCHAR(50)', nn: true },
+          { key: '', name: 'profile_name', type: 'VARCHAR(500)', nn: true },
+          { key: '', name: 'password', type: 'VARCHAR(120)', nn: true },
+          { key: '', name: 'provider', type: 'VARCHAR(50)' },
+          { key: '', name: 'phone', type: 'VARCHAR(20)' },
+          { key: '', name: 'address', type: 'VARCHAR(200)' },
+          { key: '', name: 'birthday', type: 'DATE' },
+        ]
+      },
+      {
+        id: 'role', name: 'role', label: '권한',
+        theme: 'blue', tag: 'AUTH', x: 660, y: 230,
+        fields: [
+          { key: 'PK', name: 'id', type: 'BIGINT', pk: true },
+          { key: '', name: 'name', type: 'VARCHAR(20)', nn: true },
+        ]
+      },
 
-/* ═══════════════════════════════════════════════════════
-   TABLE DATA
-═══════════════════════════════════════════════════════ */
-const tables = [
+      /* ── 지역 그룹 ────────────────────────────────────── */
+      {
+        id: 'regions', name: 'regions', label: '지역 (대만)',
+        theme: 'green', tag: 'GEO', x: 1050, y: 90,
+        fields: [
+          { key: 'PK', name: 'id', type: 'INT', pk: true },
+          { key: '', name: 'city_name', type: 'VARCHAR(50)', nn: true },
+          { key: '', name: 'district_name', type: 'VARCHAR(50)', nn: true },
+          { key: '', name: 'name_kr', type: 'VARCHAR(100)', nn: true },
+          { key: '', name: 'name_en', type: 'VARCHAR(100)' },
+          { key: '', name: 'latitude', type: 'DOUBLE', nn: true },
+          { key: '', name: 'longitude', type: 'DOUBLE', nn: true },
+          { key: '', name: 'place_id', type: 'VARCHAR' },
+          { key: '', name: 'formatted_address', type: 'VARCHAR' },
+        ]
+      },
+      {
+        id: 'user_regions', name: 'user_regions', label: '사용자 관심지역',
+        theme: 'green', tag: 'GEO', x: 1050, y: 460,
+        fields: [
+          { key: 'PK', name: 'id', type: 'BIGINT', pk: true },
+          { key: 'FK', name: 'user_id', type: 'BIGINT', fk: true, nn: true },
+          { key: 'FK', name: 'region_id', type: 'INT', fk: true, nn: true },
+          { key: 'UQ', name: '(user_id, region_id)', type: 'UNIQUE', uq: true },
+          { key: '', name: 'region_type', type: 'VARCHAR(10)', nn: true },
+          { key: '', name: 'osm_id', type: 'BIGINT' },
+          { key: '', name: 'display_name', type: 'TEXT' },
+          { key: '', name: 'latitude', type: 'DOUBLE', nn: true },
+          { key: '', name: 'longitude', type: 'DOUBLE', nn: true },
+          { key: '', name: 'created_at', type: 'DATETIME' },
+        ]
+      },
 
-  /* ── 사용자 관리 그룹 ─────────────────────────────── */
-  {
-    id: 'user_roles', name: 'user_roles', label: '사용자-권한 (중간)',
-    theme: 'blue', tag: 'JOIN', x: 380, y: 90,
-    fields: [
-      { key: 'FK', name: 'user_id', type: 'BIGINT', fk: true },
-      { key: 'FK', name: 'role_id', type: 'BIGINT', fk: true },
-    ]
-  },
-  {
-    id: 'user', name: 'user', label: '사용자',
-    theme: 'blue', tag: 'CORE', x: 80, y: 230,
-    fields: [
-      { key: 'PK', name: 'id',           type: 'BIGINT',       pk: true },
-      { key: '',   name: 'username',      type: 'VARCHAR(50)',  nn: true },
-      { key: '',   name: 'email',         type: 'VARCHAR(50)',  nn: true },
-      { key: '',   name: 'profile_name',  type: 'VARCHAR(500)', nn: true },
-      { key: '',   name: 'password',      type: 'VARCHAR(120)', nn: true },
-      { key: '',   name: 'provider',      type: 'VARCHAR(50)' },
-      { key: '',   name: 'phone',         type: 'VARCHAR(20)' },
-      { key: '',   name: 'address',       type: 'VARCHAR(200)' },
-      { key: '',   name: 'birthday',      type: 'DATE' },
-    ]
-  },
-  {
-    id: 'role', name: 'role', label: '권한',
-    theme: 'blue', tag: 'AUTH', x: 660, y: 230,
-    fields: [
-      { key: 'PK', name: 'id',   type: 'BIGINT',     pk: true },
-      { key: '',   name: 'name', type: 'VARCHAR(20)', nn: true },
-    ]
-  },
+      /* ── 게시판 그룹 ──────────────────────────────────── */
+      {
+        id: 'user_posts_category', name: 'user_posts_category', label: '게시글 카테고리',
+        theme: 'orange', tag: 'POST', x: 80, y: 680,
+        fields: [
+          { key: 'PK', name: 'id', type: 'BIGINT', pk: true },
+          { key: '', name: 'category_code', type: 'VARCHAR(50)', nn: true },
+          { key: '', name: 'category_name', type: 'VARCHAR(100)', nn: true },
+          { key: '', name: 'is_community', type: 'BOOLEAN', nn: true },
+          { key: '', name: 'date_created', type: 'DATETIME' },
+          { key: '', name: 'last_updated', type: 'DATETIME' },
+        ]
+      },
+      {
+        id: 'user_posts', name: 'user_posts', label: '게시글',
+        theme: 'orange', tag: 'POST', x: 390, y: 680,
+        fields: [
+          { key: 'PK', name: 'id', type: 'BIGINT', pk: true },
+          { key: 'FK', name: 'user_posts_category_id', type: 'BIGINT', fk: true, nn: true },
+          { key: 'FK', name: 'user_id', type: 'BIGINT', fk: true, nn: true },
+          { key: '', name: 'content_title', type: 'VARCHAR(255)', nn: true },
+          { key: '', name: 'content', type: 'TEXT', nn: true },
+          { key: '', name: 'view_count', type: 'BIGINT' },
+          { key: '', name: 'like_count', type: 'BIGINT' },
+          { key: '', name: 'deleted', type: 'BOOLEAN', nn: true },
+          { key: '', name: 'important', type: 'BOOLEAN', nn: true },
+          { key: '', name: 'date_created', type: 'DATETIME' },
+          { key: '', name: 'last_updated', type: 'DATETIME' },
+        ]
+      },
+      {
+        id: 'user_posts_comment', name: 'user_posts_comment', label: '게시글 댓글',
+        theme: 'orange', tag: 'POST', x: 80, y: 1120,
+        fields: [
+          { key: 'PK', name: 'id', type: 'BIGINT', pk: true },
+          { key: 'FK', name: 'user_id', type: 'BIGINT', fk: true, nn: true },
+          { key: 'FK', name: 'user_posts_id', type: 'BIGINT', fk: true, nn: true },
+          { key: 'FK', name: 'parent_id', type: 'BIGINT', fk: true },
+          { key: '', name: 'content', type: 'TEXT', nn: true },
+          { key: '', name: 'like_count', type: 'BIGINT' },
+          { key: '', name: 'deleted', type: 'BOOLEAN', nn: true },
+          { key: '', name: 'date_created', type: 'DATETIME' },
+          { key: '', name: 'last_updated', type: 'DATETIME' },
+        ]
+      },
+      {
+        id: 'user_posts_bookmark', name: 'user_posts_bookmark', label: '게시글 북마크',
+        theme: 'orange', tag: 'POST', x: 390, y: 1120,
+        fields: [
+          { key: 'PK', name: 'id', type: 'BIGINT', pk: true },
+          { key: 'FK', name: 'user_id', type: 'BIGINT', fk: true, nn: true },
+          { key: 'FK', name: 'user_posts_id', type: 'BIGINT', fk: true, nn: true },
+          { key: '', name: 'deleted', type: 'BOOLEAN', nn: true },
+          { key: '', name: 'date_created', type: 'DATETIME' },
+          { key: '', name: 'last_updated', type: 'DATETIME' },
+        ]
+      },
+      {
+        id: 'user_posts_actions', name: 'user_posts_actions', label: '좋아요 / 싫어요',
+        theme: 'orange', tag: 'POST', x: 700, y: 1120,
+        fields: [
+          { key: 'PK', name: 'id', type: 'BIGINT', pk: true },
+          { key: 'FK', name: 'user_posts_id', type: 'BIGINT', fk: true, nn: true },
+          { key: 'FK', name: 'user_id', type: 'BIGINT', fk: true, nn: true },
+          { key: '', name: 'action_type', type: 'VARCHAR(50)', nn: true },
+          { key: '', name: 'action_flag', type: 'BOOLEAN', nn: true },
+          { key: '', name: 'like_count', type: 'BIGINT', nn: true },
+          { key: '', name: 'version', type: 'BIGINT', nn: true },
+          { key: '', name: 'description', type: 'VARCHAR(100)' },
+          { key: '', name: 'date_created', type: 'DATETIME', nn: true },
+          { key: '', name: 'last_updated', type: 'DATETIME', nn: true },
+        ]
+      },
 
-  /* ── 지역 그룹 ────────────────────────────────────── */
-  {
-    id: 'regions', name: 'regions', label: '지역 (대만)',
-    theme: 'green', tag: 'GEO', x: 1050, y: 90,
-    fields: [
-      { key: 'PK', name: 'id',               type: 'INT',          pk: true },
-      { key: '',   name: 'city_name',         type: 'VARCHAR(50)',  nn: true },
-      { key: '',   name: 'district_name',     type: 'VARCHAR(50)',  nn: true },
-      { key: '',   name: 'name_kr',           type: 'VARCHAR(100)', nn: true },
-      { key: '',   name: 'name_en',           type: 'VARCHAR(100)' },
-      { key: '',   name: 'latitude',          type: 'DOUBLE',       nn: true },
-      { key: '',   name: 'longitude',         type: 'DOUBLE',       nn: true },
-      { key: '',   name: 'place_id',          type: 'VARCHAR' },
-      { key: '',   name: 'formatted_address', type: 'VARCHAR' },
-    ]
-  },
-  {
-    id: 'user_regions', name: 'user_regions', label: '사용자 관심지역',
-    theme: 'green', tag: 'GEO', x: 1050, y: 460,
-    fields: [
-      { key: 'PK', name: 'id',                   type: 'BIGINT',      pk: true },
-      { key: 'FK', name: 'user_id',               type: 'BIGINT',      fk: true, nn: true },
-      { key: 'FK', name: 'region_id',             type: 'INT',         fk: true, nn: true },
-      { key: 'UQ', name: '(user_id, region_id)',  type: 'UNIQUE',      uq: true },
-      { key: '',   name: 'region_type',           type: 'VARCHAR(10)', nn: true },
-      { key: '',   name: 'osm_id',               type: 'BIGINT' },
-      { key: '',   name: 'display_name',          type: 'TEXT' },
-      { key: '',   name: 'latitude',              type: 'DOUBLE',      nn: true },
-      { key: '',   name: 'longitude',             type: 'DOUBLE',      nn: true },
-      { key: '',   name: 'created_at',            type: 'DATETIME' },
-    ]
-  },
+      /* ── 공통 ─────────────────────────────────────────── */
+      {
+        id: 'category', name: 'category', label: '카테고리 (공통)',
+        theme: 'gray', tag: 'UTIL', x: 1050, y: 920,
+        fields: [
+          { key: 'PK', name: 'id', type: 'INT', pk: true },
+          { key: '', name: 'code', type: 'VARCHAR(50)', nn: true },
+          { key: '', name: 'name', type: 'VARCHAR(50)', nn: true },
+        ]
+      },
+    ];
 
-  /* ── 게시판 그룹 ──────────────────────────────────── */
-  {
-    id: 'user_posts_category', name: 'user_posts_category', label: '게시글 카테고리',
-    theme: 'orange', tag: 'POST', x: 80, y: 680,
-    fields: [
-      { key: 'PK', name: 'id',            type: 'BIGINT',       pk: true },
-      { key: '',   name: 'category_code', type: 'VARCHAR(50)',  nn: true },
-      { key: '',   name: 'category_name', type: 'VARCHAR(100)', nn: true },
-      { key: '',   name: 'is_community',  type: 'BOOLEAN',      nn: true },
-      { key: '',   name: 'date_created',  type: 'DATETIME' },
-      { key: '',   name: 'last_updated',  type: 'DATETIME' },
-    ]
-  },
-  {
-    id: 'user_posts', name: 'user_posts', label: '게시글',
-    theme: 'orange', tag: 'POST', x: 390, y: 680,
-    fields: [
-      { key: 'PK', name: 'id',                     type: 'BIGINT',       pk: true },
-      { key: 'FK', name: 'user_posts_category_id', type: 'BIGINT',       fk: true, nn: true },
-      { key: 'FK', name: 'user_id',                type: 'BIGINT',       fk: true, nn: true },
-      { key: '',   name: 'content_title',           type: 'VARCHAR(255)', nn: true },
-      { key: '',   name: 'content',                 type: 'TEXT',         nn: true },
-      { key: '',   name: 'view_count',              type: 'BIGINT' },
-      { key: '',   name: 'like_count',              type: 'BIGINT' },
-      { key: '',   name: 'deleted',                 type: 'BOOLEAN',      nn: true },
-      { key: '',   name: 'important',               type: 'BOOLEAN',      nn: true },
-      { key: '',   name: 'date_created',            type: 'DATETIME' },
-      { key: '',   name: 'last_updated',            type: 'DATETIME' },
-    ]
-  },
-  {
-    id: 'user_posts_comment', name: 'user_posts_comment', label: '게시글 댓글',
-    theme: 'orange', tag: 'POST', x: 80, y: 1120,
-    fields: [
-      { key: 'PK', name: 'id',            type: 'BIGINT',  pk: true },
-      { key: 'FK', name: 'user_id',       type: 'BIGINT',  fk: true, nn: true },
-      { key: 'FK', name: 'user_posts_id', type: 'BIGINT',  fk: true, nn: true },
-      { key: 'FK', name: 'parent_id',     type: 'BIGINT',  fk: true },
-      { key: '',   name: 'content',       type: 'TEXT',    nn: true },
-      { key: '',   name: 'like_count',    type: 'BIGINT' },
-      { key: '',   name: 'deleted',       type: 'BOOLEAN', nn: true },
-      { key: '',   name: 'date_created',  type: 'DATETIME' },
-      { key: '',   name: 'last_updated',  type: 'DATETIME' },
-    ]
-  },
-  {
-    id: 'user_posts_bookmark', name: 'user_posts_bookmark', label: '게시글 북마크',
-    theme: 'orange', tag: 'POST', x: 390, y: 1120,
-    fields: [
-      { key: 'PK', name: 'id',            type: 'BIGINT',  pk: true },
-      { key: 'FK', name: 'user_id',       type: 'BIGINT',  fk: true, nn: true },
-      { key: 'FK', name: 'user_posts_id', type: 'BIGINT',  fk: true, nn: true },
-      { key: '',   name: 'deleted',       type: 'BOOLEAN', nn: true },
-      { key: '',   name: 'date_created',  type: 'DATETIME' },
-      { key: '',   name: 'last_updated',  type: 'DATETIME' },
-    ]
-  },
-  {
-    id: 'user_posts_actions', name: 'user_posts_actions', label: '좋아요 / 싫어요',
-    theme: 'orange', tag: 'POST', x: 700, y: 1120,
-    fields: [
-      { key: 'PK', name: 'id',            type: 'BIGINT',       pk: true },
-      { key: 'FK', name: 'user_posts_id', type: 'BIGINT',       fk: true, nn: true },
-      { key: 'FK', name: 'user_id',       type: 'BIGINT',       fk: true, nn: true },
-      { key: '',   name: 'action_type',   type: 'VARCHAR(50)',  nn: true },
-      { key: '',   name: 'action_flag',   type: 'BOOLEAN',      nn: true },
-      { key: '',   name: 'like_count',    type: 'BIGINT',       nn: true },
-      { key: '',   name: 'version',       type: 'BIGINT',       nn: true },
-      { key: '',   name: 'description',   type: 'VARCHAR(100)' },
-      { key: '',   name: 'date_created',  type: 'DATETIME',     nn: true },
-      { key: '',   name: 'last_updated',  type: 'DATETIME',     nn: true },
-    ]
-  },
+    /* ═══════════════════════════════════════════════════════
+       RELATIONS
+    ═══════════════════════════════════════════════════════ */
+    const relations = [
+      // 사용자 ↔ 권한
+      { from: 'user_roles', to: 'user', type: 'many-one', label: 'N:1' },
+      { from: 'user_roles', to: 'role', type: 'many-one', label: 'N:1' },
+      // 지역
+      { from: 'user_regions', to: 'user', type: 'many-one', label: 'N:1' },
+      { from: 'user_regions', to: 'regions', type: 'many-one', label: 'N:1' },
+      // 게시글
+      { from: 'user_posts', to: 'user_posts_category', type: 'many-one', label: 'N:1' },
+      { from: 'user_posts', to: 'user', type: 'many-one', label: 'N:1' },
+      // 댓글
+      { from: 'user_posts_comment', to: 'user', type: 'many-one', label: 'N:1' },
+      { from: 'user_posts_comment', to: 'user_posts', type: 'many-one', label: 'N:1' },
+      { from: 'user_posts_comment', to: 'user_posts_comment', type: 'self', label: 'self' },
+      // 좋아요
+      { from: 'user_posts_actions', to: 'user_posts', type: 'many-one', label: 'N:1' },
+      { from: 'user_posts_actions', to: 'user', type: 'many-one', label: 'N:1' },
+      // 북마크
+      { from: 'user_posts_bookmark', to: 'user', type: 'many-one', label: 'N:1' },
+      { from: 'user_posts_bookmark', to: 'user_posts', type: 'many-one', label: 'N:1' },
+    ];
 
-  /* ── 공통 ─────────────────────────────────────────── */
-  {
-    id: 'category', name: 'category', label: '카테고리 (공통)',
-    theme: 'gray', tag: 'UTIL', x: 1050, y: 920,
-    fields: [
-      { key: 'PK', name: 'id',   type: 'INT',         pk: true },
-      { key: '',   name: 'code', type: 'VARCHAR(50)', nn: true },
-      { key: '',   name: 'name', type: 'VARCHAR(50)', nn: true },
-    ]
-  },
-];
+    /* ═══════════════════════════════════════════════════════
+       RENDER
+    ═══════════════════════════════════════════════════════ */
+    document.getElementById('tblCount').textContent = tables.length;
 
-/* ═══════════════════════════════════════════════════════
-   RELATIONS
-═══════════════════════════════════════════════════════ */
-const relations = [
-  // 사용자 ↔ 권한
-  { from: 'user_roles', to: 'user', type: 'many-one', label: 'N:1' },
-  { from: 'user_roles', to: 'role', type: 'many-one', label: 'N:1' },
-  // 지역
-  { from: 'user_regions', to: 'user',    type: 'many-one', label: 'N:1' },
-  { from: 'user_regions', to: 'regions', type: 'many-one', label: 'N:1' },
-  // 게시글
-  { from: 'user_posts', to: 'user_posts_category', type: 'many-one', label: 'N:1' },
-  { from: 'user_posts', to: 'user',                type: 'many-one', label: 'N:1' },
-  // 댓글
-  { from: 'user_posts_comment', to: 'user',              type: 'many-one', label: 'N:1' },
-  { from: 'user_posts_comment', to: 'user_posts',        type: 'many-one', label: 'N:1' },
-  { from: 'user_posts_comment', to: 'user_posts_comment', type: 'self',    label: 'self' },
-  // 좋아요
-  { from: 'user_posts_actions', to: 'user_posts', type: 'many-one', label: 'N:1' },
-  { from: 'user_posts_actions', to: 'user',       type: 'many-one', label: 'N:1' },
-  // 북마크
-  { from: 'user_posts_bookmark', to: 'user',       type: 'many-one', label: 'N:1' },
-  { from: 'user_posts_bookmark', to: 'user_posts', type: 'many-one', label: 'N:1' },
-];
+    const canvas = document.getElementById('erd-canvas');
+    const svg = document.getElementById('svg-lines');
+    const wrap = document.getElementById('canvas-wrap');
+    const tableEls = {};
+    const groupEls = {};
+    const G_PAD = { top: 52, right: 28, bottom: 28, left: 28 };
 
-/* ═══════════════════════════════════════════════════════
-   RENDER
-═══════════════════════════════════════════════════════ */
-document.getElementById('tblCount').textContent = tables.length;
-
-const canvas   = document.getElementById('erd-canvas');
-const svg      = document.getElementById('svg-lines');
-const wrap     = document.getElementById('canvas-wrap');
-const tableEls = {};
-const groupEls = {};
-const G_PAD    = { top: 52, right: 28, bottom: 28, left: 28 };
-
-/* -- Group Panels (먼저 추가 → tables 아래) -- */
-groups.forEach(g => {
-  const div = document.createElement('div');
-  div.className = 'erd-group';
-  div.id = `grp-${g.id}`;
-  div.style.background  = g.bgColor;
-  div.style.borderColor = g.borderColor;
-  div.innerHTML = `
+    /* -- Group Panels (먼저 추가 → tables 아래) -- */
+    groups.forEach(g => {
+      const div = document.createElement('div');
+      div.className = 'erd-group';
+      div.id = `grp-${g.id}`;
+      div.style.background = g.bgColor;
+      div.style.borderColor = g.borderColor;
+      div.innerHTML = `
     <div class="group-header">
       <div class="group-bar" style="background:${g.barColor};"></div>
       <div>
@@ -503,29 +781,29 @@ groups.forEach(g => {
         <span class="group-name-en" style="color:${g.color};">${g.nameEn}</span>
       </div>
     </div>`;
-  canvas.appendChild(div);
-  groupEls[g.id] = div;
-});
+      canvas.appendChild(div);
+      groupEls[g.id] = div;
+    });
 
-/* -- Table Cards -- */
-function renderField(f) {
-  const kc = f.pk ? 'pk' : f.fk ? 'fk' : f.uq ? 'uq' : '';
-  const nc = f.pk ? 'pk-name' : f.fk ? 'fk-name' : '';
-  const kt = f.pk ? 'PK' : f.fk ? 'FK' : f.uq ? 'UQ' : '';
-  return `<div class="field-row">
+    /* -- Table Cards -- */
+    function renderField(f) {
+      const kc = f.pk ? 'pk' : f.fk ? 'fk' : f.uq ? 'uq' : '';
+      const nc = f.pk ? 'pk-name' : f.fk ? 'fk-name' : '';
+      const kt = f.pk ? 'PK' : f.fk ? 'FK' : f.uq ? 'UQ' : '';
+      return `<div class="field-row">
     <span class="field-key ${kc}">${kt}</span>
     <span class="field-name ${nc}">${f.name}</span>
     <span class="field-type">${f.type}</span>
   </div>`;
-}
+    }
 
-tables.forEach(t => {
-  const div = document.createElement('div');
-  div.className = `erd-table theme-${t.theme}`;
-  div.id = `tbl-${t.id}`;
-  div.style.left = t.x + 'px';
-  div.style.top  = t.y + 'px';
-  div.innerHTML = `
+    tables.forEach(t => {
+      const div = document.createElement('div');
+      div.className = `erd-table theme-${t.theme}`;
+      div.id = `tbl-${t.id}`;
+      div.style.left = t.x + 'px';
+      div.style.top = t.y + 'px';
+      div.innerHTML = `
     <div class="table-header">
       <div>
         <div class="table-name">${t.name}</div>
@@ -534,191 +812,192 @@ tables.forEach(t => {
       <span class="table-tag">${t.tag}</span>
     </div>
     <div class="table-fields">${t.fields.map(renderField).join('')}</div>`;
-  canvas.appendChild(div);
-  tableEls[t.id] = div;
-  makeDraggable(div);
-});
-
-/* ═══════════════════════════════════════════════════════
-   GROUP BOUNDS (동적 계산)
-═══════════════════════════════════════════════════════ */
-function updateGroupBounds() {
-  groups.forEach(g => {
-    const el = groupEls[g.id];
-    if (!el) return;
-    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-    g.members.forEach(mid => {
-      const t = tableEls[mid];
-      if (!t) return;
-      const x = parseInt(t.style.left), y = parseInt(t.style.top);
-      const w = t.offsetWidth || 245, h = t.offsetHeight || 200;
-      minX = Math.min(minX, x); minY = Math.min(minY, y);
-      maxX = Math.max(maxX, x + w); maxY = Math.max(maxY, y + h);
+      canvas.appendChild(div);
+      tableEls[t.id] = div;
+      makeDraggable(div);
     });
-    if (minX === Infinity) return;
-    el.style.left   = (minX - G_PAD.left)                    + 'px';
-    el.style.top    = (minY - G_PAD.top)                     + 'px';
-    el.style.width  = (maxX - minX + G_PAD.left + G_PAD.right) + 'px';
-    el.style.height = (maxY - minY + G_PAD.top  + G_PAD.bottom)+ 'px';
-  });
-}
 
-/* ═══════════════════════════════════════════════════════
-   DRAG
-═══════════════════════════════════════════════════════ */
-function makeDraggable(el) {
-  let sx, sy, ox, oy, drag = false;
-  el.addEventListener('mousedown', e => {
-    if (e.target.closest('button')) return;
-    drag = true; sx = e.clientX; sy = e.clientY;
-    ox = parseInt(el.style.left); oy = parseInt(el.style.top);
-    el.style.zIndex = 50; e.preventDefault();
-  });
-  document.addEventListener('mousemove', e => {
-    if (!drag) return;
-    el.style.left = (ox + (e.clientX - sx) / scale) + 'px';
-    el.style.top  = (oy + (e.clientY - sy) / scale) + 'px';
-    updateGroupBounds(); drawLines();
-  });
-  document.addEventListener('mouseup', () => {
-    if (drag) { drag = false; el.style.zIndex = 3; }
-  });
-}
-
-/* ═══════════════════════════════════════════════════════
-   SVG LINES
-═══════════════════════════════════════════════════════ */
-function getBox(el) {
-  const l = parseInt(el.style.left), t = parseInt(el.style.top);
-  const w = el.offsetWidth, h = el.offsetHeight;
-  return { l, t, w, h, cx: l + w/2, cy: t + h/2 };
-}
-function bestPort(a, b) {
-  const dx = b.cx - a.cx, dy = b.cy - a.cy;
-  let ax, ay, bx, by;
-  if (Math.abs(dx) > Math.abs(dy)) {
-    ax = dx > 0 ? a.l + a.w : a.l;     ay = a.t + a.h/2;
-    bx = dx > 0 ? b.l        : b.l + b.w; by = b.t + b.h/2;
-  } else {
-    ax = a.l + a.w/2; ay = dy > 0 ? a.t + a.h : a.t;
-    bx = b.l + b.w/2; by = dy > 0 ? b.t        : b.t + b.h;
-  }
-  return { ax, ay, bx, by };
-}
-function curve(ax, ay, bx, by) {
-  const cx = ax + (bx - ax) * 0.5;
-  return `M${ax},${ay} C${cx},${ay} ${cx},${by} ${bx},${by}`;
-}
-
-function drawLines() {
-  while (svg.firstChild) svg.removeChild(svg.firstChild);
-
-  const defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
-  function mk(id, col, shape) {
-    const m = document.createElementNS('http://www.w3.org/2000/svg','marker');
-    m.setAttribute('id',id); m.setAttribute('markerWidth','8'); m.setAttribute('markerHeight','8');
-    m.setAttribute('refX','6'); m.setAttribute('refY','4'); m.setAttribute('orient','auto');
-    let s;
-    if (shape === 'arrow') {
-      s = document.createElementNS('http://www.w3.org/2000/svg','polygon');
-      s.setAttribute('points','0,0 8,4 0,8'); s.setAttribute('fill',col);
-    } else {
-      s = document.createElementNS('http://www.w3.org/2000/svg','circle');
-      s.setAttribute('cx','4'); s.setAttribute('cy','4'); s.setAttribute('r','3');
-      s.setAttribute('fill',col);
-    }
-    m.appendChild(s); return m;
-  }
-  defs.appendChild(mk('ag','#1a7f37','arrow')); defs.appendChild(mk('dg','#1a7f37','dot'));
-  defs.appendChild(mk('ap','#7c3aed','arrow'));
-  defs.appendChild(mk('ao','#b35900','arrow')); defs.appendChild(mk('do','#b35900','dot'));
-  svg.appendChild(defs);
-
-  relations.forEach(rel => {
-    const fEl = tableEls[rel.from], tEl = tableEls[rel.to];
-    if (!fEl || !tEl) return;
-
-    let stroke, dash, me, ms;
-    if (rel.type === 'many-one')  { stroke='#1a7f37'; dash='none'; me='url(#ag)'; ms='url(#dg)'; }
-    else if (rel.type === 'many-many') { stroke='#7c3aed'; dash='6,3'; me='url(#ap)'; ms=''; }
-    else { stroke='#b35900'; dash='none'; me='url(#ao)'; ms='url(#do)'; }
-
-    let pathD, mx, my;
-    if (rel.type === 'self') {
-      const c = getBox(fEl);
-      const x1=c.l+c.w, y1=c.t+c.h*.38, x2=c.l+c.w, y2=c.t+c.h*.62;
-      pathD = `M${x1},${y1} C${x1+65},${y1} ${x1+65},${y2} ${x2},${y2}`;
-      mx = x1+44; my = (y1+y2)/2;
-    } else {
-      const p = bestPort(getBox(fEl), getBox(tEl));
-      pathD = curve(p.ax, p.ay, p.bx, p.by);
-      mx = (p.ax+p.bx)/2; my = (p.ay+p.by)/2;
+    /* ═══════════════════════════════════════════════════════
+       GROUP BOUNDS (동적 계산)
+    ═══════════════════════════════════════════════════════ */
+    function updateGroupBounds() {
+      groups.forEach(g => {
+        const el = groupEls[g.id];
+        if (!el) return;
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        g.members.forEach(mid => {
+          const t = tableEls[mid];
+          if (!t) return;
+          const x = parseInt(t.style.left), y = parseInt(t.style.top);
+          const w = t.offsetWidth || 245, h = t.offsetHeight || 200;
+          minX = Math.min(minX, x); minY = Math.min(minY, y);
+          maxX = Math.max(maxX, x + w); maxY = Math.max(maxY, y + h);
+        });
+        if (minX === Infinity) return;
+        el.style.left = (minX - G_PAD.left) + 'px';
+        el.style.top = (minY - G_PAD.top) + 'px';
+        el.style.width = (maxX - minX + G_PAD.left + G_PAD.right) + 'px';
+        el.style.height = (maxY - minY + G_PAD.top + G_PAD.bottom) + 'px';
+      });
     }
 
-    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
-    path.setAttribute('d', pathD); path.setAttribute('stroke', stroke);
-    path.setAttribute('stroke-width','2'); path.setAttribute('fill','none');
-    path.setAttribute('stroke-dasharray', dash); path.setAttribute('opacity','0.9');
-    if (me) path.setAttribute('marker-end', me);
-    if (ms) path.setAttribute('marker-start', ms);
-    svg.appendChild(path);
+    /* ═══════════════════════════════════════════════════════
+       DRAG
+    ═══════════════════════════════════════════════════════ */
+    function makeDraggable(el) {
+      let sx, sy, ox, oy, drag = false;
+      el.addEventListener('mousedown', e => {
+        if (e.target.closest('button')) return;
+        drag = true; sx = e.clientX; sy = e.clientY;
+        ox = parseInt(el.style.left); oy = parseInt(el.style.top);
+        el.style.zIndex = 50; e.preventDefault();
+      });
+      document.addEventListener('mousemove', e => {
+        if (!drag) return;
+        el.style.left = (ox + (e.clientX - sx) / scale) + 'px';
+        el.style.top = (oy + (e.clientY - sy) / scale) + 'px';
+        updateGroupBounds(); drawLines();
+      });
+      document.addEventListener('mouseup', () => {
+        if (drag) { drag = false; el.style.zIndex = 3; }
+      });
+    }
 
-    // label background
-    const bg = document.createElementNS('http://www.w3.org/2000/svg','rect');
-    bg.setAttribute('x', mx-16); bg.setAttribute('y', my-18);
-    bg.setAttribute('width','32'); bg.setAttribute('height','14');
-    bg.setAttribute('rx','4'); bg.setAttribute('fill','rgba(255,255,255,0.92)');
-    svg.appendChild(bg);
+    /* ═══════════════════════════════════════════════════════
+       SVG LINES
+    ═══════════════════════════════════════════════════════ */
+    function getBox(el) {
+      const l = parseInt(el.style.left), t = parseInt(el.style.top);
+      const w = el.offsetWidth, h = el.offsetHeight;
+      return { l, t, w, h, cx: l + w / 2, cy: t + h / 2 };
+    }
+    function bestPort(a, b) {
+      const dx = b.cx - a.cx, dy = b.cy - a.cy;
+      let ax, ay, bx, by;
+      if (Math.abs(dx) > Math.abs(dy)) {
+        ax = dx > 0 ? a.l + a.w : a.l; ay = a.t + a.h / 2;
+        bx = dx > 0 ? b.l : b.l + b.w; by = b.t + b.h / 2;
+      } else {
+        ax = a.l + a.w / 2; ay = dy > 0 ? a.t + a.h : a.t;
+        bx = b.l + b.w / 2; by = dy > 0 ? b.t : b.t + b.h;
+      }
+      return { ax, ay, bx, by };
+    }
+    function curve(ax, ay, bx, by) {
+      const cx = ax + (bx - ax) * 0.5;
+      return `M${ax},${ay} C${cx},${ay} ${cx},${by} ${bx},${by}`;
+    }
 
-    const txt = document.createElementNS('http://www.w3.org/2000/svg','text');
-    txt.setAttribute('x', mx); txt.setAttribute('y', my-7);
-    txt.setAttribute('class','rel-label'); txt.setAttribute('fill', stroke);
-    txt.textContent = rel.label;
-    svg.appendChild(txt);
-  });
-}
+    function drawLines() {
+      while (svg.firstChild) svg.removeChild(svg.firstChild);
 
-/* ═══════════════════════════════════════════════════════
-   PAN & ZOOM
-═══════════════════════════════════════════════════════ */
-let scale = 0.72, panX = 50, panY = 28;
-let panning = false, psx, psy;
+      const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+      function mk(id, col, shape) {
+        const m = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+        m.setAttribute('id', id); m.setAttribute('markerWidth', '8'); m.setAttribute('markerHeight', '8');
+        m.setAttribute('refX', '6'); m.setAttribute('refY', '4'); m.setAttribute('orient', 'auto');
+        let s;
+        if (shape === 'arrow') {
+          s = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+          s.setAttribute('points', '0,0 8,4 0,8'); s.setAttribute('fill', col);
+        } else {
+          s = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          s.setAttribute('cx', '4'); s.setAttribute('cy', '4'); s.setAttribute('r', '3');
+          s.setAttribute('fill', col);
+        }
+        m.appendChild(s); return m;
+      }
+      defs.appendChild(mk('ag', '#1a7f37', 'arrow')); defs.appendChild(mk('dg', '#1a7f37', 'dot'));
+      defs.appendChild(mk('ap', '#7c3aed', 'arrow'));
+      defs.appendChild(mk('ao', '#b35900', 'arrow')); defs.appendChild(mk('do', '#b35900', 'dot'));
+      svg.appendChild(defs);
 
-function applyTransform() {
-  canvas.style.transform = `translate(${panX}px,${panY}px) scale(${scale})`;
-  updateGroupBounds();
-  drawLines();
-}
+      relations.forEach(rel => {
+        const fEl = tableEls[rel.from], tEl = tableEls[rel.to];
+        if (!fEl || !tEl) return;
 
-wrap.addEventListener('mousedown', e => {
-  if (e.target !== wrap && e.target !== canvas && e.target !== svg) return;
-  panning = true; psx = e.clientX - panX; psy = e.clientY - panY;
-});
-document.addEventListener('mousemove', e => {
-  if (!panning) return;
-  panX = e.clientX - psx; panY = e.clientY - psy; applyTransform();
-});
-document.addEventListener('mouseup', () => { panning = false; });
-wrap.addEventListener('wheel', e => {
-  e.preventDefault();
-  const d = e.deltaY > 0 ? -0.08 : 0.08;
-  const ns = Math.min(2, Math.max(0.25, scale + d));
-  const r = wrap.getBoundingClientRect();
-  const mx = e.clientX - r.left, my = e.clientY - r.top;
-  panX = mx - (mx - panX) * (ns / scale);
-  panY = my - (my - panY) * (ns / scale);
-  scale = ns; applyTransform();
-}, { passive: false });
+        let stroke, dash, me, ms;
+        if (rel.type === 'many-one') { stroke = '#1a7f37'; dash = 'none'; me = 'url(#ag)'; ms = 'url(#dg)'; }
+        else if (rel.type === 'many-many') { stroke = '#7c3aed'; dash = '6,3'; me = 'url(#ap)'; ms = ''; }
+        else { stroke = '#b35900'; dash = 'none'; me = 'url(#ao)'; ms = 'url(#do)'; }
 
-document.getElementById('zoomIn').addEventListener('click',    () => { scale = Math.min(2, scale+0.1); applyTransform(); });
-document.getElementById('zoomOut').addEventListener('click',   () => { scale = Math.max(0.25, scale-0.1); applyTransform(); });
-document.getElementById('resetView').addEventListener('click', () => { scale=0.72; panX=50; panY=28; applyTransform(); });
+        let pathD, mx, my;
+        if (rel.type === 'self') {
+          const c = getBox(fEl);
+          const x1 = c.l + c.w, y1 = c.t + c.h * .38, x2 = c.l + c.w, y2 = c.t + c.h * .62;
+          pathD = `M${x1},${y1} C${x1 + 65},${y1} ${x1 + 65},${y2} ${x2},${y2}`;
+          mx = x1 + 44; my = (y1 + y2) / 2;
+        } else {
+          const p = bestPort(getBox(fEl), getBox(tEl));
+          pathD = curve(p.ax, p.ay, p.bx, p.by);
+          mx = (p.ax + p.bx) / 2; my = (p.ay + p.by) / 2;
+        }
 
-/* ── Init ── */
-requestAnimationFrame(() => requestAnimationFrame(() => {
-  updateGroupBounds();
-  applyTransform();
-}));
-</script>
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', pathD); path.setAttribute('stroke', stroke);
+        path.setAttribute('stroke-width', '2'); path.setAttribute('fill', 'none');
+        path.setAttribute('stroke-dasharray', dash); path.setAttribute('opacity', '0.9');
+        if (me) path.setAttribute('marker-end', me);
+        if (ms) path.setAttribute('marker-start', ms);
+        svg.appendChild(path);
+
+        // label background
+        const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        bg.setAttribute('x', mx - 16); bg.setAttribute('y', my - 18);
+        bg.setAttribute('width', '32'); bg.setAttribute('height', '14');
+        bg.setAttribute('rx', '4'); bg.setAttribute('fill', 'rgba(255,255,255,0.92)');
+        svg.appendChild(bg);
+
+        const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        txt.setAttribute('x', mx); txt.setAttribute('y', my - 7);
+        txt.setAttribute('class', 'rel-label'); txt.setAttribute('fill', stroke);
+        txt.textContent = rel.label;
+        svg.appendChild(txt);
+      });
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       PAN & ZOOM
+    ═══════════════════════════════════════════════════════ */
+    let scale = 0.72, panX = 50, panY = 28;
+    let panning = false, psx, psy;
+
+    function applyTransform() {
+      canvas.style.transform = `translate(${panX}px,${panY}px) scale(${scale})`;
+      updateGroupBounds();
+      drawLines();
+    }
+
+    wrap.addEventListener('mousedown', e => {
+      if (e.target !== wrap && e.target !== canvas && e.target !== svg) return;
+      panning = true; psx = e.clientX - panX; psy = e.clientY - panY;
+    });
+    document.addEventListener('mousemove', e => {
+      if (!panning) return;
+      panX = e.clientX - psx; panY = e.clientY - psy; applyTransform();
+    });
+    document.addEventListener('mouseup', () => { panning = false; });
+    wrap.addEventListener('wheel', e => {
+      e.preventDefault();
+      const d = e.deltaY > 0 ? -0.08 : 0.08;
+      const ns = Math.min(2, Math.max(0.25, scale + d));
+      const r = wrap.getBoundingClientRect();
+      const mx = e.clientX - r.left, my = e.clientY - r.top;
+      panX = mx - (mx - panX) * (ns / scale);
+      panY = my - (my - panY) * (ns / scale);
+      scale = ns; applyTransform();
+    }, { passive: false });
+
+    document.getElementById('zoomIn').addEventListener('click', () => { scale = Math.min(2, scale + 0.1); applyTransform(); });
+    document.getElementById('zoomOut').addEventListener('click', () => { scale = Math.max(0.25, scale - 0.1); applyTransform(); });
+    document.getElementById('resetView').addEventListener('click', () => { scale = 0.72; panX = 50; panY = 28; applyTransform(); });
+
+    /* ── Init ── */
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      updateGroupBounds();
+      applyTransform();
+    }));
+  </script>
 </body>
+
 </html>

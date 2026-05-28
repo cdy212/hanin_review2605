@@ -48,8 +48,12 @@
     <nav class="bg-white border-b border-slate-200 sticky top-16 z-40 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex space-x-1 py-3 overflow-x-auto no-scrollbar">
-                <button onclick="switchTab('policy')" id="btn-policy"
+                <button onclick="switchTab('tasks')" id="btn-tasks"
                     class="tab-btn shrink-0 flex items-center px-4 py-2.5 rounded-lg text-sm font-medium transition-all text-indigo-600 bg-indigo-50">
+                    <span>부서별 Task 관리</span>
+                </button>
+                <button onclick="switchTab('policy')" id="btn-policy"
+                    class="tab-btn shrink-0 flex items-center px-4 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-50">
                     <span>통합 정책 정리</span>
                 </button>
                 <button onclick="switchTab('mvp1')" id="btn-mvp1"
@@ -64,14 +68,15 @@
                     class="tab-btn shrink-0 flex items-center px-4 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-50">
                     <span>체크사항 & 리스크</span>
                 </button>
-                <button onclick="switchTab('tasks')" id="btn-tasks"
-                    class="tab-btn shrink-0 flex items-center px-4 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-50">
-                    <span>부서별 Task 관리</span>
-                </button>
                 <a href="260519_구글가격정책_산정로직.html"
                     class="tab-btn shrink-0 flex items-center px-4 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-50">
                     <span>구글가격정책</span>
                 </a>
+                <button onclick="switchTab('erd')" id="btn-erd"
+                    class="tab-btn shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-50 ml-auto border border-slate-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="15" y="3" width="6" height="6" rx="1"/><rect x="9" y="15" width="6" height="6" rx="1"/><line x1="6" y1="9" x2="6" y2="12"/><line x1="18" y1="9" x2="18" y2="12"/><line x1="6" y1="12" x2="12" y2="12"/><line x1="18" y1="12" x2="12" y2="12"/><line x1="12" y1="12" x2="12" y2="15"/></svg>
+                    <span>DB ERD</span>
+                </button>
             </div>
         </div>
     </nav>
@@ -81,7 +86,7 @@
         <main class="min-w-0">
 
             <!-- SECTION 1: 통합 정책 정리 -->
-            <section id="sec-policy" class="tab-section space-y-6">
+            <section id="sec-policy" class="tab-section hidden space-y-6">
 
                 <!-- 작업 절차 (최상단 고정) -->
                 <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
@@ -508,8 +513,21 @@
                 </div>
             </section>
 
+            <!-- SECTION ERD: DB ERD 뷰어 -->
+            <section id="sec-erd" class="tab-section hidden" style="margin: -2rem -1rem -2rem -1rem; height: calc(100vh - 8rem);">
+                <div style="height:100%; background:#f4f6f9; border-radius:12px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+                    <iframe
+                        src="erd.html"
+                        id="erd-iframe"
+                        style="width:100%; height:100%; border:none; display:block;"
+                        title="DB ERD 다이어그램"
+                        loading="lazy"
+                    ></iframe>
+                </div>
+            </section>
+
             <!-- SECTION 5: 부서별 Task 관리 -->
-            <section id="sec-tasks" class="tab-section hidden space-y-6">
+            <section id="sec-tasks" class="tab-section space-y-6">
                 <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
                     <div class="flex justify-between items-center border-b border-slate-100 pb-4 mb-4">
                         <h2 class="text-lg font-bold text-slate-900">5. 부서별 세부 실행 과제 현황</h2>
@@ -746,6 +764,16 @@
             // Show selected section
             document.getElementById('sec-' + tabId).classList.remove('hidden');
 
+            // ERD 탭: iframe이 화면 꽉 차도록 컨테이너 패딩 조정
+            const mainContainer = document.querySelector('main').parentElement;
+            if (tabId === 'erd') {
+                mainContainer.style.paddingTop = '8px';
+                mainContainer.style.paddingBottom = '8px';
+            } else {
+                mainContainer.style.paddingTop = '';
+                mainContainer.style.paddingBottom = '';
+            }
+
             // Reset buttons
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('text-indigo-600', 'bg-indigo-50');
@@ -753,13 +781,21 @@
             });
             // Highlight selected button
             const activeBtn = document.getElementById('btn-' + tabId);
-            activeBtn.classList.remove('text-slate-600', 'hover:text-slate-900', 'hover:bg-slate-50');
-            activeBtn.classList.add('text-indigo-600', 'bg-indigo-50');
+            if (activeBtn) {
+                activeBtn.classList.remove('text-slate-600', 'hover:text-slate-900', 'hover:bg-slate-50');
+                activeBtn.classList.add('text-indigo-600', 'bg-indigo-50');
+            }
         }
 
         function updateProgress(type) {
             const tasks = document.querySelectorAll('.task-' + type);
-            const completed = Array.from(tasks).filter(task => task.checked).length;
+            
+            // 변경된 상태를 localStorage에 저장
+            const states = [];
+            tasks.forEach(task => states.push(task.checked));
+            localStorage.setItem('tasks_' + type, JSON.stringify(states));
+
+            const completed = states.filter(checked => checked).length;
             const countSpan = document.getElementById('count-' + type);
 
             if (type === 'pm') {
@@ -781,8 +817,22 @@
 
         // Initialize counts
         window.onload = function () {
-            updateProgress('pm');
-            updateProgress('dev');
+            // 저장된 체크박스 상태 로드
+            ['pm', 'dev'].forEach(type => {
+                const saved = localStorage.getItem('tasks_' + type);
+                if (saved) {
+                    try {
+                        const states = JSON.parse(saved);
+                        const tasks = document.querySelectorAll('.task-' + type);
+                        tasks.forEach((task, index) => {
+                            if (index < states.length) {
+                                task.checked = states[index];
+                            }
+                        });
+                    } catch(e) {}
+                }
+                updateProgress(type);
+            });
         }
     </script>
 </body>
