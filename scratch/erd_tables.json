@@ -1,0 +1,1395 @@
+[
+  {
+    "id": "category",
+    "name": "category",
+    "label": "category",
+    "theme": "gray",
+    "tag": "UTIL",
+    "x": 80,
+    "y": 90,
+    "fields": [
+      {
+        "key": "PK",
+        "name": "my_row_id",
+        "type": "BIGINT UNSIGNED",
+        "pk": true,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "FK",
+        "name": "id",
+        "type": "INT",
+        "pk": false,
+        "fk": true,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "code",
+        "type": "VARCHAR(50)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "name",
+        "type": "VARCHAR(50)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      }
+    ]
+  },
+  {
+    "id": "coupon",
+    "name": "coupon",
+    "label": "coupon",
+    "theme": "gray",
+    "tag": "UTIL",
+    "x": 380,
+    "y": 90,
+    "fields": [
+      {
+        "key": "PK",
+        "name": "id",
+        "type": "BIGINT",
+        "pk": true,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "UQ",
+        "name": "code",
+        "type": "VARCHAR(255)",
+        "pk": false,
+        "fk": false,
+        "uq": true,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "title",
+        "type": "VARCHAR(255)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "description",
+        "type": "TEXT",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "password",
+        "type": "VARCHAR(255)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "expiration_date",
+        "type": "DATETIME",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "type",
+        "type": "VARCHAR(50)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "FK",
+        "name": "user_id",
+        "type": "BIGINT",
+        "pk": false,
+        "fk": true,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "FK",
+        "name": "target_user_id",
+        "type": "BIGINT",
+        "pk": false,
+        "fk": true,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "max_usage_count",
+        "type": "INT",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "current_usage_count",
+        "type": "INT",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "hidden",
+        "type": "TINYINT(1)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "is_delete",
+        "type": "TINYINT(1)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "date_created",
+        "type": "DATETIME",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "last_updated",
+        "type": "DATETIME",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "FK",
+        "name": "place_id",
+        "type": "BIGINT",
+        "pk": false,
+        "fk": true,
+        "uq": false,
+        "nn": false
+      }
+    ]
+  },
+  {
+    "id": "coupon_target_user",
+    "name": "coupon_target_user",
+    "label": "coupon_target_user",
+    "theme": "blue",
+    "tag": "USER",
+    "x": 680,
+    "y": 90,
+    "fields": [
+      {
+        "key": "PK",
+        "name": "id",
+        "type": "BIGINT",
+        "pk": true,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "FK",
+        "name": "coupon_id",
+        "type": "BIGINT",
+        "pk": false,
+        "fk": true,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "FK",
+        "name": "target_user_id",
+        "type": "BIGINT",
+        "pk": false,
+        "fk": true,
+        "uq": false,
+        "nn": true
+      }
+    ]
+  },
+  {
+    "id": "coupon_user",
+    "name": "coupon_user",
+    "label": "coupon_user",
+    "theme": "blue",
+    "tag": "USER",
+    "x": 980,
+    "y": 90,
+    "fields": [
+      {
+        "key": "PK",
+        "name": "id",
+        "type": "BIGINT",
+        "pk": true,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "FK",
+        "name": "coupon_id",
+        "type": "BIGINT",
+        "pk": false,
+        "fk": true,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "FK",
+        "name": "user_id",
+        "type": "BIGINT",
+        "pk": false,
+        "fk": true,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "is_used",
+        "type": "TINYINT(1)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "download_date",
+        "type": "DATETIME",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "use_date",
+        "type": "DATETIME",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      }
+    ]
+  },
+  {
+    "id": "coupon_user_history",
+    "name": "coupon_user_history",
+    "label": "coupon_user_history",
+    "theme": "blue",
+    "tag": "USER",
+    "x": 80,
+    "y": 440,
+    "fields": [
+      {
+        "key": "PK",
+        "name": "id",
+        "type": "BIGINT",
+        "pk": true,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "FK",
+        "name": "coupon_id",
+        "type": "BIGINT",
+        "pk": false,
+        "fk": true,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "FK",
+        "name": "user_id",
+        "type": "BIGINT",
+        "pk": false,
+        "fk": true,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "use_date",
+        "type": "DATETIME",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      }
+    ]
+  },
+  {
+    "id": "place",
+    "name": "place",
+    "label": "place",
+    "theme": "gray",
+    "tag": "UTIL",
+    "x": 380,
+    "y": 440,
+    "fields": [
+      {
+        "key": "PK",
+        "name": "id",
+        "type": "BIGINT",
+        "pk": true,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "FK",
+        "name": "category_id",
+        "type": "INT",
+        "pk": false,
+        "fk": true,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "name",
+        "type": "VARCHAR(255)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "address",
+        "type": "VARCHAR(500)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "description",
+        "type": "TEXT",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "is_korean_service",
+        "type": "TINYINT(1)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "is_partner",
+        "type": "TINYINT(1)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "weight",
+        "type": "INT",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "latitude",
+        "type": "DOUBLE",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "longitude",
+        "type": "DOUBLE",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "date_created",
+        "type": "DATETIME",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "last_updated",
+        "type": "DATETIME",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "FK",
+        "name": "user_id",
+        "type": "BIGINT",
+        "pk": false,
+        "fk": true,
+        "uq": false,
+        "nn": false
+      }
+    ]
+  },
+  {
+    "id": "regions",
+    "name": "regions",
+    "label": "regions",
+    "theme": "green",
+    "tag": "GEO",
+    "x": 680,
+    "y": 440,
+    "fields": [
+      {
+        "key": "PK",
+        "name": "id",
+        "type": "INT",
+        "pk": true,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "city_name",
+        "type": "VARCHAR(50)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "district_name",
+        "type": "VARCHAR(50)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "name_kr",
+        "type": "VARCHAR(100)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "name_en",
+        "type": "VARCHAR(100)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "latitude",
+        "type": "DOUBLE",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "longitude",
+        "type": "DOUBLE",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "place_id",
+        "type": "VARCHAR(255)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "formatted_address",
+        "type": "VARCHAR(255)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      }
+    ]
+  },
+  {
+    "id": "role",
+    "name": "role",
+    "label": "role",
+    "theme": "gray",
+    "tag": "UTIL",
+    "x": 980,
+    "y": 440,
+    "fields": [
+      {
+        "key": "PK",
+        "name": "id",
+        "type": "BIGINT",
+        "pk": true,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "name",
+        "type": "VARCHAR(20)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      }
+    ]
+  },
+  {
+    "id": "sample",
+    "name": "sample",
+    "label": "sample",
+    "theme": "gray",
+    "tag": "UTIL",
+    "x": 80,
+    "y": 790,
+    "fields": [
+      {
+        "key": "PK",
+        "name": "my_row_id",
+        "type": "BIGINT UNSIGNED",
+        "pk": true,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "FK",
+        "name": "id",
+        "type": "INT",
+        "pk": false,
+        "fk": true,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "category",
+        "type": "VARCHAR(50)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "name",
+        "type": "VARCHAR(500)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "address",
+        "type": "VARCHAR(1000)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "position_x",
+        "type": "DECIMAL(20,6)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "position_y",
+        "type": "DECIMAL(20,6)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      }
+    ]
+  },
+  {
+    "id": "user",
+    "name": "user",
+    "label": "user",
+    "theme": "blue",
+    "tag": "USER",
+    "x": 380,
+    "y": 790,
+    "fields": [
+      {
+        "key": "PK",
+        "name": "id",
+        "type": "BIGINT",
+        "pk": true,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "FK",
+        "name": "username",
+        "type": "VARCHAR(50)",
+        "pk": false,
+        "fk": true,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "password",
+        "type": "VARCHAR(120)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "profile_name",
+        "type": "VARCHAR(500)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "email",
+        "type": "VARCHAR(50)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "provider",
+        "type": "VARCHAR(50)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "phone",
+        "type": "VARCHAR(20)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "address",
+        "type": "VARCHAR(200)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "birthday",
+        "type": "DATE",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "account_status",
+        "type": "VARCHAR(20)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "partner_approval_status",
+        "type": "VARCHAR(20)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "admin_memo",
+        "type": "VARCHAR(1000)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      }
+    ]
+  },
+  {
+    "id": "user_posts",
+    "name": "user_posts",
+    "label": "user_posts",
+    "theme": "blue",
+    "tag": "USER",
+    "x": 680,
+    "y": 790,
+    "fields": [
+      {
+        "key": "PK",
+        "name": "id",
+        "type": "BIGINT",
+        "pk": true,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "FK",
+        "name": "user_posts_category_id",
+        "type": "BIGINT",
+        "pk": false,
+        "fk": true,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "content_title",
+        "type": "VARCHAR(255)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "view_count",
+        "type": "BIGINT",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "date_created",
+        "type": "DATETIME",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "last_updated",
+        "type": "DATETIME",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "content",
+        "type": "TEXT",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "like_count",
+        "type": "BIGINT",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "FK",
+        "name": "user_id",
+        "type": "BIGINT",
+        "pk": false,
+        "fk": true,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "deleted",
+        "type": "TINYINT(1)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "important",
+        "type": "BIT(1)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "media_url",
+        "type": "VARCHAR(1000)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "link_url",
+        "type": "VARCHAR(1000)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "button_text",
+        "type": "VARCHAR(100)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "display_order",
+        "type": "INT",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "active",
+        "type": "TINYINT(1)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      }
+    ]
+  },
+  {
+    "id": "user_posts_actions",
+    "name": "user_posts_actions",
+    "label": "user_posts_actions",
+    "theme": "blue",
+    "tag": "USER",
+    "x": 980,
+    "y": 790,
+    "fields": [
+      {
+        "key": "PK",
+        "name": "id",
+        "type": "BIGINT",
+        "pk": true,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "FK",
+        "name": "user_posts_id",
+        "type": "BIGINT",
+        "pk": false,
+        "fk": true,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "FK",
+        "name": "user_id",
+        "type": "BIGINT",
+        "pk": false,
+        "fk": true,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "action_type",
+        "type": "VARCHAR(50)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "date_created",
+        "type": "DATETIME",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "last_updated",
+        "type": "DATETIME",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "description",
+        "type": "VARCHAR(100)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "version",
+        "type": "BIGINT",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "action_flag",
+        "type": "BIT(1)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "like_count",
+        "type": "BIGINT",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      }
+    ]
+  },
+  {
+    "id": "user_posts_bookmark",
+    "name": "user_posts_bookmark",
+    "label": "user_posts_bookmark",
+    "theme": "blue",
+    "tag": "USER",
+    "x": 80,
+    "y": 1140,
+    "fields": [
+      {
+        "key": "PK",
+        "name": "id",
+        "type": "BIGINT",
+        "pk": true,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "FK",
+        "name": "user_id",
+        "type": "BIGINT",
+        "pk": false,
+        "fk": true,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "FK",
+        "name": "user_posts_id",
+        "type": "BIGINT",
+        "pk": false,
+        "fk": true,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "deleted",
+        "type": "TINYINT(1)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "date_created",
+        "type": "DATETIME",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "last_updated",
+        "type": "DATETIME",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      }
+    ]
+  },
+  {
+    "id": "user_posts_category",
+    "name": "user_posts_category",
+    "label": "user_posts_category",
+    "theme": "blue",
+    "tag": "USER",
+    "x": 380,
+    "y": 1140,
+    "fields": [
+      {
+        "key": "PK",
+        "name": "id",
+        "type": "BIGINT",
+        "pk": true,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "UQ",
+        "name": "category_code",
+        "type": "VARCHAR(50)",
+        "pk": false,
+        "fk": false,
+        "uq": true,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "category_name",
+        "type": "VARCHAR(100)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "date_created",
+        "type": "DATETIME",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "last_updated",
+        "type": "DATETIME",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "is_community",
+        "type": "TINYINT(1)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      }
+    ]
+  },
+  {
+    "id": "user_posts_comment",
+    "name": "user_posts_comment",
+    "label": "user_posts_comment",
+    "theme": "blue",
+    "tag": "USER",
+    "x": 680,
+    "y": 1140,
+    "fields": [
+      {
+        "key": "PK",
+        "name": "id",
+        "type": "BIGINT",
+        "pk": true,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "FK",
+        "name": "user_id",
+        "type": "BIGINT",
+        "pk": false,
+        "fk": true,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "FK",
+        "name": "user_posts_id",
+        "type": "BIGINT",
+        "pk": false,
+        "fk": true,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "content",
+        "type": "TEXT",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "like_count",
+        "type": "BIGINT",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "FK",
+        "name": "parent_id",
+        "type": "BIGINT",
+        "pk": false,
+        "fk": true,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "date_created",
+        "type": "DATETIME",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "last_updated",
+        "type": "DATETIME",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "deleted",
+        "type": "TINYINT(1)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      }
+    ]
+  },
+  {
+    "id": "user_regions",
+    "name": "user_regions",
+    "label": "user_regions",
+    "theme": "blue",
+    "tag": "USER",
+    "x": 980,
+    "y": 1140,
+    "fields": [
+      {
+        "key": "PK",
+        "name": "id",
+        "type": "BIGINT",
+        "pk": true,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "FK",
+        "name": "user_id",
+        "type": "BIGINT",
+        "pk": false,
+        "fk": true,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "FK",
+        "name": "region_id",
+        "type": "INT",
+        "pk": false,
+        "fk": true,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "region_type",
+        "type": "VARCHAR(10)",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "osm_id",
+        "type": "BIGINT",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "display_name",
+        "type": "TEXT",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      },
+      {
+        "key": "",
+        "name": "latitude",
+        "type": "DOUBLE",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "longitude",
+        "type": "DOUBLE",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "",
+        "name": "created_at",
+        "type": "DATETIME",
+        "pk": false,
+        "fk": false,
+        "uq": false,
+        "nn": false
+      }
+    ]
+  },
+  {
+    "id": "user_roles",
+    "name": "user_roles",
+    "label": "user_roles",
+    "theme": "blue",
+    "tag": "USER",
+    "x": 80,
+    "y": 1490,
+    "fields": [
+      {
+        "key": "PK",
+        "name": "user_id",
+        "type": "BIGINT",
+        "pk": true,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      },
+      {
+        "key": "PK",
+        "name": "role_id",
+        "type": "BIGINT",
+        "pk": true,
+        "fk": false,
+        "uq": false,
+        "nn": true
+      }
+    ]
+  }
+]

@@ -1,0 +1,1696 @@
+{
+  "common": {
+    "member": [
+      {
+        "Field": "Seq",
+        "Type": "int",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "PRI",
+        "Default": null,
+        "Extra": "auto_increment",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "UserID",
+        "Type": "varchar(320)",
+        "Collation": "utf8mb4_unicode_ci",
+        "Null": "NO",
+        "Key": "UNI",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "UserName",
+        "Type": "varchar(64)",
+        "Collation": "utf8mb4_unicode_ci",
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "Password",
+        "Type": "varchar(256)",
+        "Collation": "utf8mb4_unicode_ci",
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "Department",
+        "Type": "varchar(200)",
+        "Collation": "utf8mb4_unicode_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "Status",
+        "Type": "enum('Y','N')",
+        "Collation": "utf8mb4_unicode_ci",
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      }
+    ],
+    "menu": [
+      {
+        "Field": "Seq",
+        "Type": "int",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "PRI",
+        "Default": null,
+        "Extra": "auto_increment",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "Name",
+        "Type": "varchar(200)",
+        "Collation": "utf8mb4_unicode_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      }
+    ],
+    "permission": [
+      {
+        "Field": "Seq",
+        "Type": "int",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "PRI",
+        "Default": null,
+        "Extra": "auto_increment",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "IdSeq",
+        "Type": "int",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "MUL",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "Menu",
+        "Type": "varchar(100)",
+        "Collation": "utf8mb4_unicode_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "Access",
+        "Type": "enum('Y','N')",
+        "Collation": "utf8mb4_unicode_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "Read",
+        "Type": "enum('Y','N')",
+        "Collation": "utf8mb4_unicode_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "Write",
+        "Type": "enum('Y','N')",
+        "Collation": "utf8mb4_unicode_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "Delete",
+        "Type": "enum('Y','N')",
+        "Collation": "utf8mb4_unicode_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "Update",
+        "Type": "enum('Y','N')",
+        "Collation": "utf8mb4_unicode_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      }
+    ]
+  },
+  "twone": {
+    "category": [
+      {
+        "Field": "my_row_id",
+        "Type": "bigint unsigned",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "PRI",
+        "Default": null,
+        "Extra": "auto_increment INVISIBLE",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "id",
+        "Type": "int",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "MUL",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "code",
+        "Type": "varchar(50)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "name",
+        "Type": "varchar(50)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      }
+    ],
+    "coupon": [
+      {
+        "Field": "id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "PRI",
+        "Default": null,
+        "Extra": "auto_increment",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "code",
+        "Type": "varchar(255)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "NO",
+        "Key": "UNI",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "title",
+        "Type": "varchar(255)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "description",
+        "Type": "text",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "password",
+        "Type": "varchar(255)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "expiration_date",
+        "Type": "datetime",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "type",
+        "Type": "varchar(50)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "user_id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "MUL",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "target_user_id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "MUL",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "max_usage_count",
+        "Type": "int",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "current_usage_count",
+        "Type": "int",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "",
+        "Default": "0",
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "hidden",
+        "Type": "tinyint(1)",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "",
+        "Default": "0",
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "is_delete",
+        "Type": "tinyint(1)",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "",
+        "Default": "0",
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "date_created",
+        "Type": "datetime",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "last_updated",
+        "Type": "datetime",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "place_id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "MUL",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      }
+    ],
+    "coupon_target_user": [
+      {
+        "Field": "id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "PRI",
+        "Default": null,
+        "Extra": "auto_increment",
+        "Privileges": "select,insert,update,references",
+        "Comment": "고유 식별자(PK)"
+      },
+      {
+        "Field": "coupon_id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "MUL",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "쿠폰 ID (FK)"
+      },
+      {
+        "Field": "target_user_id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "MUL",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "지정 대상 유저 ID (FK)"
+      }
+    ],
+    "coupon_user": [
+      {
+        "Field": "id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "PRI",
+        "Default": null,
+        "Extra": "auto_increment",
+        "Privileges": "select,insert,update,references",
+        "Comment": "유저 쿠폰 고유 ID"
+      },
+      {
+        "Field": "coupon_id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "MUL",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "쿠폰 마스터 ID (FK)"
+      },
+      {
+        "Field": "user_id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "MUL",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "다운로드 받은 유저 ID (FK)"
+      },
+      {
+        "Field": "is_used",
+        "Type": "tinyint(1)",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "",
+        "Default": "0",
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "사용 여부 (0: 미사용, 1: 사용완료)"
+      },
+      {
+        "Field": "download_date",
+        "Type": "datetime",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "쿠폰 다운로드 일시"
+      },
+      {
+        "Field": "use_date",
+        "Type": "datetime",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "실제 사용 처리된 일시 (미사용 시 NULL)"
+      }
+    ],
+    "coupon_user_history": [
+      {
+        "Field": "id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "PRI",
+        "Default": null,
+        "Extra": "auto_increment",
+        "Privileges": "select,insert,update,references",
+        "Comment": "쿠폰 사용 이력 고유 ID"
+      },
+      {
+        "Field": "coupon_id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "MUL",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "사용한 쿠폰 마스터 ID (FK)"
+      },
+      {
+        "Field": "user_id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "MUL",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "사용한 유저 ID (FK)"
+      },
+      {
+        "Field": "use_date",
+        "Type": "datetime",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "실제 쿠폰을 사용한 일시"
+      }
+    ],
+    "place": [
+      {
+        "Field": "id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "PRI",
+        "Default": null,
+        "Extra": "auto_increment",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "category_id",
+        "Type": "int",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "MUL",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "FK to category.id"
+      },
+      {
+        "Field": "name",
+        "Type": "varchar(255)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "업체명"
+      },
+      {
+        "Field": "address",
+        "Type": "varchar(500)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "상세 주소"
+      },
+      {
+        "Field": "description",
+        "Type": "text",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "간단한 설명 (혜택 등)"
+      },
+      {
+        "Field": "is_korean_service",
+        "Type": "tinyint(1)",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "",
+        "Default": "0",
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "한국어 가능 여부"
+      },
+      {
+        "Field": "is_partner",
+        "Type": "tinyint(1)",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "",
+        "Default": "0",
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "제휴 업체 여부"
+      },
+      {
+        "Field": "weight",
+        "Type": "int",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "",
+        "Default": "0",
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "노출 가중치 (우선순위)"
+      },
+      {
+        "Field": "latitude",
+        "Type": "double",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "위도"
+      },
+      {
+        "Field": "longitude",
+        "Type": "double",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "경도"
+      },
+      {
+        "Field": "date_created",
+        "Type": "datetime",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "",
+        "Default": "CURRENT_TIMESTAMP",
+        "Extra": "DEFAULT_GENERATED",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "last_updated",
+        "Type": "datetime",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "",
+        "Default": "CURRENT_TIMESTAMP",
+        "Extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "user_id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "MUL",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      }
+    ],
+    "regions": [
+      {
+        "Field": "id",
+        "Type": "int",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "PRI",
+        "Default": null,
+        "Extra": "auto_increment",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "city_name",
+        "Type": "varchar(50)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "City/County Name (e.g., Taipei City, Yilan County)"
+      },
+      {
+        "Field": "district_name",
+        "Type": "varchar(50)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "District/Township Name (e.g., Daan District, Jiaoxi Township)"
+      },
+      {
+        "Field": "name_kr",
+        "Type": "varchar(100)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "Korean Name (e.g., 타이베이시 다안구)"
+      },
+      {
+        "Field": "name_en",
+        "Type": "varchar(100)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "English Name (e.g., Daan Dist, Taipei City)"
+      },
+      {
+        "Field": "latitude",
+        "Type": "double",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "",
+        "Default": "0",
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "Latitude"
+      },
+      {
+        "Field": "longitude",
+        "Type": "double",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "",
+        "Default": "0",
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "Longitude"
+      },
+      {
+        "Field": "place_id",
+        "Type": "varchar(255)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "Google Place ID"
+      },
+      {
+        "Field": "formatted_address",
+        "Type": "varchar(255)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      }
+    ],
+    "role": [
+      {
+        "Field": "id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "PRI",
+        "Default": null,
+        "Extra": "auto_increment",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "name",
+        "Type": "varchar(20)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      }
+    ],
+    "sample": [
+      {
+        "Field": "my_row_id",
+        "Type": "bigint unsigned",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "PRI",
+        "Default": null,
+        "Extra": "auto_increment INVISIBLE",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "id",
+        "Type": "int",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "MUL",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "category",
+        "Type": "varchar(50)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "name",
+        "Type": "varchar(500)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "address",
+        "Type": "varchar(1000)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "position_x",
+        "Type": "decimal(20,6)",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "position_y",
+        "Type": "decimal(20,6)",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      }
+    ],
+    "user": [
+      {
+        "Field": "id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "PRI",
+        "Default": null,
+        "Extra": "auto_increment",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "username",
+        "Type": "varchar(50)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "NO",
+        "Key": "MUL",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "password",
+        "Type": "varchar(120)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "profile_name",
+        "Type": "varchar(500)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "email",
+        "Type": "varchar(50)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "provider",
+        "Type": "varchar(50)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "phone",
+        "Type": "varchar(20)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "휴대폰 번호"
+      },
+      {
+        "Field": "address",
+        "Type": "varchar(200)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "주소"
+      },
+      {
+        "Field": "birthday",
+        "Type": "date",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "생년월일"
+      },
+      {
+        "Field": "account_status",
+        "Type": "varchar(20)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": "ACTIVE",
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "partner_approval_status",
+        "Type": "varchar(20)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": "NONE",
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "admin_memo",
+        "Type": "varchar(1000)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      }
+    ],
+    "user_posts": [
+      {
+        "Field": "id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "PRI",
+        "Default": null,
+        "Extra": "auto_increment",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "user_posts_category_id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "MUL",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "content_title",
+        "Type": "varchar(255)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "view_count",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "",
+        "Default": "0",
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "date_created",
+        "Type": "datetime",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "",
+        "Default": "CURRENT_TIMESTAMP",
+        "Extra": "DEFAULT_GENERATED",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "last_updated",
+        "Type": "datetime",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "",
+        "Default": "CURRENT_TIMESTAMP",
+        "Extra": "DEFAULT_GENERATED",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "content",
+        "Type": "text",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "like_count",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "",
+        "Default": "0",
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "user_id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "MUL",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "deleted",
+        "Type": "tinyint(1)",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "",
+        "Default": "0",
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "important",
+        "Type": "bit(1)",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "",
+        "Default": "b'0'",
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "media_url",
+        "Type": "varchar(1000)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "link_url",
+        "Type": "varchar(1000)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "button_text",
+        "Type": "varchar(100)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "display_order",
+        "Type": "int",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "active",
+        "Type": "tinyint(1)",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "",
+        "Default": "1",
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      }
+    ],
+    "user_posts_actions": [
+      {
+        "Field": "id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "PRI",
+        "Default": null,
+        "Extra": "auto_increment",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "user_posts_id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "MUL",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "user_id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "MUL",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "action_type",
+        "Type": "varchar(50)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "date_created",
+        "Type": "datetime",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "last_updated",
+        "Type": "datetime",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "description",
+        "Type": "varchar(100)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "version",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "action_flag",
+        "Type": "bit(1)",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "like_count",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      }
+    ],
+    "user_posts_bookmark": [
+      {
+        "Field": "id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "PRI",
+        "Default": null,
+        "Extra": "auto_increment",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "user_id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "MUL",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "user_posts_id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "MUL",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "deleted",
+        "Type": "tinyint(1)",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "",
+        "Default": "0",
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "date_created",
+        "Type": "datetime",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "",
+        "Default": "CURRENT_TIMESTAMP",
+        "Extra": "DEFAULT_GENERATED",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "last_updated",
+        "Type": "datetime",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "",
+        "Default": "CURRENT_TIMESTAMP",
+        "Extra": "DEFAULT_GENERATED",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      }
+    ],
+    "user_posts_category": [
+      {
+        "Field": "id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "PRI",
+        "Default": null,
+        "Extra": "auto_increment",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "category_code",
+        "Type": "varchar(50)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "NO",
+        "Key": "UNI",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "category_name",
+        "Type": "varchar(100)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "date_created",
+        "Type": "datetime",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "",
+        "Default": "CURRENT_TIMESTAMP",
+        "Extra": "DEFAULT_GENERATED",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "last_updated",
+        "Type": "datetime",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "",
+        "Default": "CURRENT_TIMESTAMP",
+        "Extra": "DEFAULT_GENERATED",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "is_community",
+        "Type": "tinyint(1)",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "",
+        "Default": "0",
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      }
+    ],
+    "user_posts_comment": [
+      {
+        "Field": "id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "PRI",
+        "Default": null,
+        "Extra": "auto_increment",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "user_id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "MUL",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "user_posts_id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "MUL",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "content",
+        "Type": "text",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "like_count",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "",
+        "Default": "0",
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "parent_id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "MUL",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "date_created",
+        "Type": "datetime",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "",
+        "Default": "CURRENT_TIMESTAMP",
+        "Extra": "DEFAULT_GENERATED",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "last_updated",
+        "Type": "datetime",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "",
+        "Default": "CURRENT_TIMESTAMP",
+        "Extra": "DEFAULT_GENERATED",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "deleted",
+        "Type": "tinyint(1)",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "",
+        "Default": "0",
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      }
+    ],
+    "user_regions": [
+      {
+        "Field": "id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "PRI",
+        "Default": null,
+        "Extra": "auto_increment",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "user_id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "MUL",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "region_id",
+        "Type": "int",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "MUL",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "FK to regions.id"
+      },
+      {
+        "Field": "region_type",
+        "Type": "varchar(10)",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": "MAIN, INTEREST"
+      },
+      {
+        "Field": "osm_id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "display_name",
+        "Type": "text",
+        "Collation": "utf8mb4_general_ci",
+        "Null": "YES",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "latitude",
+        "Type": "double",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "longitude",
+        "Type": "double",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "created_at",
+        "Type": "datetime",
+        "Collation": null,
+        "Null": "YES",
+        "Key": "",
+        "Default": "CURRENT_TIMESTAMP",
+        "Extra": "DEFAULT_GENERATED",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      }
+    ],
+    "user_roles": [
+      {
+        "Field": "user_id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "PRI",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      },
+      {
+        "Field": "role_id",
+        "Type": "bigint",
+        "Collation": null,
+        "Null": "NO",
+        "Key": "PRI",
+        "Default": null,
+        "Extra": "",
+        "Privileges": "select,insert,update,references",
+        "Comment": ""
+      }
+    ]
+  }
+}

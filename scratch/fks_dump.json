@@ -1,0 +1,146 @@
+[
+  {
+    "TABLE_NAME": "coupon",
+    "COLUMN_NAME": "user_id",
+    "REFERENCED_TABLE_NAME": "user",
+    "REFERENCED_COLUMN_NAME": "id"
+  },
+  {
+    "TABLE_NAME": "coupon",
+    "COLUMN_NAME": "target_user_id",
+    "REFERENCED_TABLE_NAME": "user",
+    "REFERENCED_COLUMN_NAME": "id"
+  },
+  {
+    "TABLE_NAME": "coupon",
+    "COLUMN_NAME": "place_id",
+    "REFERENCED_TABLE_NAME": "place",
+    "REFERENCED_COLUMN_NAME": "id"
+  },
+  {
+    "TABLE_NAME": "coupon_target_user",
+    "COLUMN_NAME": "coupon_id",
+    "REFERENCED_TABLE_NAME": "coupon",
+    "REFERENCED_COLUMN_NAME": "id"
+  },
+  {
+    "TABLE_NAME": "coupon_target_user",
+    "COLUMN_NAME": "target_user_id",
+    "REFERENCED_TABLE_NAME": "user",
+    "REFERENCED_COLUMN_NAME": "id"
+  },
+  {
+    "TABLE_NAME": "coupon_user",
+    "COLUMN_NAME": "coupon_id",
+    "REFERENCED_TABLE_NAME": "coupon",
+    "REFERENCED_COLUMN_NAME": "id"
+  },
+  {
+    "TABLE_NAME": "coupon_user",
+    "COLUMN_NAME": "user_id",
+    "REFERENCED_TABLE_NAME": "user",
+    "REFERENCED_COLUMN_NAME": "id"
+  },
+  {
+    "TABLE_NAME": "coupon_user_history",
+    "COLUMN_NAME": "coupon_id",
+    "REFERENCED_TABLE_NAME": "coupon",
+    "REFERENCED_COLUMN_NAME": "id"
+  },
+  {
+    "TABLE_NAME": "coupon_user_history",
+    "COLUMN_NAME": "user_id",
+    "REFERENCED_TABLE_NAME": "user",
+    "REFERENCED_COLUMN_NAME": "id"
+  },
+  {
+    "TABLE_NAME": "place",
+    "COLUMN_NAME": "category_id",
+    "REFERENCED_TABLE_NAME": "category",
+    "REFERENCED_COLUMN_NAME": "id"
+  },
+  {
+    "TABLE_NAME": "place",
+    "COLUMN_NAME": "user_id",
+    "REFERENCED_TABLE_NAME": "user",
+    "REFERENCED_COLUMN_NAME": "id"
+  },
+  {
+    "TABLE_NAME": "user_posts",
+    "COLUMN_NAME": "user_posts_category_id",
+    "REFERENCED_TABLE_NAME": "user_posts_category",
+    "REFERENCED_COLUMN_NAME": "id"
+  },
+  {
+    "TABLE_NAME": "user_posts",
+    "COLUMN_NAME": "user_id",
+    "REFERENCED_TABLE_NAME": "user",
+    "REFERENCED_COLUMN_NAME": "id"
+  },
+  {
+    "TABLE_NAME": "user_posts_actions",
+    "COLUMN_NAME": "user_posts_id",
+    "REFERENCED_TABLE_NAME": "user_posts",
+    "REFERENCED_COLUMN_NAME": "id"
+  },
+  {
+    "TABLE_NAME": "user_posts_actions",
+    "COLUMN_NAME": "user_id",
+    "REFERENCED_TABLE_NAME": "user",
+    "REFERENCED_COLUMN_NAME": "id"
+  },
+  {
+    "TABLE_NAME": "user_posts_bookmark",
+    "COLUMN_NAME": "user_id",
+    "REFERENCED_TABLE_NAME": "user",
+    "REFERENCED_COLUMN_NAME": "id"
+  },
+  {
+    "TABLE_NAME": "user_posts_bookmark",
+    "COLUMN_NAME": "user_posts_id",
+    "REFERENCED_TABLE_NAME": "user_posts",
+    "REFERENCED_COLUMN_NAME": "id"
+  },
+  {
+    "TABLE_NAME": "user_posts_comment",
+    "COLUMN_NAME": "user_id",
+    "REFERENCED_TABLE_NAME": "user",
+    "REFERENCED_COLUMN_NAME": "id"
+  },
+  {
+    "TABLE_NAME": "user_posts_comment",
+    "COLUMN_NAME": "user_posts_id",
+    "REFERENCED_TABLE_NAME": "user_posts",
+    "REFERENCED_COLUMN_NAME": "id"
+  },
+  {
+    "TABLE_NAME": "user_posts_comment",
+    "COLUMN_NAME": "parent_id",
+    "REFERENCED_TABLE_NAME": "user_posts_comment",
+    "REFERENCED_COLUMN_NAME": "id"
+  },
+  {
+    "TABLE_NAME": "user_regions",
+    "COLUMN_NAME": "user_id",
+    "REFERENCED_TABLE_NAME": "user",
+    "REFERENCED_COLUMN_NAME": "id"
+  },
+  {
+    "TABLE_NAME": "user_regions",
+    "COLUMN_NAME": "region_id",
+    "REFERENCED_TABLE_NAME": "regions",
+    "REFERENCED_COLUMN_NAME": "id"
+  },
+  {
+    "TABLE_NAME": "user_roles",
+    "COLUMN_NAME": "user_id",
+    "REFERENCED_TABLE_NAME": "user",
+    "REFERENCED_COLUMN_NAME": "id"
+  },
+  {
+    "TABLE_NAME": "user_roles",
+    "COLUMN_NAME": "role_id",
+    "REFERENCED_TABLE_NAME": "role",
+    "REFERENCED_COLUMN_NAME": "id"
+  }
+]

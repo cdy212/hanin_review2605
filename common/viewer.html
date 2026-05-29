@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ERD Builder Pro — 뷰어</title>
+  <meta name="description" content="공유된 ERD 다이어그램을 확인합니다."/>
+  <link rel="stylesheet" href="erd-core.css"/>
+  <script src="erd-core.js"></script>
+  <script src="share.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg, #f4f6f9); overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
+
+    /* Header */
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+      height: 52px;
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #d0d7de;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+    .logo {
+      display: flex; align-items: center; gap: 8px;
+      font-weight: 800; font-size: 15px; text-decoration: none; color: #1c2128;
+    }
+    .logo-icon {
+      width: 28px; height: 28px;
+      background: linear-gradient(135deg, #0969da, #7c3aed);
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 900; color: #fff;
+    }
+    .logo span { color: #0969da; }
+    .header-meta { display: flex; align-items: center; gap: 10px; }
+    .badge {
+      padding: 3px 10px; border-radius: 12px;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.04em; border: 1px solid;
+    }
+    .badge-blue { color: #0969da; border-color: rgba(9,105,218,0.3); background: rgba(9,105,218,0.06); }
+    .badge-green { color: #1a7f37; border-color: rgba(26,127,55,0.3); background: rgba(26,127,55,0.06); }
+    .tbl-count { color: #57606a; font-size: 12px; }
+    .btn-sm {
+      padding: 5px 12px; border-radius: 7px;
+      border: 1px solid #d0d7de;
+      background: #fff; color: #57606a;
+      font-size: 12px; font-weight: 500; cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-sm:hover { background: #f0f2f5; color: #1c2128; }
+
+    /* Canvas */
+    #erd-canvas-wrap {
+      position: fixed;
+      top: 52px; left: 0; right: 0; bottom: 0;
+    }
+
+    /* Controls */
+    .erd-controls {
+      position: fixed; bottom: 24px; right: 24px; z-index: 300;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .erd-ctrl-btn {
+      width: 40px; height: 40px;
+      background: #fff; border: 1px solid #d0d7de;
+      border-radius: 8px; color: #1c2128;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      font-size: 18px; box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      transition: all 0.2s;
+    }
+    .erd-ctrl-btn:hover { background: #f0f2f5; border-color: #a8b1bb; }
+    .erd-ctrl-btn:active { transform: scale(0.94); }
+
+    /* Legend */
+    .erd-legend {
+      position: fixed; bottom: 24px; left: 24px; z-index: 300;
+      background: rgba(255,255,255,0.96); backdrop-filter: blur(8px);
+      border: 1px solid #d0d7de; border-radius: 12px;
+      padding: 14px 18px; font-size: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+    .legend-title { font-weight: 700; color: #57606a; margin-bottom: 8px; letter-spacing: 0.06em; text-transform: uppercase; font-size: 10px; }
+    .legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; font-size: 11px; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+    .legend-line { width: 26px; height: 2px; border-radius: 2px; }
+    .legend-sep { height: 1px; background: #d0d7de; margin: 8px 0; }
+
+    /* Error screen */
+    #error-screen {
+      position: fixed; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 16px;
+      background: #f4f6f9;
+      z-index: 999;
+    }
+    #error-screen .err-icon { font-size: 56px; }
+    #error-screen h2 { font-size: 22px; font-weight: 700; }
+    #error-screen p { color: #57606a; font-size: 14px; }
+    #error-screen a { color: #0969da; text-decoration: none; }
+
+    /* Loading */
+    #loading-screen {
+      position: fixed; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: #f4f6f9; z-index: 998;
+    }
+    .spinner {
+      width: 40px; height: 40px;
+      border: 3px solid #d0d7de;
+      border-top-color: #0969da;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<div id="loading-screen"><div class="spinner"></div></div>
+<div id="error-screen" style="display:none;">
+  <div class="err-icon">🗺️</div>
+  <h2>ERD 데이터를 불러올 수 없습니다</h2>
+  <p>공유 링크가 올바른지 확인해 주세요.</p>
+  <a href="index.html">← ERD Builder Pro로 돌아가기</a>
+</div>
+
+<header id="main-header" style="display:none;">
+  <a class="logo" href="index.html">
+    <div class="logo-icon">E</div>
+    ERD Builder <span>Pro</span>
+  </a>
+  <div class="header-meta">
+    <span class="tbl-count">총 <strong id="tbl-count">0</strong>개 테이블</span>
+    <span class="badge badge-blue" id="project-name-badge">ERD</span>
+    <span class="badge badge-green" id="db-type-badge">DB</span>
+    <button class="btn-sm" onclick="window.open('index.html','_blank')">+ 새 ERD 만들기</button>
+  </div>
+</header>
+
+<div id="erd-canvas-wrap" style="display:none;"></div>
+
+<!-- Controls -->
+<div class="erd-controls" id="erd-controls" style="display:none;">
+  <button class="erd-ctrl-btn" onclick="ERDCore.zoomIn()" title="확대">＋</button>
+  <button class="erd-ctrl-btn" onclick="ERDCore.zoomOut()" title="축소">－</button>
+  <button class="erd-ctrl-btn" onclick="ERDCore.resetView()" title="초기화">⊙</button>
+</div>
+
+<!-- Legend -->
+<div class="erd-legend" id="erd-legend" style="display:none;">
+  <div class="legend-title">컬럼 키</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#b08000;"></div> PK — 기본키</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#0969da;"></div> FK — 외래키</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#7c3aed;"></div> UQ — 유니크</div>
+  <div class="legend-sep"></div>
+  <div class="legend-title">관계선</div>
+  <div class="legend-item"><div class="legend-line" style="border-top:2px solid #1a7f37;"></div> N:1 ManyToOne</div>
+  <div class="legend-item"><div class="legend-line" style="border-top:2px dashed #7c3aed;"></div> M:N ManyToMany</div>
+  <div class="legend-item"><div class="legend-line" style="border-top:2px solid #b35900;"></div> Self-Reference</div>
+  <div class="legend-sep"></div>
+  <div class="legend-title">그룹</div>
+  <div id="group-legend"></div>
+</div>
+
+<script>
+(function() {
+  const payload = ERDShare.loadFromURL();
+
+  if (!payload || !payload.tables || payload.tables.length === 0) {
+    document.getElementById('loading-screen').style.display = 'none';
+    document.getElementById('error-screen').style.display = 'flex';
+    return;
+  }
+
+  // Apply auto-save positions if available
+  const savedPos = ERDShare.loadAutoPositions();
+  payload.tables.forEach(t => {
+    if (savedPos[t.id]) { t.x = savedPos[t.id].x; t.y = savedPos[t.id].y; }
+  });
+
+  // Header info
+  const meta = payload.meta || {};
+  document.getElementById('tbl-count').textContent = payload.tables.length;
+  document.getElementById('project-name-badge').textContent = meta.name || 'ERD';
+  document.getElementById('db-type-badge').textContent = (meta.db || 'DB').toUpperCase();
+
+  // Group legend
+  const groupLegend = document.getElementById('group-legend');
+  (payload.groups || []).forEach(g => {
+    const item = document.createElement('div');
+    item.className = 'legend-item';
+    item.innerHTML = `<div class="legend-dot" style="background:${g.color};border-radius:50%;"></div> ${g.name}`;
+    groupLegend.appendChild(item);
+  });
+
+  // Show UI
+  document.getElementById('loading-screen').style.display = 'none';
+  document.getElementById('main-header').style.display = 'flex';
+  document.getElementById('erd-canvas-wrap').style.display = 'block';
+  document.getElementById('erd-controls').style.display = 'flex';
+  document.getElementById('erd-legend').style.display = 'block';
+
+  // Init ERD
+  ERDCore.init({
+    wrapId: 'erd-canvas-wrap',
+    tables: payload.tables,
+    relations: payload.relations || [],
+    groups: payload.groups || [],
+    viewport: payload.viewport || { scale: 0.65, panX: 50, panY: 30 },
+    onPositionChange: (tables) => { ERDShare.autoSavePositions(tables); }
+  });
+})();
+</script>
+</body>
+</html>

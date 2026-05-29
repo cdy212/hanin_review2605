@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ERD Builder Pro — DB 스키마로 ERD 자동 생성</title>
+  <meta name="description" content="MySQL, MSSQL, Oracle, PostgreSQL 스키마 SQL 결과를 붙여넣기만 하면 ERD가 자동 생성됩니다. 공유 URL로 팀과 즉시 공유."/>
+  <link rel="stylesheet" href="erd-core.css"/>
+  <script src="sql-queries.js"></script>
+  <script src="erd-core.js"></script>
+  <script src="parser.js"></script>
+  <script src="layout.js"></script>
+  <script src="share.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --brand: #0969da; --brand-dark: #0550ae; --brand-light: rgba(9,105,218,0.08);
+      --accent: #7c3aed; --success: #1a7f37; --warning: #b35900;
+      --bg: #f4f6f9; --surface: #ffffff; --border: #d0d7de; --border-bright: #a8b1bb;
+      --text: #1c2128; --text-muted: #57606a; --text-dim: #8c959f;
+      --radius: 12px; --shadow: 0 4px 24px rgba(0,0,0,0.09);
+    }
+    body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; display:flex; flex-direction:column; }
+
+    /* ── Header ── */
+    .site-header {
+      position:sticky; top:0; z-index:200;
+      background:rgba(255,255,255,0.96); backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border); padding:0 28px; height:58px;
+      display:flex; align-items:center; justify-content:space-between;
+      box-shadow:0 1px 5px rgba(0,0,0,0.06);
+    }
+    .logo { display:flex; align-items:center; gap:10px; font-weight:800; font-size:16px; color:var(--text); text-decoration:none; }
+    .logo-icon { width:32px; height:32px; background:linear-gradient(135deg,var(--brand),var(--accent)); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:900; color:#fff; }
+    .logo span { color:var(--brand); }
+    .header-actions { display:flex; gap:8px; align-items:center; }
+    .btn-ghost { padding:6px 14px; border-radius:8px; border:1px solid var(--border); background:transparent; color:var(--text-muted); font-size:13px; font-weight:500; cursor:pointer; transition:all 0.15s; text-decoration:none; display:inline-flex; align-items:center; gap:5px; }
+    .btn-ghost:hover { background:var(--bg); color:var(--text); }
+    .btn-primary { padding:7px 18px; border-radius:8px; border:none; background:var(--brand); color:#fff; font-size:13px; font-weight:600; cursor:pointer; transition:background 0.2s; }
+    .btn-primary:hover { background:var(--brand-dark); }
+
+    /* ── Stepper ── */
+    .stepper { display:flex; align-items:center; justify-content:center; padding:20px 28px 0; gap:0; max-width:700px; margin:0 auto; width:100%; }
+    .step { display:flex; align-items:center; gap:8px; font-size:12px; font-weight:500; color:var(--text-dim); flex-shrink:0; white-space:nowrap; }
+    .step.active { color:var(--brand); }
+    .step.done { color:var(--success); }
+    .step-num { width:26px; height:26px; border-radius:50%; border:2px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; background:#fff; transition:all 0.2s; }
+    .step.active .step-num { border-color:var(--brand); background:var(--brand); color:#fff; }
+    .step.done .step-num { border-color:var(--success); background:var(--success); color:#fff; }
+    .step-line { flex:1; height:2px; background:var(--border); min-width:24px; max-width:80px; transition:background 0.3s; }
+    .step-line.done { background:var(--success); }
+
+    /* ── Main ── */
+    .main { flex:1; padding:20px 24px 48px; max-width:1060px; margin:0 auto; width:100%; }
+
+    /* ── Panel ── */
+    .panel { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden; animation:slideIn 0.28s ease; }
+    @keyframes slideIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
+    .panel-header { padding:18px 24px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:12px; }
+    .panel-icon { width:40px; height:40px; border-radius:10px; background:var(--brand-light); display:flex; align-items:center; justify-content:center; font-size:19px; flex-shrink:0; }
+    .panel-title { font-size:17px; font-weight:700; }
+    .panel-sub { font-size:12px; color:var(--text-muted); margin-top:2px; }
+    .panel-body { padding:24px; }
+
+    /* ── DB Grid ── */
+    .db-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; margin-bottom:24px; }
+    .db-card { border:2px solid var(--border); border-radius:10px; padding:16px 12px; cursor:pointer; text-align:center; transition:all 0.18s; background:var(--surface); }
+    .db-card:hover { border-color:var(--brand); background:var(--brand-light); }
+    .db-card.selected { border-color:var(--brand); background:var(--brand-light); box-shadow:0 0 0 3px rgba(9,105,218,0.13); }
+    .db-card .db-icon { font-size:26px; margin-bottom:7px; }
+    .db-card .db-name { font-size:12px; font-weight:600; color:var(--text); }
+    .db-card .db-desc { font-size:10px; color:var(--text-muted); margin-top:3px; line-height:1.4; }
+
+    /* ── SQL Block ── */
+    .sql-block-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+    .sql-block-label { font-size:13px; font-weight:600; display:flex; align-items:center; gap:6px; }
+    .sql-actions { display:flex; gap:6px; }
+    .btn-copy { font-size:11px; font-weight:500; padding:4px 12px; border-radius:7px; border:1px solid var(--border); background:var(--bg); color:var(--text-muted); cursor:pointer; transition:all 0.15s; display:flex; align-items:center; gap:4px; }
+    .btn-copy:hover { background:var(--brand-light); color:var(--brand); border-color:var(--brand); }
+    .btn-copy.success { background:#dcfce7; color:var(--success); border-color:#86efac; }
+    .sql-code {
+      background:#1e2130; color:#e6edf3; border-radius:10px;
+      padding:16px; font-family:'JetBrains Mono',monospace; font-size:11.5px;
+      line-height:1.7; overflow-x:auto; white-space:pre;
+      border:1px solid #30363d; max-height:340px; overflow-y:auto;
+    }
+    .info-box { background:rgba(9,105,218,0.06); border:1px solid rgba(9,105,218,0.2); border-radius:10px; padding:12px 16px; font-size:13px; color:#0550ae; line-height:1.6; }
+    .info-box strong { font-weight:700; }
+
+    /* ── Step 2: Paste Area ── */
+    .paste-zone {
+      position:relative;
+      border:2px dashed var(--border); border-radius:12px;
+      min-height:260px; transition:all 0.2s;
+      background:#fafbfc;
+    }
+    .paste-zone.drag-over { border-color:var(--brand); background:var(--brand-light); }
+    .paste-placeholder {
+      position:absolute; inset:0;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:10px; pointer-events:none; color:var(--text-dim);
+    }
+    .paste-placeholder-icon { font-size:40px; }
+    .paste-placeholder-text { font-size:14px; font-weight:500; }
+    .paste-placeholder-sub { font-size:12px; text-align:center; line-height:1.6; max-width:340px; }
+    #input-unified {
+      width:100%; min-height:260px;
+      border:none; outline:none;
+      padding:16px; font-family:'JetBrains Mono',monospace;
+      font-size:12px; line-height:1.6;
+      background:transparent; color:var(--text); resize:vertical;
+      position:relative; z-index:1;
+    }
+    .paste-zone.has-data { border-style:solid; border-color:var(--success); background:#fff; }
+    .paste-status { display:none; padding:8px 14px; font-size:12px; font-weight:500; border-top:1px solid var(--border); background:#fafbfc; border-radius:0 0 10px 10px; }
+    .paste-zone.has-data .paste-status { display:flex; align-items:center; gap:8px; color:var(--success); }
+    .paste-zone.has-data .paste-placeholder { display:none; }
+
+    /* ── Format indicator ── */
+    .format-chips { display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; }
+    .format-chip { font-size:11px; padding:3px 10px; border-radius:12px; border:1px solid var(--border); background:var(--bg); color:var(--text-muted); }
+    .format-chip.active { background:rgba(26,127,55,0.1); color:var(--success); border-color:rgba(26,127,55,0.3); font-weight:600; }
+
+    /* ── Step 3: ERD ── */
+    .erd-toolbar { display:flex; align-items:center; gap:8px; padding:10px 16px; border-bottom:1px solid var(--border); background:#fafbfc; flex-wrap:wrap; }
+    .erd-toolbar-title { font-size:13px; font-weight:600; flex:1; color:var(--text); }
+    #erd-preview-wrap { height:580px; border-bottom:1px solid var(--border); position:relative; overflow:hidden; }
+    #erd-canvas-wrap { width:100%; height:100%; }
+
+    .group-editor { margin-top:20px; }
+    .group-list { display:flex; flex-direction:column; gap:7px; }
+    .group-item { border:1px solid var(--border); border-radius:8px; padding:10px 14px; display:flex; align-items:center; gap:10px; background:var(--surface); }
+    .group-color-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; }
+    .group-name-input { flex:1; border:none; outline:none; font-size:13px; font-weight:600; background:transparent; }
+    .table-tag-chip { font-size:10px; padding:2px 8px; border-radius:10px; background:var(--bg); border:1px solid var(--border); color:var(--text-muted); }
+    .group-table-tags { display:flex; flex-wrap:wrap; gap:4px; }
+
+    /* ── Step 4: Share ── */
+    .stat-row { display:flex; gap:12px; flex-wrap:wrap; margin:16px 0; }
+    .stat-card { flex:1; min-width:90px; background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:16px; text-align:center; }
+    .stat-val { font-size:28px; font-weight:800; color:var(--brand); }
+    .stat-label { font-size:11px; color:var(--text-muted); margin-top:3px; }
+    .share-box { background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:16px 18px; display:flex; align-items:center; gap:10px; }
+    .share-url-input { flex:1; border:none; outline:none; background:transparent; font-size:12px; font-family:monospace; color:var(--brand); word-break:break-all; }
+    .share-copy-btn { padding:8px 18px; border-radius:8px; border:none; background:var(--brand); color:#fff; font-size:13px; font-weight:600; cursor:pointer; white-space:nowrap; transition:background 0.2s; }
+    .share-copy-btn:hover { background:var(--brand-dark); }
+
+    /* ── Nav Actions ── */
+    .nav-actions { display:flex; justify-content:space-between; align-items:center; margin-top:24px; padding-top:20px; border-top:1px solid var(--border); }
+    .btn-large { padding:10px 26px; border-radius:10px; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+    .btn-back { background:var(--bg); border:1px solid var(--border); color:var(--text-muted); }
+    .btn-back:hover { color:var(--text); border-color:var(--border-bright); }
+    .btn-next { background:var(--brand); border:none; color:#fff; }
+    .btn-next:hover { background:var(--brand-dark); transform:translateY(-1px); box-shadow:0 4px 12px rgba(9,105,218,0.3); }
+    .btn-next:disabled { background:#a8b1bb; cursor:not-allowed; transform:none; box-shadow:none; }
+
+    /* ── Toast ── */
+    #toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%); background:#1c2128; color:#fff; padding:10px 22px; border-radius:24px; font-size:13px; font-weight:500; opacity:0; transition:opacity 0.3s; pointer-events:none; z-index:9999; }
+    #toast.show { opacity:1; }
+    .hidden { display:none !important; }
+
+    /* ── Version row ── */
+    .version-row { display:flex; gap:8px; align-items:center; margin-top:10px; }
+    .ver-input { flex:1; padding:8px 12px; border:1.5px solid var(--border); border-radius:8px; font-size:13px; outline:none; }
+    .ver-input:focus { border-color:var(--brand); }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="index.html" class="logo">
+    <div class="logo-icon">E</div>
+    ERD Builder <span>Pro</span>
+  </a>
+  <div class="header-actions">
+    <a href="docs/README.md" target="_blank" class="btn-ghost">📖 사용법</a>
+    <a href="viewer.html" target="_blank" class="btn-ghost">👁 뷰어</a>
+  </div>
+</header>
+
+<!-- Stepper -->
+<div class="stepper" id="stepper">
+  <div class="step active" id="si-1"><div class="step-num">1</div><span>DB 선택</span></div>
+  <div class="step-line" id="sl-12"></div>
+  <div class="step" id="si-2"><div class="step-num">2</div><span>결과 붙여넣기</span></div>
+  <div class="step-line" id="sl-23"></div>
+  <div class="step" id="si-3"><div class="step-num">3</div><span>ERD 편집</span></div>
+  <div class="step-line" id="sl-34"></div>
+  <div class="step" id="si-4"><div class="step-num">4</div><span>공유</span></div>
+</div>
+
+<main class="main">
+
+  <!-- ══════════════ STEP 1 ══════════════ -->
+  <div id="step-1" class="panel">
+    <div class="panel-header">
+      <div class="panel-icon">🗄️</div>
+      <div>
+        <div class="panel-title">Step 1 — DB 선택 &amp; 쿼리 복사</div>
+        <div class="panel-sub">DB를 선택하면 컬럼 + FK 관계를 한 번에 조회하는 통합 쿼리가 표시됩니다.</div>
+      </div>
+    </div>
+    <div class="panel-body">
+
+      <div class="db-grid" id="db-grid"></div>
+
+      <div id="sql-display" class="hidden">
+        <div class="sql-block-header">
+          <div class="sql-block-label">
+            ⚡ 통합 조회 쿼리 (컬럼 + FK 관계 한 번에)
+            <span style="font-size:10px; font-weight:400; color:var(--text-muted);" id="db-desc-label"></span>
+          </div>
+          <div class="sql-actions">
+            <button class="btn-copy" id="copy-btn" onclick="copySQL()">📋 쿼리 복사</button>
+          </div>
+        </div>
+        <pre class="sql-code" id="sql-code-block"></pre>
+
+        <div class="info-box" style="margin-top:14px;">
+          <strong>📌 사용법</strong><br>
+          1️⃣ 위 쿼리 복사 → DB 도구(DBeaver / SSMS / SQL*Plus)에서 실행<br>
+          2️⃣ 결과를 <strong>JSON으로 내보내기</strong> (DBeaver: 결과 우클릭 → <em>"Copy as JSON"</em>)<br>
+          3️⃣ 다음 단계에서 붙여넣기 → ERD 자동 생성 완료!
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <div></div>
+        <button class="btn-large btn-next" id="btn1-next" onclick="goStep(2)" disabled>다음 단계 →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ STEP 2 ══════════════ -->
+  <div id="step-2" class="panel hidden">
+    <div class="panel-header">
+      <div class="panel-icon">📥</div>
+      <div>
+        <div class="panel-title">Step 2 — 쿼리 결과 붙여넣기</div>
+        <div class="panel-sub">DB에서 쿼리 실행 후 결과를 복사하여 아래에 붙여넣기 하세요.</div>
+      </div>
+    </div>
+    <div class="panel-body">
+
+      <!-- Project name -->
+      <div style="margin-bottom:16px; display:flex; gap:10px; align-items:center;">
+        <span style="font-size:13px; font-weight:600; white-space:nowrap;">프로젝트명</span>
+        <input type="text" id="input-project-name" placeholder="예: 한인회 DB, 쇼핑몰 API" style="flex:1; padding:8px 12px; border:1.5px solid var(--border); border-radius:8px; font-size:13px; outline:none;">
+      </div>
+
+      <!-- Paste Zone -->
+      <div class="paste-zone" id="paste-zone">
+        <div class="paste-placeholder">
+          <div class="paste-placeholder-icon">📋</div>
+          <div class="paste-placeholder-text">여기에 쿼리 결과를 붙여넣기 하세요</div>
+          <div class="paste-placeholder-sub">
+            DBeaver에서 "Copy as JSON" 또는<br>
+            탭 구분(TSV) / CSV 형식도 지원합니다<br>
+            <span style="color:var(--brand); font-weight:600;">Ctrl+V</span>로 바로 붙여넣기
+          </div>
+        </div>
+        <textarea id="input-unified"
+          placeholder="[ &#10;  {&quot;ROW_TYPE&quot;:&quot;COLUMN&quot;, &quot;TABLE_NAME&quot;:&quot;user&quot;, &quot;COLUMN_NAME&quot;:&quot;id&quot;, ...},&#10;  {&quot;ROW_TYPE&quot;:&quot;FK&quot;, &quot;TABLE_NAME&quot;:&quot;user_posts&quot;, ...}&#10;]"
+          oninput="onPasteInput(this.value)"
+          onpaste="setTimeout(()=>onPasteInput(this.value),50)"
+        ></textarea>
+        <div class="paste-status" id="paste-status">
+          <span id="paste-status-icon">✅</span>
+          <span id="paste-status-text">데이터가 입력되었습니다.</span>
+        </div>
+      </div>
+
+      <!-- Format chips -->
+      <div class="format-chips">
+        <span class="format-chip active" id="chip-json">JSON</span>
+        <span class="format-chip" id="chip-tsv">TSV (탭구분)</span>
+        <span class="format-chip" id="chip-csv">CSV</span>
+        <span class="format-chip" style="margin-left:auto; cursor:pointer;" onclick="clearInput()">🗑 지우기</span>
+      </div>
+
+      <div class="nav-actions">
+        <button class="btn-large btn-back" onclick="goStep(1)">← 이전</button>
+        <button class="btn-large btn-next" id="btn2-next" onclick="parseAndGenerate()" disabled>ERD 생성 →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ STEP 3 ══════════════ -->
+  <div id="step-3" class="panel hidden">
+    <div class="panel-header">
+      <div class="panel-icon">🗺️</div>
+      <div>
+        <div class="panel-title">Step 3 — ERD 확인 &amp; 그룹 편집</div>
+        <div class="panel-sub">테이블 또는 그룹 타이틀을 드래그하여 배치를 조정하세요.</div>
+      </div>
+    </div>
+
+    <div class="erd-toolbar">
+      <span class="erd-toolbar-title" id="tbl-count-label">로딩 중...</span>
+      <button class="btn-copy" onclick="ERDCore.zoomIn()">＋</button>
+      <button class="btn-copy" onclick="ERDCore.zoomOut()">－</button>
+      <button class="btn-copy" onclick="ERDCore.resetView()">⊙ 뷰 초기화</button>
+      <button class="btn-copy" onclick="applyAutoLayout()">✦ 자동 배치</button>
+      <button class="btn-copy" onclick="reAutoGroup()">↺ 자동 그룹화</button>
+    </div>
+
+    <div id="erd-preview-wrap">
+      <div id="erd-canvas-wrap" style="width:100%;height:100%;"></div>
+    </div>
+
+    <div class="panel-body">
+      <div class="group-editor">
+        <div style="font-size:13px; font-weight:700; margin-bottom:10px; color:var(--text);">그룹 편집</div>
+        <div class="group-list" id="group-list"></div>
+        <div style="display:flex; gap:8px; margin-top:10px;">
+          <button class="btn-copy" onclick="addGroup()">+ 그룹 추가</button>
+        </div>
+      </div>
+      <div class="nav-actions">
+        <button class="btn-large btn-back" onclick="goStep(2)">← 이전</button>
+        <button class="btn-large btn-next" onclick="goStep(4)">공유 설정 →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ STEP 4 ══════════════ -->
+  <div id="step-4" class="panel hidden">
+    <div class="panel-header">
+      <div class="panel-icon">🔗</div>
+      <div>
+        <div class="panel-title">Step 4 — ERD 공유</div>
+        <div class="panel-sub">URL을 복사하여 팀원들과 공유하세요. 링크 열기만으로 동일한 ERD가 복원됩니다.</div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="stat-row" id="stat-row"></div>
+
+      <div style="font-size:13px; font-weight:600; margin-bottom:8px;">📎 공유 링크</div>
+      <div class="share-box">
+        <input class="share-url-input" id="share-url" readonly/>
+        <button class="share-copy-btn" onclick="copyShareURL()">링크 복사</button>
+      </div>
+      <div style="font-size:11px; color:var(--text-muted); margin-top:8px;">
+        💡 서버 없이 URL만으로 공유. viewer.html에서 자동 복원됩니다.
+      </div>
+
+      <div style="margin-top:22px; padding-top:20px; border-top:1px solid var(--border);">
+        <div style="font-size:13px; font-weight:600; margin-bottom:10px;">💾 버전 저장 (로컬)</div>
+        <div class="version-row">
+          <input class="ver-input" id="ver-name" placeholder="버전명 (예: v1.0_완성)"/>
+          <button class="btn-primary" onclick="saveVersion()">저장</button>
+        </div>
+        <select id="ver-select" style="width:100%; margin-top:10px; padding:8px 12px; border:1px solid var(--border); border-radius:8px; font-size:13px; cursor:pointer;">
+          <option value="">--- 저장된 버전 불러오기 ---</option>
+        </select>
+      </div>
+
+      <div class="nav-actions">
+        <button class="btn-large btn-back" onclick="goStep(3)">← 이전</button>
+        <button class="btn-large btn-next" onclick="openViewer()">🚀 뷰어에서 열기</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+<div id="toast"></div>
+
+<script>
+/* ═══════════ State ═══════════ */
+const state = { currentStep:1, selectedDb:null, tables:[], relations:[], groups:[], projectName:'My ERD' };
+
+/* ═══════════ Toast ═══════════ */
+function showToast(msg, ms=2500) {
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), ms);
+}
+
+/* ═══════════ Stepper ═══════════ */
+function goStep(n) {
+  [1,2,3,4].forEach(i=>{
+    document.getElementById(`step-${i}`).classList.add('hidden');
+    const si=document.getElementById(`si-${i}`);
+    si.classList.remove('active','done');
+    if(i<n) si.classList.add('done');
+  });
+  for(let i=1;i<=3;i++){
+    const sl=document.getElementById(`sl-${i}${i+1}`);
+    if(sl) sl.classList.toggle('done', i<n);
+  }
+  document.getElementById(`step-${n}`).classList.remove('hidden');
+  document.getElementById(`si-${n}`).classList.add('active');
+  state.currentStep=n;
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(n===4) buildShareStep();
+}
+
+/* ═══════════ Step 1: DB Select ═══════════ */
+(function initDbGrid(){
+  const grid=document.getElementById('db-grid');
+  Object.entries(SQL_QUERIES).forEach(([key,db])=>{
+    const card=document.createElement('div');
+    card.className='db-card'; card.dataset.db=key;
+    card.innerHTML=`<div class="db-icon">${db.icon}</div><div class="db-name">${db.label}</div><div class="db-desc">${db.description||''}</div>`;
+    card.addEventListener('click',()=>selectDb(key));
+    grid.appendChild(card);
+  });
+})();
+
+function selectDb(key) {
+  state.selectedDb=key;
+  document.querySelectorAll('.db-card').forEach(c=>c.classList.toggle('selected',c.dataset.db===key));
+  const db=SQL_QUERIES[key];
+  document.getElementById('sql-code-block').textContent = db.unified;
+  document.getElementById('db-desc-label').textContent  = db.description ? `(${db.description})` : '';
+  document.getElementById('sql-display').classList.remove('hidden');
+  document.getElementById('btn1-next').disabled=false;
+}
+
+function copySQL() {
+  const code=document.getElementById('sql-code-block').textContent;
+  const btn=document.getElementById('copy-btn');
+  ERDShare.copyToClipboard(code).then(ok=>{
+    if(ok){ btn.textContent='✅ 복사됨'; btn.classList.add('success'); setTimeout(()=>{btn.textContent='📋 쿼리 복사'; btn.classList.remove('success');},2000); }
+    showToast(ok?'✅ 쿼리가 클립보드에 복사되었습니다!':'복사 실패');
+  });
+}
+
+/* ═══════════ Step 2: Paste Input ═══════════ */
+function onPasteInput(val) {
+  const zone=document.getElementById('paste-zone');
+  const txt=val.trim();
+  const hasData=txt.length>10;
+  zone.classList.toggle('has-data', hasData);
+  document.getElementById('btn2-next').disabled=!hasData;
+
+  // Detect format
+  document.getElementById('chip-json').classList.toggle('active', txt.startsWith('[') || txt.startsWith('{'));
+  document.getElementById('chip-tsv').classList.toggle('active', !txt.startsWith('[') && txt.includes('\t'));
+  document.getElementById('chip-csv').classList.toggle('active', !txt.startsWith('[') && !txt.includes('\t') && txt.includes(','));
+
+  if(hasData){
+    // Quick row count estimate
+    let count=0;
+    try { const a=JSON.parse(txt); count=Array.isArray(a)?a.length:1; } catch{ count=txt.split('\n').length-1; }
+    document.getElementById('paste-status-text').textContent=`${count.toLocaleString()}행 감지됨 — 다음 단계에서 ERD를 생성합니다.`;
+  }
+}
+
+function clearInput() {
+  const ta=document.getElementById('input-unified'); ta.value='';
+  onPasteInput('');
+}
+
+/* ═══════════ Step 2→3: Parse & Generate ═══════════ */
+function parseAndGenerate() {
+  const raw=document.getElementById('input-unified').value.trim();
+  state.projectName=document.getElementById('input-project-name').value.trim() || 'My ERD';
+  if(!raw){ showToast('⚠️ 쿼리 결과를 붙여넣기 해주세요.'); return; }
+  try {
+    const {tables, relations}=ERDParser.detectAndParse(raw);
+    if(!tables||tables.length===0) throw new Error('테이블이 감지되지 않았습니다. JSON 포맷을 확인해주세요.');
+    state.tables=tables; state.relations=relations;
+    state.groups=ERDParser.autoGroup(state.tables, state.relations);
+    ERDLayout.applySmartLayout(state.tables, state.relations, state.groups, 1200, 1200);
+    goStep(3);
+    initERD(); renderGroupEditor();
+    document.getElementById('tbl-count-label').textContent=
+      `테이블 ${state.tables.length}개 · 관계 ${state.relations.length}개 · 그룹 ${state.groups.length}개`;
+  } catch(e) {
+    showToast('❌ 파싱 오류: '+e.message, 5000);
+    console.error(e);
+  }
+}
+
+/* ═══════════ Step 3: ERD ═══════════ */
+function initERD() {
+  ERDCore.init({
+    wrapId:'erd-canvas-wrap',
+    tables:state.tables, relations:state.relations, groups:state.groups,
+    viewport:{scale:0.48,panX:60,panY:60},
+    onPositionChange:(t)=>{ state.tables=t; }
+  });
+}
+function applyAutoLayout() {
+  ERDLayout.applySmartLayout(state.tables, state.relations, state.groups, 1200, 1200);
+  initERD(); renderGroupEditor();
+  showToast('✅ 자동 배치 적용됨');
+}
+function reAutoGroup() {
+  state.groups=ERDParser.autoGroup(state.tables, state.relations);
+  ERDLayout.applySmartLayout(state.tables, state.relations, state.groups, 1200, 1200);
+  initERD(); renderGroupEditor();
+  showToast('✅ 자동 그룹화 재실행');
+}
+
+const GRP_COLORS=[
+  {color:'#0969da',bgColor:'rgba(9,105,218,0.045)',borderColor:'rgba(9,105,218,0.25)',barColor:'#0969da'},
+  {color:'#1a7f37',bgColor:'rgba(26,127,55,0.045)',borderColor:'rgba(26,127,55,0.25)',barColor:'#1a7f37'},
+  {color:'#b35900',bgColor:'rgba(179,89,0,0.045)',borderColor:'rgba(179,89,0,0.25)',barColor:'#b35900'},
+  {color:'#db2777',bgColor:'rgba(219,39,119,0.045)',borderColor:'rgba(219,39,119,0.25)',barColor:'#db2777'},
+  {color:'#7c3aed',bgColor:'rgba(124,58,237,0.045)',borderColor:'rgba(124,58,237,0.25)',barColor:'#7c3aed'},
+  {color:'#57606a',bgColor:'rgba(87,96,106,0.045)',borderColor:'rgba(87,96,106,0.25)',barColor:'#57606a'},
+];
+function renderGroupEditor() {
+  const list=document.getElementById('group-list'); list.innerHTML='';
+  state.groups.forEach((g,i)=>{
+    const c=GRP_COLORS[i%GRP_COLORS.length];
+    const item=document.createElement('div'); item.className='group-item';
+    item.innerHTML=`<div class="group-color-dot" style="background:${c.color};"></div>
+      <input class="group-name-input" value="${g.name}" onchange="state.groups[${i}].name=this.value"/>
+      <div class="group-table-tags">${g.members.slice(0,6).map(m=>`<span class="table-tag-chip">${m}</span>`).join('')}${g.members.length>6?`<span class="table-tag-chip">+${g.members.length-6}</span>`:''}</div>`;
+    list.appendChild(item);
+  });
+}
+let _gc=0;
+function addGroup() {
+  const name=prompt('새 그룹 이름:'); if(!name) return;
+  const i=state.groups.length; const c=GRP_COLORS[i%GRP_COLORS.length];
+  state.groups.push({id:`grp_${_gc++}`,name,nameEn:name,...c,members:[]});
+  renderGroupEditor();
+}
+
+/* ═══════════ Step 4: Share ═══════════ */
+function buildShareStep() {
+  const statRow=document.getElementById('stat-row');
+  statRow.innerHTML=`
+    <div class="stat-card"><div class="stat-val">${state.tables.length}</div><div class="stat-label">테이블</div></div>
+    <div class="stat-card"><div class="stat-val">${state.relations.length}</div><div class="stat-label">관계</div></div>
+    <div class="stat-card"><div class="stat-val">${state.groups.length}</div><div class="stat-label">그룹</div></div>
+  `;
+  const tables=ERDCore.getTables(), vp=ERDCore.getViewport();
+  const url=ERDShare.buildShareURL(tables,state.relations,state.groups,vp,
+    {name:state.projectName,db:state.selectedDb,createdAt:new Date().toISOString()},
+    location.origin+location.pathname.replace('index.html','')+'/viewer.html'
+  );
+  document.getElementById('share-url').value=url||'(URL 생성 실패)';
+  loadVersionList();
+}
+function copyShareURL() {
+  ERDShare.copyToClipboard(document.getElementById('share-url').value).then(ok=>showToast(ok?'✅ 공유 링크 복사됨!':'복사 실패'));
+}
+function saveVersion() {
+  const name=document.getElementById('ver-name').value.trim();
+  if(!name){showToast('⚠️ 버전명을 입력해주세요.');return;}
+  ERDShare.saveVersion(name,ERDCore.getTables(),state.relations,state.groups,ERDCore.getViewport());
+  showToast(`✅ [${name}] 저장 완료`); loadVersionList();
+}
+function loadVersionList() {
+  const sel=document.getElementById('ver-select');
+  const versions=ERDShare.getVersionList();
+  sel.innerHTML='<option value="">--- 저장된 버전 불러오기 ---</option>';
+  Object.entries(versions).forEach(([n,v])=>{
+    const opt=document.createElement('option'); opt.value=n;
+    opt.textContent=`${n} (${v.savedAt?new Date(v.savedAt).toLocaleDateString('ko-KR'):''})`;
+    sel.appendChild(opt);
+  });
+  sel.onchange=()=>{
+    const name=sel.value; if(!name) return;
+    if(!confirm(`[${name}] 버전을 불러오시겠습니까?`)){sel.value='';return;}
+    const p=ERDShare.loadVersion(name);
+    if(p){state.tables=p.tables;state.relations=p.relations;state.groups=p.groups;goStep(3);initERD();renderGroupEditor();showToast(`✅ [${name}] 불러오기 완료`);}
+    sel.value='';
+  };
+}
+function openViewer() {
+  const url=document.getElementById('share-url').value;
+  if(url) window.open(url,'_blank');
+}
+</script>
+</body>
+</html>

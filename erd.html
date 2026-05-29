@@ -242,6 +242,8 @@
     }
 
     .group-header {
+      pointer-events: auto;
+      cursor: move;
       position: absolute;
       top: 14px;
       left: 18px;
@@ -455,6 +457,23 @@
       text-anchor: middle;
       font-weight: 700;
     }
+  
+    /* ── 테마: 쿠폰 그룹 → pink ── */
+    .theme-pink .table-header {
+      background: #fdf2f8;
+      border-bottom-color: #fbcfe8;
+    }
+
+    .theme-pink .table-name {
+      color: #be185d;
+    }
+
+    .theme-pink .table-tag {
+      background: #fce7f3;
+      color: #db2777;
+      border: 1px solid #f9a8d4;
+    }
+    
   </style>
 </head>
 
@@ -509,6 +528,9 @@
     <div class="legend-item">
       <div class="legend-dot" style="background:#57606a;border-radius:50%;"></div> 공통
     </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#db2777;border-radius:50%;"></div> 쿠폰 관리
+    </div>
   </div>
 
   <!-- Zoom -->
@@ -516,6 +538,14 @@
     <button class="ctrl-btn" id="zoomIn" title="확대">＋</button>
     <button class="ctrl-btn" id="zoomOut" title="축소">－</button>
     <button class="ctrl-btn" id="resetView" title="초기화">⊙</button>
+    <button class="ctrl-btn" id="resetLayout" title="자동 배치로 초기화 (현재 자동저장 삭제)" style="font-size:14px; margin-top:15px;">⟲</button>
+    <div style="margin-top: 10px; display:flex; flex-direction:column; gap:6px;">
+        <button class="ctrl-btn" id="manualSave" title="수동 버전 저장" style="font-size:14px; width:40px; height:40px;">💾</button>
+        <select id="versionSelect" style="width: 40px; height: 26px; font-size:10px; text-align:center; cursor:pointer;" title="저장된 버전 불러오기">
+            <option value="">V</option>
+        </select>
+    </div>
+    
   </div>
 
   <!-- Canvas -->
@@ -530,229 +560,64 @@
        BUSINESS GROUPS
     ═══════════════════════════════════════════════════════ */
     const groups = [
-      {
-        id: 'user',
-        name: '사용자 관리',
-        nameEn: 'User Management',
-        color: '#0969da',
-        bgColor: 'rgba(9,105,218,0.045)',
-        borderColor: 'rgba(9,105,218,0.25)',
-        barColor: '#0969da',
-        members: ['user', 'role', 'user_roles'],
-      },
-      {
-        id: 'region',
-        name: '지역',
-        nameEn: 'Region / Geo',
-        color: '#1a7f37',
-        bgColor: 'rgba(26,127,55,0.045)',
-        borderColor: 'rgba(26,127,55,0.25)',
-        barColor: '#1a7f37',
-        members: ['regions', 'user_regions'],
-      },
-      {
-        id: 'board',
-        name: '게시판',
-        nameEn: 'Board / Posts',
-        color: '#b35900',
-        bgColor: 'rgba(179,89,0,0.045)',
-        borderColor: 'rgba(179,89,0,0.25)',
-        barColor: '#b35900',
-        members: ['user_posts_category', 'user_posts', 'user_posts_comment', 'user_posts_bookmark', 'user_posts_actions'],
-      },
-      {
-        id: 'common',
-        name: '공통',
-        nameEn: 'Common',
-        color: '#57606a',
-        bgColor: 'rgba(87,96,106,0.045)',
-        borderColor: 'rgba(87,96,106,0.25)',
-        barColor: '#57606a',
-        members: ['category'],
-      },
-    ];
+  {"id":"user","name":"사용자 관리","nameEn":"User Management","color":"#0969da","bgColor":"rgba(9,105,218,0.045)","borderColor":"rgba(9,105,218,0.25)","barColor":"#0969da","members":["user","role","user_roles"]},
+  {"id":"region","name":"지역","nameEn":"Region / Geo","color":"#1a7f37","bgColor":"rgba(26,127,55,0.045)","borderColor":"rgba(26,127,55,0.25)","barColor":"#1a7f37","members":["regions","user_regions"]},
+  {"id":"board","name":"게시판","nameEn":"Board / Posts","color":"#b35900","bgColor":"rgba(179,89,0,0.045)","borderColor":"rgba(179,89,0,0.25)","barColor":"#b35900","members":["user_posts_category","user_posts","user_posts_comment","user_posts_bookmark","user_posts_actions"]},
+  {"id":"common","name":"공통","nameEn":"Common","color":"#57606a","bgColor":"rgba(87,96,106,0.045)","borderColor":"rgba(87,96,106,0.25)","barColor":"#57606a","members":["category"]},
+  {"id":"coupon","name":"쿠폰 관리","nameEn":"Coupon Management","color":"#db2777","bgColor":"rgba(219,39,119,0.045)","borderColor":"rgba(219,39,119,0.25)","barColor":"#db2777","members":["coupon","coupon_target_user","coupon_user","coupon_user_history"]},
+];
 
     /* ═══════════════════════════════════════════════════════
        TABLE DATA
     ═══════════════════════════════════════════════════════ */
     const tables = [
-
-      /* ── 사용자 관리 그룹 ─────────────────────────────── */
-      {
-        id: 'user_roles', name: 'user_roles', label: '사용자-권한 (중간)',
-        theme: 'blue', tag: 'JOIN', x: 380, y: 90,
-        fields: [
-          { key: 'FK', name: 'user_id', type: 'BIGINT', fk: true },
-          { key: 'FK', name: 'role_id', type: 'BIGINT', fk: true },
-        ]
-      },
-      {
-        id: 'user', name: 'user', label: '사용자',
-        theme: 'blue', tag: 'CORE', x: 80, y: 230,
-        fields: [
-          { key: 'PK', name: 'id', type: 'BIGINT', pk: true },
-          { key: '', name: 'username', type: 'VARCHAR(50)', nn: true },
-          { key: '', name: 'email', type: 'VARCHAR(50)', nn: true },
-          { key: '', name: 'profile_name', type: 'VARCHAR(500)', nn: true },
-          { key: '', name: 'password', type: 'VARCHAR(120)', nn: true },
-          { key: '', name: 'provider', type: 'VARCHAR(50)' },
-          { key: '', name: 'phone', type: 'VARCHAR(20)' },
-          { key: '', name: 'address', type: 'VARCHAR(200)' },
-          { key: '', name: 'birthday', type: 'DATE' },
-        ]
-      },
-      {
-        id: 'role', name: 'role', label: '권한',
-        theme: 'blue', tag: 'AUTH', x: 660, y: 230,
-        fields: [
-          { key: 'PK', name: 'id', type: 'BIGINT', pk: true },
-          { key: '', name: 'name', type: 'VARCHAR(20)', nn: true },
-        ]
-      },
-
-      /* ── 지역 그룹 ────────────────────────────────────── */
-      {
-        id: 'regions', name: 'regions', label: '지역 (대만)',
-        theme: 'green', tag: 'GEO', x: 1050, y: 90,
-        fields: [
-          { key: 'PK', name: 'id', type: 'INT', pk: true },
-          { key: '', name: 'city_name', type: 'VARCHAR(50)', nn: true },
-          { key: '', name: 'district_name', type: 'VARCHAR(50)', nn: true },
-          { key: '', name: 'name_kr', type: 'VARCHAR(100)', nn: true },
-          { key: '', name: 'name_en', type: 'VARCHAR(100)' },
-          { key: '', name: 'latitude', type: 'DOUBLE', nn: true },
-          { key: '', name: 'longitude', type: 'DOUBLE', nn: true },
-          { key: '', name: 'place_id', type: 'VARCHAR' },
-          { key: '', name: 'formatted_address', type: 'VARCHAR' },
-        ]
-      },
-      {
-        id: 'user_regions', name: 'user_regions', label: '사용자 관심지역',
-        theme: 'green', tag: 'GEO', x: 1050, y: 460,
-        fields: [
-          { key: 'PK', name: 'id', type: 'BIGINT', pk: true },
-          { key: 'FK', name: 'user_id', type: 'BIGINT', fk: true, nn: true },
-          { key: 'FK', name: 'region_id', type: 'INT', fk: true, nn: true },
-          { key: 'UQ', name: '(user_id, region_id)', type: 'UNIQUE', uq: true },
-          { key: '', name: 'region_type', type: 'VARCHAR(10)', nn: true },
-          { key: '', name: 'osm_id', type: 'BIGINT' },
-          { key: '', name: 'display_name', type: 'TEXT' },
-          { key: '', name: 'latitude', type: 'DOUBLE', nn: true },
-          { key: '', name: 'longitude', type: 'DOUBLE', nn: true },
-          { key: '', name: 'created_at', type: 'DATETIME' },
-        ]
-      },
-
-      /* ── 게시판 그룹 ──────────────────────────────────── */
-      {
-        id: 'user_posts_category', name: 'user_posts_category', label: '게시글 카테고리',
-        theme: 'orange', tag: 'POST', x: 80, y: 680,
-        fields: [
-          { key: 'PK', name: 'id', type: 'BIGINT', pk: true },
-          { key: '', name: 'category_code', type: 'VARCHAR(50)', nn: true },
-          { key: '', name: 'category_name', type: 'VARCHAR(100)', nn: true },
-          { key: '', name: 'is_community', type: 'BOOLEAN', nn: true },
-          { key: '', name: 'date_created', type: 'DATETIME' },
-          { key: '', name: 'last_updated', type: 'DATETIME' },
-        ]
-      },
-      {
-        id: 'user_posts', name: 'user_posts', label: '게시글',
-        theme: 'orange', tag: 'POST', x: 390, y: 680,
-        fields: [
-          { key: 'PK', name: 'id', type: 'BIGINT', pk: true },
-          { key: 'FK', name: 'user_posts_category_id', type: 'BIGINT', fk: true, nn: true },
-          { key: 'FK', name: 'user_id', type: 'BIGINT', fk: true, nn: true },
-          { key: '', name: 'content_title', type: 'VARCHAR(255)', nn: true },
-          { key: '', name: 'content', type: 'TEXT', nn: true },
-          { key: '', name: 'view_count', type: 'BIGINT' },
-          { key: '', name: 'like_count', type: 'BIGINT' },
-          { key: '', name: 'deleted', type: 'BOOLEAN', nn: true },
-          { key: '', name: 'important', type: 'BOOLEAN', nn: true },
-          { key: '', name: 'date_created', type: 'DATETIME' },
-          { key: '', name: 'last_updated', type: 'DATETIME' },
-        ]
-      },
-      {
-        id: 'user_posts_comment', name: 'user_posts_comment', label: '게시글 댓글',
-        theme: 'orange', tag: 'POST', x: 80, y: 1120,
-        fields: [
-          { key: 'PK', name: 'id', type: 'BIGINT', pk: true },
-          { key: 'FK', name: 'user_id', type: 'BIGINT', fk: true, nn: true },
-          { key: 'FK', name: 'user_posts_id', type: 'BIGINT', fk: true, nn: true },
-          { key: 'FK', name: 'parent_id', type: 'BIGINT', fk: true },
-          { key: '', name: 'content', type: 'TEXT', nn: true },
-          { key: '', name: 'like_count', type: 'BIGINT' },
-          { key: '', name: 'deleted', type: 'BOOLEAN', nn: true },
-          { key: '', name: 'date_created', type: 'DATETIME' },
-          { key: '', name: 'last_updated', type: 'DATETIME' },
-        ]
-      },
-      {
-        id: 'user_posts_bookmark', name: 'user_posts_bookmark', label: '게시글 북마크',
-        theme: 'orange', tag: 'POST', x: 390, y: 1120,
-        fields: [
-          { key: 'PK', name: 'id', type: 'BIGINT', pk: true },
-          { key: 'FK', name: 'user_id', type: 'BIGINT', fk: true, nn: true },
-          { key: 'FK', name: 'user_posts_id', type: 'BIGINT', fk: true, nn: true },
-          { key: '', name: 'deleted', type: 'BOOLEAN', nn: true },
-          { key: '', name: 'date_created', type: 'DATETIME' },
-          { key: '', name: 'last_updated', type: 'DATETIME' },
-        ]
-      },
-      {
-        id: 'user_posts_actions', name: 'user_posts_actions', label: '좋아요 / 싫어요',
-        theme: 'orange', tag: 'POST', x: 700, y: 1120,
-        fields: [
-          { key: 'PK', name: 'id', type: 'BIGINT', pk: true },
-          { key: 'FK', name: 'user_posts_id', type: 'BIGINT', fk: true, nn: true },
-          { key: 'FK', name: 'user_id', type: 'BIGINT', fk: true, nn: true },
-          { key: '', name: 'action_type', type: 'VARCHAR(50)', nn: true },
-          { key: '', name: 'action_flag', type: 'BOOLEAN', nn: true },
-          { key: '', name: 'like_count', type: 'BIGINT', nn: true },
-          { key: '', name: 'version', type: 'BIGINT', nn: true },
-          { key: '', name: 'description', type: 'VARCHAR(100)' },
-          { key: '', name: 'date_created', type: 'DATETIME', nn: true },
-          { key: '', name: 'last_updated', type: 'DATETIME', nn: true },
-        ]
-      },
-
-      /* ── 공통 ─────────────────────────────────────────── */
-      {
-        id: 'category', name: 'category', label: '카테고리 (공통)',
-        theme: 'gray', tag: 'UTIL', x: 1050, y: 920,
-        fields: [
-          { key: 'PK', name: 'id', type: 'INT', pk: true },
-          { key: '', name: 'code', type: 'VARCHAR(50)', nn: true },
-          { key: '', name: 'name', type: 'VARCHAR(50)', nn: true },
-        ]
-      },
-    ];
+  {"id":"user_roles","name":"user_roles","label":"사용자-권한 (중간)","theme":"blue","tag":"JOIN","x":3060,"y":2000,"fields":[{"key":"PK","name":"user_id","type":"BIGINT","pk":true,"fk":false,"uq":false,"nn":true},{"key":"PK","name":"role_id","type":"BIGINT","pk":true,"fk":false,"uq":false,"nn":true}],"gx":0,"gy":0},
+  {"id":"user","name":"user","label":"사용자","theme":"blue","tag":"CORE","x":2661,"y":2829,"fields":[{"key":"PK","name":"id","type":"BIGINT","pk":true,"fk":false,"uq":false,"nn":true},{"key":"FK","name":"username","type":"VARCHAR(50)","pk":false,"fk":true,"uq":false,"nn":true},{"key":"","name":"password","type":"VARCHAR(120)","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"profile_name","type":"VARCHAR(500)","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"email","type":"VARCHAR(50)","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"provider","type":"VARCHAR(50)","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"phone","type":"VARCHAR(20)","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"address","type":"VARCHAR(200)","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"birthday","type":"DATE","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"account_status","type":"VARCHAR(20)","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"partner_approval_status","type":"VARCHAR(20)","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"admin_memo","type":"VARCHAR(1000)","pk":false,"fk":false,"uq":false,"nn":false}],"gx":0,"gy":0},
+  {"id":"role","name":"role","label":"권한","theme":"blue","tag":"AUTH","x":1764,"y":3033,"fields":[{"key":"PK","name":"id","type":"BIGINT","pk":true,"fk":false,"uq":false,"nn":true},{"key":"","name":"name","type":"VARCHAR(20)","pk":false,"fk":false,"uq":false,"nn":false}],"gx":0,"gy":0},
+  {"id":"regions","name":"regions","label":"지역 (대만)","theme":"green","tag":"GEO","x":875,"y":2460,"fields":[{"key":"PK","name":"id","type":"INT","pk":true,"fk":false,"uq":false,"nn":true},{"key":"","name":"city_name","type":"VARCHAR(50)","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"district_name","type":"VARCHAR(50)","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"name_kr","type":"VARCHAR(100)","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"name_en","type":"VARCHAR(100)","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"latitude","type":"DOUBLE","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"longitude","type":"DOUBLE","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"place_id","type":"VARCHAR(255)","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"formatted_address","type":"VARCHAR(255)","pk":false,"fk":false,"uq":false,"nn":false}],"gx":-340,"gy":0},
+  {"id":"user_regions","name":"user_regions","label":"사용자 관심지역","theme":"green","tag":"GEO","x":1215,"y":2460,"fields":[{"key":"PK","name":"id","type":"BIGINT","pk":true,"fk":false,"uq":false,"nn":true},{"key":"FK","name":"user_id","type":"BIGINT","pk":false,"fk":true,"uq":false,"nn":true},{"key":"FK","name":"region_id","type":"INT","pk":false,"fk":true,"uq":false,"nn":true},{"key":"","name":"region_type","type":"VARCHAR(10)","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"osm_id","type":"BIGINT","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"display_name","type":"TEXT","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"latitude","type":"DOUBLE","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"longitude","type":"DOUBLE","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"created_at","type":"DATETIME","pk":false,"fk":false,"uq":false,"nn":false}],"gx":0,"gy":0},
+  {"id":"user_posts_category","name":"user_posts_category","label":"게시글 카테고리","theme":"orange","tag":"POST","x":2000,"y":2300,"fields":[{"key":"PK","name":"id","type":"BIGINT","pk":true,"fk":false,"uq":false,"nn":true},{"key":"UQ","name":"category_code","type":"VARCHAR(50)","pk":false,"fk":false,"uq":true,"nn":true},{"key":"","name":"category_name","type":"VARCHAR(100)","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"date_created","type":"DATETIME","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"last_updated","type":"DATETIME","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"is_community","type":"TINYINT(1)","pk":false,"fk":false,"uq":false,"nn":true}],"gx":0,"gy":300},
+  {"id":"user_posts","name":"user_posts","label":"게시글","theme":"orange","tag":"POST","x":2000,"y":2000,"fields":[{"key":"PK","name":"id","type":"BIGINT","pk":true,"fk":false,"uq":false,"nn":true},{"key":"FK","name":"user_posts_category_id","type":"BIGINT","pk":false,"fk":true,"uq":false,"nn":true},{"key":"","name":"content_title","type":"VARCHAR(255)","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"view_count","type":"BIGINT","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"date_created","type":"DATETIME","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"last_updated","type":"DATETIME","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"content","type":"TEXT","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"like_count","type":"BIGINT","pk":false,"fk":false,"uq":false,"nn":false},{"key":"FK","name":"user_id","type":"BIGINT","pk":false,"fk":true,"uq":false,"nn":true},{"key":"","name":"deleted","type":"TINYINT(1)","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"important","type":"BIT(1)","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"media_url","type":"VARCHAR(1000)","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"link_url","type":"VARCHAR(1000)","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"button_text","type":"VARCHAR(100)","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"display_order","type":"INT","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"active","type":"TINYINT(1)","pk":false,"fk":false,"uq":false,"nn":false}],"gx":0,"gy":0},
+  {"id":"user_posts_comment","name":"user_posts_comment","label":"게시글 댓글","theme":"orange","tag":"POST","x":1660,"y":2000,"fields":[{"key":"PK","name":"id","type":"BIGINT","pk":true,"fk":false,"uq":false,"nn":true},{"key":"FK","name":"user_id","type":"BIGINT","pk":false,"fk":true,"uq":false,"nn":true},{"key":"FK","name":"user_posts_id","type":"BIGINT","pk":false,"fk":true,"uq":false,"nn":true},{"key":"","name":"content","type":"TEXT","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"like_count","type":"BIGINT","pk":false,"fk":false,"uq":false,"nn":false},{"key":"FK","name":"parent_id","type":"BIGINT","pk":false,"fk":true,"uq":false,"nn":false},{"key":"","name":"date_created","type":"DATETIME","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"last_updated","type":"DATETIME","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"deleted","type":"TINYINT(1)","pk":false,"fk":false,"uq":false,"nn":true}],"gx":-340,"gy":0},
+  {"id":"user_posts_bookmark","name":"user_posts_bookmark","label":"게시글 북마크","theme":"orange","tag":"POST","x":2340,"y":2000,"fields":[{"key":"PK","name":"id","type":"BIGINT","pk":true,"fk":false,"uq":false,"nn":true},{"key":"FK","name":"user_id","type":"BIGINT","pk":false,"fk":true,"uq":false,"nn":true},{"key":"FK","name":"user_posts_id","type":"BIGINT","pk":false,"fk":true,"uq":false,"nn":true},{"key":"","name":"deleted","type":"TINYINT(1)","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"date_created","type":"DATETIME","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"last_updated","type":"DATETIME","pk":false,"fk":false,"uq":false,"nn":false}],"gx":340,"gy":0},
+  {"id":"user_posts_actions","name":"user_posts_actions","label":"좋아요 / 싫어요","theme":"orange","tag":"POST","x":2000,"y":1700,"fields":[{"key":"PK","name":"id","type":"BIGINT","pk":true,"fk":false,"uq":false,"nn":true},{"key":"FK","name":"user_posts_id","type":"BIGINT","pk":false,"fk":true,"uq":false,"nn":true},{"key":"FK","name":"user_id","type":"BIGINT","pk":false,"fk":true,"uq":false,"nn":true},{"key":"","name":"action_type","type":"VARCHAR(50)","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"date_created","type":"DATETIME","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"last_updated","type":"DATETIME","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"description","type":"VARCHAR(100)","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"version","type":"BIGINT","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"action_flag","type":"BIT(1)","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"like_count","type":"BIGINT","pk":false,"fk":false,"uq":false,"nn":true}],"gx":0,"gy":-300},
+  {"id":"category","name":"category","label":"카테고리 (공통)","theme":"gray","tag":"UTIL","x":1045,"y":1540,"fields":[{"key":"PK","name":"my_row_id","type":"BIGINT UNSIGNED","pk":true,"fk":false,"uq":false,"nn":true},{"key":"FK","name":"id","type":"INT","pk":false,"fk":true,"uq":false,"nn":true},{"key":"","name":"code","type":"VARCHAR(50)","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"name","type":"VARCHAR(50)","pk":false,"fk":false,"uq":false,"nn":true}],"gx":0,"gy":0},
+  {"id":"coupon","name":"coupon","label":"coupon (New)","theme":"pink","tag":"COUPON","x":1764,"y":1117,"fields":[{"key":"PK","name":"id","type":"BIGINT","pk":true,"fk":false,"uq":false,"nn":true},{"key":"UQ","name":"code","type":"VARCHAR(255)","pk":false,"fk":false,"uq":true,"nn":true},{"key":"","name":"title","type":"VARCHAR(255)","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"description","type":"TEXT","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"password","type":"VARCHAR(255)","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"expiration_date","type":"DATETIME","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"type","type":"VARCHAR(50)","pk":false,"fk":false,"uq":false,"nn":true},{"key":"FK","name":"user_id","type":"BIGINT","pk":false,"fk":true,"uq":false,"nn":true},{"key":"FK","name":"target_user_id","type":"BIGINT","pk":false,"fk":true,"uq":false,"nn":false},{"key":"","name":"max_usage_count","type":"INT","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"current_usage_count","type":"INT","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"hidden","type":"TINYINT(1)","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"is_delete","type":"TINYINT(1)","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"date_created","type":"DATETIME","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"last_updated","type":"DATETIME","pk":false,"fk":false,"uq":false,"nn":true},{"key":"FK","name":"place_id","type":"BIGINT","pk":false,"fk":true,"uq":false,"nn":false}],"gx":0,"gy":0},
+  {"id":"coupon_target_user","name":"coupon_target_user","label":"coupon_target_user (New)","theme":"pink","tag":"COUPON","x":1424,"y":1117,"fields":[{"key":"PK","name":"id","type":"BIGINT","pk":true,"fk":false,"uq":false,"nn":true},{"key":"FK","name":"coupon_id","type":"BIGINT","pk":false,"fk":true,"uq":false,"nn":true},{"key":"FK","name":"target_user_id","type":"BIGINT","pk":false,"fk":true,"uq":false,"nn":true}],"gx":-340,"gy":0},
+  {"id":"coupon_user","name":"coupon_user","label":"coupon_user (New)","theme":"pink","tag":"COUPON","x":2104,"y":1117,"fields":[{"key":"PK","name":"id","type":"BIGINT","pk":true,"fk":false,"uq":false,"nn":true},{"key":"FK","name":"coupon_id","type":"BIGINT","pk":false,"fk":true,"uq":false,"nn":true},{"key":"FK","name":"user_id","type":"BIGINT","pk":false,"fk":true,"uq":false,"nn":true},{"key":"","name":"is_used","type":"TINYINT(1)","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"download_date","type":"DATETIME","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"use_date","type":"DATETIME","pk":false,"fk":false,"uq":false,"nn":false}],"gx":340,"gy":0},
+  {"id":"coupon_user_history","name":"coupon_user_history","label":"coupon_user_history (New)","theme":"pink","tag":"COUPON","x":1764,"y":817,"fields":[{"key":"PK","name":"id","type":"BIGINT","pk":true,"fk":false,"uq":false,"nn":true},{"key":"FK","name":"coupon_id","type":"BIGINT","pk":false,"fk":true,"uq":false,"nn":true},{"key":"FK","name":"user_id","type":"BIGINT","pk":false,"fk":true,"uq":false,"nn":true},{"key":"","name":"use_date","type":"DATETIME","pk":false,"fk":false,"uq":false,"nn":true}],"gx":0,"gy":-300},
+  {"id":"place","name":"place","label":"place (New)","theme":"gray","tag":"NEW","x":2831,"y":1171,"fields":[{"key":"PK","name":"id","type":"BIGINT","pk":true,"fk":false,"uq":false,"nn":true},{"key":"FK","name":"category_id","type":"INT","pk":false,"fk":true,"uq":false,"nn":true},{"key":"","name":"name","type":"VARCHAR(255)","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"address","type":"VARCHAR(500)","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"description","type":"TEXT","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"is_korean_service","type":"TINYINT(1)","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"is_partner","type":"TINYINT(1)","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"weight","type":"INT","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"latitude","type":"DOUBLE","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"longitude","type":"DOUBLE","pk":false,"fk":false,"uq":false,"nn":true},{"key":"","name":"date_created","type":"DATETIME","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"last_updated","type":"DATETIME","pk":false,"fk":false,"uq":false,"nn":false},{"key":"FK","name":"user_id","type":"BIGINT","pk":false,"fk":true,"uq":false,"nn":false}],"gx":0,"gy":0},
+  {"id":"sample","name":"sample","label":"sample (New)","theme":"gray","tag":"NEW","x":2491,"y":1171,"fields":[{"key":"PK","name":"my_row_id","type":"BIGINT UNSIGNED","pk":true,"fk":false,"uq":false,"nn":true},{"key":"FK","name":"id","type":"INT","pk":false,"fk":true,"uq":false,"nn":true},{"key":"","name":"category","type":"VARCHAR(50)","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"name","type":"VARCHAR(500)","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"address","type":"VARCHAR(1000)","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"position_x","type":"DECIMAL(20,6)","pk":false,"fk":false,"uq":false,"nn":false},{"key":"","name":"position_y","type":"DECIMAL(20,6)","pk":false,"fk":false,"uq":false,"nn":false}],"gx":-340,"gy":0},
+];
 
     /* ═══════════════════════════════════════════════════════
        RELATIONS
     ═══════════════════════════════════════════════════════ */
     const relations = [
-      // 사용자 ↔ 권한
-      { from: 'user_roles', to: 'user', type: 'many-one', label: 'N:1' },
-      { from: 'user_roles', to: 'role', type: 'many-one', label: 'N:1' },
-      // 지역
-      { from: 'user_regions', to: 'user', type: 'many-one', label: 'N:1' },
-      { from: 'user_regions', to: 'regions', type: 'many-one', label: 'N:1' },
-      // 게시글
-      { from: 'user_posts', to: 'user_posts_category', type: 'many-one', label: 'N:1' },
-      { from: 'user_posts', to: 'user', type: 'many-one', label: 'N:1' },
-      // 댓글
-      { from: 'user_posts_comment', to: 'user', type: 'many-one', label: 'N:1' },
-      { from: 'user_posts_comment', to: 'user_posts', type: 'many-one', label: 'N:1' },
-      { from: 'user_posts_comment', to: 'user_posts_comment', type: 'self', label: 'self' },
-      // 좋아요
-      { from: 'user_posts_actions', to: 'user_posts', type: 'many-one', label: 'N:1' },
-      { from: 'user_posts_actions', to: 'user', type: 'many-one', label: 'N:1' },
-      // 북마크
-      { from: 'user_posts_bookmark', to: 'user', type: 'many-one', label: 'N:1' },
-      { from: 'user_posts_bookmark', to: 'user_posts', type: 'many-one', label: 'N:1' },
-    ];
+  {"from":"coupon","to":"user","type":"many-one","label":"N:1"},
+  {"from":"coupon","to":"place","type":"many-one","label":"N:1"},
+  {"from":"coupon_target_user","to":"coupon","type":"many-one","label":"N:1"},
+  {"from":"coupon_target_user","to":"user","type":"many-one","label":"N:1"},
+  {"from":"coupon_user","to":"coupon","type":"many-one","label":"N:1"},
+  {"from":"coupon_user","to":"user","type":"many-one","label":"N:1"},
+  {"from":"coupon_user_history","to":"coupon","type":"many-one","label":"N:1"},
+  {"from":"coupon_user_history","to":"user","type":"many-one","label":"N:1"},
+  {"from":"place","to":"category","type":"many-one","label":"N:1"},
+  {"from":"place","to":"user","type":"many-one","label":"N:1"},
+  {"from":"user_posts","to":"user_posts_category","type":"many-one","label":"N:1"},
+  {"from":"user_posts","to":"user","type":"many-one","label":"N:1"},
+  {"from":"user_posts_actions","to":"user_posts","type":"many-one","label":"N:1"},
+  {"from":"user_posts_actions","to":"user","type":"many-one","label":"N:1"},
+  {"from":"user_posts_bookmark","to":"user","type":"many-one","label":"N:1"},
+  {"from":"user_posts_bookmark","to":"user_posts","type":"many-one","label":"N:1"},
+  {"from":"user_posts_comment","to":"user","type":"many-one","label":"N:1"},
+  {"from":"user_posts_comment","to":"user_posts","type":"many-one","label":"N:1"},
+  {"from":"user_posts_comment","to":"user_posts_comment","type":"self","label":"self"},
+  {"from":"user_regions","to":"user","type":"many-one","label":"N:1"},
+  {"from":"user_regions","to":"regions","type":"many-one","label":"N:1"},
+  {"from":"user_roles","to":"user","type":"many-one","label":"N:1"},
+  {"from":"user_roles","to":"role","type":"many-one","label":"N:1"},
+];
 
     /* ═══════════════════════════════════════════════════════
        RENDER
@@ -781,8 +646,14 @@
         <span class="group-name-en" style="color:${g.color};">${g.nameEn}</span>
       </div>
     </div>`;
-      canvas.appendChild(div);
+            canvas.appendChild(div);
       groupEls[g.id] = div;
+      
+      // Attach group drag
+      const header = div.querySelector('.group-header');
+      if(header) {
+          makeGroupDraggable(header, g);
+      }
     });
 
     /* -- Table Cards -- */
@@ -796,6 +667,16 @@
     <span class="field-type">${f.type}</span>
   </div>`;
     }
+
+    
+    /* Load saved positions from localStorage */
+    const savedPos = JSON.parse(localStorage.getItem('erd_positions') || '{}');
+    tables.forEach(t => {
+        if (savedPos[t.id]) {
+            t.x = savedPos[t.id].x;
+            t.y = savedPos[t.id].y;
+        }
+    });
 
     tables.forEach(t => {
       const div = document.createElement('div');
@@ -841,9 +722,24 @@
       });
     }
 
-    /* ═══════════════════════════════════════════════════════
+        /* ═══════════════════════════════════════════════════════
        DRAG
     ═══════════════════════════════════════════════════════ */
+
+    function savePositions() {
+        const pos = {};
+        tables.forEach(t => {
+            const el = document.getElementById('tbl-' + t.id);
+            if (el) {
+                pos[t.id] = {
+                    x: parseInt(el.style.left) || 0,
+                    y: parseInt(el.style.top) || 0
+                };
+            }
+        });
+        localStorage.setItem('erd_positions', JSON.stringify(pos));
+    }
+
     function makeDraggable(el) {
       let sx, sy, ox, oy, drag = false;
       el.addEventListener('mousedown', e => {
@@ -859,7 +755,50 @@
         updateGroupBounds(); drawLines();
       });
       document.addEventListener('mouseup', () => {
-        if (drag) { drag = false; el.style.zIndex = 3; }
+        if (drag) { drag = false; el.style.zIndex = 3; savePositions(); }
+      });
+    }
+
+    function makeGroupDraggable(headerEl, groupObj) {
+      let sx, sy, drag = false;
+      let initialPositions = []; // To store initial positions of all member tables
+      
+      headerEl.addEventListener('mousedown', e => {
+        drag = true; 
+        sx = e.clientX; 
+        sy = e.clientY;
+        
+        initialPositions = groupObj.members.map(mid => {
+            const t = tableEls[mid];
+            return t ? { el: t, ox: parseInt(t.style.left) || 0, oy: parseInt(t.style.top) || 0 } : null;
+        }).filter(Boolean);
+        
+        // bring members to front
+        initialPositions.forEach(item => { item.el.style.zIndex = 50; });
+        e.preventDefault();
+        e.stopPropagation(); // prevent panning the canvas
+      });
+      
+      document.addEventListener('mousemove', e => {
+        if (!drag) return;
+        const dx = (e.clientX - sx) / scale;
+        const dy = (e.clientY - sy) / scale;
+        
+        initialPositions.forEach(item => {
+            item.el.style.left = (item.ox + dx) + 'px';
+            item.el.style.top = (item.oy + dy) + 'px';
+        });
+        
+        updateGroupBounds(); 
+        drawLines();
+      });
+      
+      document.addEventListener('mouseup', () => {
+        if (drag) { 
+            drag = false; 
+            initialPositions.forEach(item => { item.el.style.zIndex = 3; });
+            savePositions();
+        }
       });
     }
 
@@ -888,6 +827,7 @@
       return `M${ax},${ay} C${cx},${ay} ${cx},${by} ${bx},${by}`;
     }
 
+    
     function drawLines() {
       while (svg.firstChild) svg.removeChild(svg.firstChild);
 
@@ -910,11 +850,74 @@
       defs.appendChild(mk('ag', '#1a7f37', 'arrow')); defs.appendChild(mk('dg', '#1a7f37', 'dot'));
       defs.appendChild(mk('ap', '#7c3aed', 'arrow'));
       defs.appendChild(mk('ao', '#b35900', 'arrow')); defs.appendChild(mk('do', '#b35900', 'dot'));
+      
+      // highlight markers
+      defs.appendChild(mk('ag-hl', '#1a7f37', 'arrow')); defs.appendChild(mk('dg-hl', '#1a7f37', 'dot'));
+      defs.appendChild(mk('ap-hl', '#7c3aed', 'arrow'));
+      defs.appendChild(mk('ao-hl', '#b35900', 'arrow')); defs.appendChild(mk('do-hl', '#b35900', 'dot'));
+      
       svg.appendChild(defs);
+      
+      // Determine related tables for table opacity highlighting
+      let relatedTables = new Set();
+      if (selectedEntity) {
+          if (selectedEntity.type === 'table') {
+              relatedTables.add(selectedEntity.id);
+              relations.forEach(rel => {
+                  if (rel.from === selectedEntity.id) relatedTables.add(rel.to);
+                  if (rel.to === selectedEntity.id) relatedTables.add(rel.from);
+              });
+          } else if (selectedEntity.type === 'group') {
+              const g = groups.find(g => g.id === selectedEntity.id);
+              if (g) {
+                  g.members.forEach(m => relatedTables.add(m));
+                  relations.forEach(rel => {
+                      if (g.members.includes(rel.from)) relatedTables.add(rel.to);
+                      if (g.members.includes(rel.to)) relatedTables.add(rel.from);
+                  });
+              }
+          }
+      }
+
+      // Update table opacities
+      tables.forEach(t => {
+          const el = tableEls[t.id];
+          if (!el) return;
+          if (!selectedEntity || relatedTables.has(t.id)) {
+              el.style.opacity = '1';
+              el.style.boxShadow = selectedEntity ? '0 0 0 2px rgba(9,105,218,0.3), 0 4px 12px rgba(0,0,0,0.1)' : '';
+          } else {
+              el.style.opacity = '0.3';
+              el.style.boxShadow = '';
+          }
+      });
+      
+      // Update group opacities
+      groups.forEach(g => {
+         const el = groupEls[g.id];
+         if (!el) return;
+         if (!selectedEntity || (selectedEntity.type === 'group' && selectedEntity.id === g.id)) {
+             el.style.opacity = '1';
+         } else {
+             el.style.opacity = '0.3';
+         }
+      });
 
       relations.forEach(rel => {
         const fEl = tableEls[rel.from], tEl = tableEls[rel.to];
         if (!fEl || !tEl) return;
+        
+        let isRelated = false;
+        if (!selectedEntity) {
+            isRelated = true;
+        } else if (selectedEntity.type === 'table') {
+            isRelated = (rel.from === selectedEntity.id || rel.to === selectedEntity.id);
+        } else if (selectedEntity.type === 'group') {
+            const g = groups.find(g => g.id === selectedEntity.id);
+            if (g && (g.members.includes(rel.from) || g.members.includes(rel.to))) {
+                isRelated = true;
+            }
+        }
 
         let stroke, dash, me, ms;
         if (rel.type === 'many-one') { stroke = '#1a7f37'; dash = 'none'; me = 'url(#ag)'; ms = 'url(#dg)'; }
@@ -935,23 +938,50 @@
 
         const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
         path.setAttribute('d', pathD); path.setAttribute('stroke', stroke);
-        path.setAttribute('stroke-width', '2'); path.setAttribute('fill', 'none');
-        path.setAttribute('stroke-dasharray', dash); path.setAttribute('opacity', '0.9');
-        if (me) path.setAttribute('marker-end', me);
-        if (ms) path.setAttribute('marker-start', ms);
+        path.setAttribute('fill', 'none');
+        
+        if (selectedEntity && !isRelated) {
+            path.setAttribute('stroke-width', '1');
+            path.setAttribute('opacity', '0.1');
+            path.setAttribute('stroke-dasharray', dash);
+            // remove markers for dimmed lines to reduce noise
+        } else if (selectedEntity && isRelated) {
+            path.setAttribute('stroke-width', '4'); // highlight thickness
+            path.setAttribute('opacity', '1');
+            path.setAttribute('stroke-dasharray', dash);
+            if (me) path.setAttribute('marker-end', me.replace(')', '-hl)'));
+            if (ms) path.setAttribute('marker-start', ms.replace(')', '-hl)'));
+            
+            // Bring to front by appending later
+        } else {
+            path.setAttribute('stroke-width', '2');
+            path.setAttribute('opacity', '0.8');
+            path.setAttribute('stroke-dasharray', dash);
+            if (me) path.setAttribute('marker-end', me);
+            if (ms) path.setAttribute('marker-start', ms);
+        }
+        
         svg.appendChild(path);
 
         // label background
         const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
         bg.setAttribute('x', mx - 16); bg.setAttribute('y', my - 18);
         bg.setAttribute('width', '32'); bg.setAttribute('height', '14');
-        bg.setAttribute('rx', '4'); bg.setAttribute('fill', 'rgba(255,255,255,0.92)');
+        bg.setAttribute('rx', '4'); 
+        bg.setAttribute('fill', 'rgba(255,255,255,0.92)');
+        if (selectedEntity && !isRelated) bg.setAttribute('opacity', '0.1');
+        
         svg.appendChild(bg);
 
         const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         txt.setAttribute('x', mx); txt.setAttribute('y', my - 7);
         txt.setAttribute('class', 'rel-label'); txt.setAttribute('fill', stroke);
         txt.textContent = rel.label;
+        if (selectedEntity && !isRelated) txt.setAttribute('opacity', '0.1');
+        else if (selectedEntity && isRelated) {
+            txt.setAttribute('font-weight', '900');
+            txt.setAttribute('font-size', '12px');
+        }
         svg.appendChild(txt);
       });
     }
@@ -959,6 +989,7 @@
     /* ═══════════════════════════════════════════════════════
        PAN & ZOOM
     ═══════════════════════════════════════════════════════ */
+    let selectedEntity = null;
     let scale = 0.72, panX = 50, panY = 28;
     let panning = false, psx, psy;
 
@@ -992,11 +1023,83 @@
     document.getElementById('zoomOut').addEventListener('click', () => { scale = Math.max(0.25, scale - 0.1); applyTransform(); });
     document.getElementById('resetView').addEventListener('click', () => { scale = 0.72; panX = 50; panY = 28; applyTransform(); });
 
+    document.getElementById('resetLayout').addEventListener('click', () => {
+        if(confirm('저장된 테이블 위치를 초기화하고 자동 배치로 되돌리시겠습니까?')) {
+            localStorage.removeItem('erd_positions');
+            location.reload();
+        }
+    });
+
+
     /* ── Init ── */
     requestAnimationFrame(() => requestAnimationFrame(() => {
       updateGroupBounds();
       applyTransform();
     }));
+  
+    /* Version Control Logic */
+    function loadVersions() {
+        const select = document.getElementById('versionSelect');
+        const versions = JSON.parse(localStorage.getItem('erd_versions') || '{}');
+        select.innerHTML = '<option value="">V</option>';
+        for(let v in versions) {
+            let opt = document.createElement('option');
+            opt.value = v;
+            opt.textContent = v;
+            select.appendChild(opt);
+        }
+    }
+    
+    document.getElementById('manualSave').addEventListener('click', () => {
+        const vName = prompt('저장할 버전 이름을 입력하세요 (예: v1.0_정리완료)');
+        if(!vName) return;
+        
+        const pos = {};
+        tables.forEach(t => {
+            const el = document.getElementById('tbl-' + t.id);
+            if (el) {
+                pos[t.id] = { x: parseInt(el.style.left) || 0, y: parseInt(el.style.top) || 0 };
+            }
+        });
+        
+        const versions = JSON.parse(localStorage.getItem('erd_versions') || '{}');
+        versions[vName] = pos;
+        localStorage.setItem('erd_versions', JSON.stringify(versions));
+        alert('[' + vName + '] 버전이 저장되었습니다.');
+        loadVersions();
+    });
+    
+    document.getElementById('versionSelect').addEventListener('change', (e) => {
+        const vName = e.target.value;
+        if(!vName) return;
+        if(!confirm('[' + vName + '] 버전을 불러오시겠습니까? 현재 자동 저장된 화면은 덮어씌워집니다.')) {
+            e.target.value = '';
+            return;
+        }
+        
+        const versions = JSON.parse(localStorage.getItem('erd_versions') || '{}');
+        const savedPos = versions[vName];
+        if(savedPos) {
+            tables.forEach(t => {
+                if (savedPos[t.id]) {
+                    const el = document.getElementById('tbl-' + t.id);
+                    if(el) {
+                        el.style.left = savedPos[t.id].x + 'px';
+                        el.style.top = savedPos[t.id].y + 'px';
+                    }
+                }
+            });
+            updateGroupBounds();
+            drawLines();
+            savePositions(); // Update auto-save with loaded version
+            alert('[' + vName + '] 버전을 성공적으로 불러왔습니다.');
+        }
+        e.target.value = '';
+    });
+    
+    // Init versions list
+    loadVersions();
+    
   </script>
 </body>
 
