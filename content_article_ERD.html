@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Content Article — DB ERD</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    :root {
+      --bg: #f4f6f9;
+      --surface: #ffffff;
+      --surface2: #f0f2f5;
+      --border: #d0d7de;
+      --border-bright: #a8b1bb;
+      --text: #1c2128;
+      --text-muted: #57606a;
+      --text-dim: #8c959f;
+      --pk-color: #b08000;
+      --fk-color: #0969da;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ── Header ── */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 300;
+      height: 56px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--text);
+    }
+
+    .logo-icon {
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, #0969da, #7c3aed);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .logo span {
+      color: #0969da;
+    }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .badge {
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      border: 1px solid;
+    }
+
+    .badge-blue {
+      color: #0969da;
+      border-color: rgba(9, 105, 218, 0.3);
+      background: rgba(9, 105, 218, 0.06);
+    }
+
+    .tbl-count {
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    /* ── Controls ── */
+    .controls {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 300;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .ctrl-btn {
+      width: 40px;
+      height: 40px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      transition: all 0.2s;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .ctrl-btn:hover {
+      background: var(--surface2);
+      border-color: var(--border-bright);
+    }
+
+    /* ── Legend ── */
+    .legend {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      z-index: 300;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: 12px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .legend-title {
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-size: 10px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 5px;
+      color: var(--text);
+      font-size: 11px;
+    }
+
+    .legend-line {
+      width: 26px;
+      height: 2px;
+      border-radius: 2px;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    .legend-sep {
+      height: 1px;
+      background: var(--border);
+      margin: 8px 0;
+    }
+
+    /* ── Canvas ── */
+    #canvas-wrap {
+      position: fixed;
+      top: 56px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow: auto;
+      background-image: radial-gradient(circle, #c8d0d9 1px, transparent 1px);
+      background-size: 24px 24px;
+      padding: 40px;
+    }
+
+    #erd-canvas {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 800px;
+    }
+
+    /* ── Group Panels ── */
+    .erd-group {
+      position: absolute;
+      border-radius: 18px;
+      border: 2px dashed transparent;
+      z-index: 0;
+    }
+
+    .group-header {
+      position: absolute;
+      top: 14px;
+      left: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .group-bar {
+      width: 4px;
+      height: 30px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .group-name {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      display: block;
+    }
+
+    .group-name-en {
+      font-size: 10px;
+      font-weight: 500;
+      opacity: 0.6;
+      display: block;
+      margin-top: 1px;
+    }
+
+    /* ── Table Cards ── */
+    .erd-table {
+      position: absolute;
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      min-width: 280px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      z-index: 3;
+    }
+
+    .table-header {
+      padding: 10px 14px;
+      border-radius: 9px 9px 0 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1.5px solid var(--border);
+    }
+
+    .table-name {
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.01em;
+    }
+
+    .table-sub {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+
+    .table-tag {
+      margin-left: auto;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 6px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .table-fields {
+      padding: 4px 0;
+    }
+
+    .field-row {
+      padding: 4px 14px;
+      display: grid;
+      grid-template-columns: 22px 1fr auto;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      transition: background 0.1s;
+    }
+
+    .field-row:hover {
+      background: #f5f7fa;
+    }
+
+    .field-key {
+      font-size: 9px;
+      font-weight: 800;
+      text-align: center;
+      color: var(--text-dim);
+    }
+
+    .field-key.pk {
+      color: var(--pk-color);
+    }
+
+    .field-key.fk {
+      color: var(--fk-color);
+    }
+
+    .field-name {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text);
+      font-size: 11px;
+    }
+
+    .field-name.pk-name {
+      color: var(--pk-color);
+      font-weight: 700;
+    }
+
+    .field-name.fk-name {
+      color: var(--fk-color);
+    }
+
+    .field-type {
+      font-size: 10px;
+      color: var(--text-dim);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ── 테마: 게시판 그룹 → orange ── */
+    .theme-orange .table-header {
+      background: #fef3e2;
+      border-bottom-color: #fcd49a;
+    }
+    .theme-orange .table-name {
+      color: #92400e;
+    }
+    .theme-orange .table-tag {
+      background: #fef3c7;
+      color: #b45309;
+      border: 1px solid #fcd34d;
+    }
+    
+    /* ── 테마: 사용자 그룹 → blue ── */
+    .theme-blue .table-header {
+      background: #e8f1fc;
+      border-bottom-color: #bfd4f5;
+    }
+    .theme-blue .table-name {
+      color: #0550ae;
+    }
+    .theme-blue .table-tag {
+      background: #dbeafe;
+      color: #0969da;
+      border: 1px solid #93c5fd;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo">
+      <div class="logo-icon">KT</div>
+      ContentArticle &nbsp;<span>Generic ERD</span>
+    </div>
+    <div class="header-meta">
+      <span class="tbl-count">총 <strong id="tblCount">6</strong>개 테이블</span>
+      <span class="badge badge-blue">Generic / Framework-Agnostic</span>
+    </div>
+  </header>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-title">컬럼 키</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#b08000;"></div> PK — 기본키</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#0969da;"></div> FK — 외래키</div>
+    <div class="legend-sep"></div>
+    <div class="legend-title">비즈니스 그룹</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#b35900;border-radius:50%;"></div> 게시판(Article)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#0969da;border-radius:50%;"></div> 사용자(User)</div>
+  </div>
+
+  <!-- Canvas -->
+  <div id="canvas-wrap">
+    <div id="erd-canvas">
+      
+      <!-- Group Background -->
+      <div class="erd-group" style="background: rgba(179,89,0,0.045); border-color: rgba(179,89,0,0.25); left: 20px; top: 20px; width: 1000px; height: 850px;">
+        <div class="group-header">
+          <div class="group-bar" style="background:#b35900;"></div>
+          <div>
+            <span class="group-name" style="color:#b35900;">범용 게시판</span>
+            <span class="group-name-en" style="color:#b35900;">Content Article (Generic)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tables -->
+      
+      <!-- content_article_category -->
+      <div class="erd-table theme-orange" style="left: 350px; top: 90px;">
+        <div class="table-header">
+          <div>
+            <div class="table-name">content_article_category</div>
+            <div class="table-sub">게시판 카테고리</div>
+          </div>
+          <span class="table-tag">POST</span>
+        </div>
+        <div class="table-fields">
+          <div class="field-row"><span class="field-key pk">PK</span><span class="field-name pk-name">id</span><span class="field-type">BIGINT</span></div>
+          <div class="field-row"><span class="field-key uq">UQ</span><span class="field-name">category_code</span><span class="field-type">VARCHAR(50)</span></div>
+          <div class="field-row"><span class="field-key"></span><span class="field-name">category_name</span><span class="field-type">VARCHAR(100)</span></div>
+          <div class="field-row"><span class="field-key"></span><span class="field-name">is_active</span><span class="field-type">TINYINT(1)</span></div>
+        </div>
+      </div>
+
+      <!-- content_article -->
+      <div class="erd-table theme-orange" style="left: 350px; top: 260px;">
+        <div class="table-header">
+          <div>
+            <div class="table-name">content_article</div>
+            <div class="table-sub">게시글 본체</div>
+          </div>
+          <span class="table-tag">POST</span>
+        </div>
+        <div class="table-fields">
+          <div class="field-row"><span class="field-key pk">PK</span><span class="field-name pk-name">id</span><span class="field-type">BIGINT</span></div>
+          <div class="field-row"><span class="field-key fk">FK</span><span class="field-name fk-name">category_id</span><span class="field-type">BIGINT</span></div>
+          <div class="field-row"><span class="field-key fk">FK</span><span class="field-name fk-name">user_id</span><span class="field-type">BIGINT</span></div>
+          <div class="field-row"><span class="field-key"></span><span class="field-name">title</span><span class="field-type">VARCHAR(255)</span></div>
+          <div class="field-row"><span class="field-key"></span><span class="field-name">content</span><span class="field-type">TEXT</span></div>
+          <div class="field-row"><span class="field-key"></span><span class="field-name">view_count</span><span class="field-type">BIGINT</span></div>
+          <div class="field-row"><span class="field-key"></span><span class="field-name">like_count</span><span class="field-type">BIGINT</span></div>
+          <div class="field-row"><span class="field-key"></span><span class="field-name">is_important</span><span class="field-type">TINYINT(1)</span></div>
+          <div class="field-row"><span class="field-key"></span><span class="field-name">is_deleted</span><span class="field-type">TINYINT(1)</span></div>
+        </div>
+      </div>
+
+      <!-- content_article_comment -->
+      <div class="erd-table theme-orange" style="left: 40px; top: 260px;">
+        <div class="table-header">
+          <div>
+            <div class="table-name">content_article_comment</div>
+            <div class="table-sub">게시글 댓글</div>
+          </div>
+          <span class="table-tag">POST</span>
+        </div>
+        <div class="table-fields">
+          <div class="field-row"><span class="field-key pk">PK</span><span class="field-name pk-name">id</span><span class="field-type">BIGINT</span></div>
+          <div class="field-row"><span class="field-key fk">FK</span><span class="field-name fk-name">article_id</span><span class="field-type">BIGINT</span></div>
+          <div class="field-row"><span class="field-key fk">FK</span><span class="field-name fk-name">user_id</span><span class="field-type">BIGINT</span></div>
+          <div class="field-row"><span class="field-key fk">FK</span><span class="field-name fk-name">parent_id</span><span class="field-type">BIGINT</span></div>
+          <div class="field-row"><span class="field-key"></span><span class="field-name">content</span><span class="field-type">TEXT</span></div>
+          <div class="field-row"><span class="field-key"></span><span class="field-name">like_count</span><span class="field-type">BIGINT</span></div>
+          <div class="field-row"><span class="field-key"></span><span class="field-name">is_deleted</span><span class="field-type">TINYINT(1)</span></div>
+        </div>
+      </div>
+
+      <!-- content_article_action -->
+      <div class="erd-table theme-orange" style="left: 690px; top: 260px;">
+        <div class="table-header">
+          <div>
+            <div class="table-name">content_article_action</div>
+            <div class="table-sub">게시글 좋아요/싫어요</div>
+          </div>
+          <span class="table-tag">POST</span>
+        </div>
+        <div class="table-fields">
+          <div class="field-row"><span class="field-key pk">PK</span><span class="field-name pk-name">id</span><span class="field-type">BIGINT</span></div>
+          <div class="field-row"><span class="field-key fk">FK</span><span class="field-name fk-name">article_id</span><span class="field-type">BIGINT</span></div>
+          <div class="field-row"><span class="field-key fk">FK</span><span class="field-name fk-name">user_id</span><span class="field-type">BIGINT</span></div>
+          <div class="field-row"><span class="field-key"></span><span class="field-name">action_type</span><span class="field-type">VARCHAR(50)</span></div>
+          <div class="field-row"><span class="field-key"></span><span class="field-name">action_flag</span><span class="field-type">TINYINT(1)</span></div>
+        </div>
+      </div>
+
+      <!-- content_article_bookmark -->
+      <div class="erd-table theme-orange" style="left: 690px; top: 480px;">
+        <div class="table-header">
+          <div>
+            <div class="table-name">content_article_bookmark</div>
+            <div class="table-sub">게시글 북마크</div>
+          </div>
+          <span class="table-tag">POST</span>
+        </div>
+        <div class="table-fields">
+          <div class="field-row"><span class="field-key pk">PK</span><span class="field-name pk-name">id</span><span class="field-type">BIGINT</span></div>
+          <div class="field-row"><span class="field-key fk">FK</span><span class="field-name fk-name">article_id</span><span class="field-type">BIGINT</span></div>
+          <div class="field-row"><span class="field-key fk">FK</span><span class="field-name fk-name">user_id</span><span class="field-type">BIGINT</span></div>
+          <div class="field-row"><span class="field-key"></span><span class="field-name">is_deleted</span><span class="field-type">TINYINT(1)</span></div>
+        </div>
+      </div>
+
+      <!-- user (Dummy) -->
+      <div class="erd-table theme-blue" style="left: 350px; top: 620px;">
+        <div class="table-header">
+          <div>
+            <div class="table-name">user</div>
+            <div class="table-sub">사용자 (외부 조인용)</div>
+          </div>
+          <span class="table-tag">CORE</span>
+        </div>
+        <div class="table-fields">
+          <div class="field-row"><span class="field-key pk">PK</span><span class="field-name pk-name">id</span><span class="field-type">BIGINT</span></div>
+          <div class="field-row"><span class="field-key"></span><span class="field-name">username</span><span class="field-type">VARCHAR(50)</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>
