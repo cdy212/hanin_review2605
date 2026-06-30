@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회의 준비 - 260630</title>
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <style>
+        /* 폰트 설정 (Pretendard, Noto Sans KR) */
+        @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
+        
+        :root {
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-main: #212529;
+            --text-sub: #495057;
+            --border-color: #dee2e6;
+            --highlight-bg: #ffe066;
+            --primary-color: #339af0;
+            --section-title: #343a40;
+            --font-size-base: 16px;
+        }
+
+        body {
+            margin: 0;
+            padding: 15px; /* 좌우 여백 최소화 */
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+            font-size: var(--font-size-base);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px; /* 한눈에 볼 수 있도록 넓게 설정 */
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            padding: 30px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        h2 {
+            font-size: 1.3rem;
+            color: var(--section-title);
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            border-left: 4px solid var(--primary-color);
+            background: #f1f3f5;
+            padding: 8px 12px;
+            border-radius: 0 4px 4px 0;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            color: var(--text-main);
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        ul {
+            padding-left: 20px;
+            margin: 10px 0;
+            color: var(--text-sub);
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .highlight {
+            background-color: var(--highlight-bg);
+            color: #000;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .url-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.95rem;
+            word-break: break-all;
+        }
+
+        .url-link:hover {
+            text-decoration: underline;
+        }
+
+        .note {
+            font-size: 0.95rem;
+            color: #868e96;
+            margin-top: 5px;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+        }
+
+        .flow-arrow {
+            color: var(--primary-color);
+            margin-right: 8px;
+            font-weight: bold;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        /* 반응형 */
+        @media (max-width: 1024px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .box {
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="grid-container">
+        <!-- 첫번째 파트: 한인회 정책 확정 -->
+        <div class="box">
+            <h2>한인회 정책 확정</h2>
+            
+            <h3>1. 회원</h3>
+            <ul>
+                <li><strong>1.1 인증</strong>
+                    <ul>
+                        <li>일반 회원 &rarr; 정회원, 제휴회원 인증 방식</li>
+                        <li>a. 휴대폰 인증 - <span class="highlight">건당 비용 발생</span></li>
+                        <li>b. ARC 혹은 신분증 인증 - <span class="highlight">인증 후 즉시 파기 혹은 보관 여부 체크 필요</span></li>
+                        <li class="note">* 쿠폰 및 인증의 경우 별도 QR은 사용하지 않으며 문자열 기반 쿠폰을 제휴사 PIN 인증 방식으로 진행</li>
+                    </ul>
+                </li>
+                <li><strong>1.2 개인정보</strong>
+                    <ul>
+                        <li>수집 범위 (<a href="https://kr.happytuk.tw/mypage/edit" class="url-link" target="_blank">https://kr.happytuk.tw/mypage/edit</a>)
+                            <ul>
+                                <li>이메일, 휴대폰, 주소, 생년월일, 위치정보(한인맵)</li>
+                            </ul>
+                        </li>
+                        <li>파기 시점: <span class="highlight">정책 정의 필요</span></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>2. 업체등록</h3>
+            <ul>
+                <li><strong>2.1 등록 플로우</strong> (<a href="https://kr.happytuk.tw/main" class="url-link" target="_blank">https://kr.happytuk.tw/main</a>)
+                    <div class="flow-step">메인 상단 플로팅 배너 혹은 상단 배너 '업체 등록' 버튼 노출</div>
+                    <div class="flow-step"><span class="flow-arrow">&rarr;</span>업체 등록 혜택 및 정책 내용 등 기록된 게시물 이동</div>
+                    <div class="flow-step"><span class="flow-arrow">&rarr;</span>업체 등록 요청 시 [업체명, 대표사진, 업체주소, 연락처] 등 기입</div>
+                    <div class="flow-step"><span class="flow-arrow">&rarr;</span><span class="highlight">관리자 확인/승인 절차 후 업체 등록 완료</span></div>
+                </li>
+            </ul>
+
+            <h3>3. 커뮤니티</h3>
+            <ul>
+                <li>URL: <a href="https://kr.happytuk.tw/community" class="url-link" target="_blank">https://kr.happytuk.tw/community</a></li>
+                <li><strong>카테고리별 작성 권한</strong>
+                    <ul>
+                        <li>자유게시판 - 정회원</li>
+                        <li>구인구직 - <strong>관리자</strong></li>
+                        <li>중고장터 - 정회원</li>
+                        <li>공지사항 - 정회원</li>
+                        <li>뉴스 - <strong>시스템 자동</strong></li>
+                    </ul>
+                </li>
+                <li><strong>제재</strong>
+                    <ul>
+                        <li>게시판: <span class="highlight">신고 발생 시 자동 숨김 처리 &rarr; 관리자 확인 후 숨김/삭제 처리</span></li>
+                        <li>사용자: <span class="highlight">제재 필요한 사용자의 경우 관리자 수동 처리 및 로그인 불가</span></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>4. 쿠폰</h3>
+            <ul>
+                <li><strong>쿠폰 발행 페이지 (업체 등록/수정)</strong>
+                    <ul>
+                        <li>URL: <a href="https://kr.happytuk.tw/coupon/manage" class="url-link" target="_blank">https://kr.happytuk.tw/coupon/manage</a></li>
+                    </ul>
+                </li>
+                <li><strong>발행쿠폰 리스트 (일반 유저 조회)</strong>
+                    <ul>
+                        <li>URL: <a href="https://kr.happytuk.tw/coupon" class="url-link" target="_blank">https://kr.happytuk.tw/coupon</a></li>
+                    </ul>
+                </li>
+                <li><strong>다운로드 쿠폰</strong>
+                    <ul>
+                        <li>URL: <a href="https://kr.happytuk.tw/coupon" class="url-link" target="_blank">https://kr.happytuk.tw/coupon</a></li>
+                    </ul>
+                </li>
+                <li><strong>[쿠폰 발행 타입]</strong>
+                    <ul>
+                        <li>1. 범용 쿠폰 - 아무나 다운받고 사용</li>
+                        <li>2. 범용제한 쿠폰 - 지정쿠폰과 동일하나, 사용제한이 있는 쿠폰 (선착순)</li>
+                        <li>3. 지정 쿠폰 - 업체가 발행전 지정한 유저만 사용</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>5. 기타</h3>
+            <ul>
+                <li><strong>관리자 기능</strong>
+                    <ul>
+                        <li>URL: <a href="https://kr.happytuk.tw/admin/index.html" class="url-link" target="_blank">https://kr.happytuk.tw/admin/index.html</a></li>
+                        <li>메인화면, 쿠폰 관리, PUSH, 유저 관리</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
