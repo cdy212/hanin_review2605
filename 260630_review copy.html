@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>정책 결정 필요 및 구현 현황 v2 — 회의 참고자료</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --gray-50: #f8f9fa;
+            --gray-100: #f1f3f5;
+            --gray-200: #e9ecef;
+            --gray-300: #dee2e6;
+            --gray-600: #495057;
+            --gray-700: #343a40;
+            --gray-800: #212529;
+
+            --highlight: #e67700;
+            /* 중요 항목 하이라이트 (주황) */
+            --highlight-bg: #fff9db;
+            --highlight-border: #ffe066;
+
+            --danger: #c92a2a;
+            /* 미구현 등 주의 필요 항목 (빨강) */
+            --danger-light: #fff5f5;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: #ffffff;
+            color: var(--gray-700);
+            min-height: 100vh;
+        }
+
+        .page-header {
+            background: #ffffff;
+            color: var(--gray-800);
+            padding: 28px 40px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            border-bottom: 2px solid var(--gray-800);
+        }
+
+        .page-header .title-group {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .badge-v2 {
+            background: var(--gray-800);
+            color: #fff;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.05em;
+        }
+
+        .page-header h1 {
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            margin-bottom: 4px;
+        }
+
+        .page-header .sub {
+            font-size: 0.85rem;
+            color: var(--gray-600);
+        }
+
+        .page-header .meta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+        }
+
+        .meta-badge {
+            background: var(--gray-100);
+            border: 1px solid var(--gray-300);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        .page-header .date {
+            font-size: 0.75rem;
+            color: var(--gray-600);
+        }
+
+        .main-wrap {
+            max-width: 1440px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 30px 24px 60px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--gray-800);
+            margin: 36px 0 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--gray-300);
+        }
+
+        .legend {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 14px 20px;
+            margin-bottom: 24px;
+            font-size: 0.82rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .dot-done {
+            background: var(--gray-400);
+            border: 1px solid var(--gray-600);
+        }
+
+        .dot-none {
+            background: var(--danger);
+        }
+
+        .dot-policy {
+            background: var(--highlight);
+        }
+
+        .table-wrap {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--gray-300);
+            margin-bottom: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead tr {
+            background: var(--gray-100);
+            color: var(--gray-800);
+            border-bottom: 2px solid var(--gray-300);
+        }
+
+        thead th {
+            padding: 14px 18px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-align: left;
+            letter-spacing: 0.03em;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid var(--gray-200);
+            transition: background 0.15s;
+        }
+
+        tbody tr:hover {
+            background: var(--gray-50);
+        }
+
+        tbody td {
+            padding: 13px 18px;
+            font-size: 0.88rem;
+            vertical-align: middle;
+        }
+
+        .cat-cell {
+            font-weight: 800;
+            font-size: 0.85rem;
+            color: var(--gray-800);
+            text-align: center;
+            vertical-align: middle;
+            min-width: 110px;
+            background: var(--gray-50);
+            border-right: 1px solid var(--gray-200);
+        }
+
+        .item-name {
+            font-weight: 700;
+            color: var(--gray-800);
+            font-size: 0.87rem;
+        }
+
+        .item-num {
+            display: inline-block;
+            background: var(--gray-200);
+            color: var(--gray-700);
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 4px;
+            margin-left: 6px;
+        }
+
+        .tag-done {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--gray-600);
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .tag-none {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--danger);
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .policy-row td {
+            background: var(--highlight-bg);
+            padding: 12px 18px;
+            border-top: 2px dashed var(--highlight-border);
+        }
+
+        .policy-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 800;
+            font-size: 0.82rem;
+            color: var(--highlight);
+            margin-bottom: 8px;
+        }
+
+        .policy-list {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .policy-item {
+            font-size: 0.84rem;
+            color: #5c4300;
+            padding-left: 14px;
+            position: relative;
+            line-height: 1.55;
+        }
+
+        .policy-item::before {
+            content: '›';
+            position: absolute;
+            left: 0;
+            color: var(--highlight);
+            font-weight: 700;
+        }
+
+        .policy-item strong {
+            color: #3d2e00;
+        }
+
+        .flow-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .flow-card {
+            background: white;
+            border: 1px solid var(--gray-300);
+            border-radius: 8px;
+            padding: 22px;
+        }
+
+        .flow-card-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--gray-800);
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .flow-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .flow-box {
+            flex: 1;
+            border-radius: 6px;
+            padding: 12px 14px;
+            text-align: center;
+            border: 1px solid var(--gray-300);
+            background: var(--gray-50);
+        }
+
+        .flow-box .box-title {
+            font-weight: 700;
+            font-size: 0.88rem;
+            color: var(--gray-800);
+        }
+
+        .flow-box .box-sub {
+            font-size: 0.78rem;
+            color: var(--gray-600);
+            margin-top: 5px;
+            line-height: 1.45;
+        }
+
+        .flow-box.important {
+            border-color: var(--gray-800);
+            background: var(--gray-100);
+        }
+
+        .flow-box.important .box-title {
+            color: var(--gray-800);
+        }
+
+        .arrow {
+            color: var(--gray-400);
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            font-weight: bold;
+        }
+
+        .admin-note {
+            margin-top: 14px;
+            background: var(--gray-50);
+            border-left: 4px solid var(--gray-400);
+            padding: 10px 14px;
+            border-radius: 4px;
+            font-size: 0.82rem;
+            color: var(--gray-700);
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+        }
+
+        .map-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .map-box {
+            border-radius: 6px;
+            padding: 14px 16px;
+            border: 1px solid var(--gray-300);
+            background: var(--gray-50);
+        }
+
+        .map-box .map-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            margin-bottom: 5px;
+            color: var(--gray-600);
+        }
+
+        .map-box .map-title {
+            font-weight: 700;
+            font-size: 0.88rem;
+            color: var(--gray-800);
+        }
+
+        .map-box .map-sub {
+            font-size: 0.78rem;
+            margin-top: 4px;
+            color: var(--gray-600);
+        }
+
+        .map-box.web {
+            border-left: 4px solid var(--gray-400);
+        }
+
+        .map-box.app {
+            border-left: 4px solid var(--gray-400);
+        }
+
+        .info-box {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-300);
+            border-radius: 4px;
+            padding: 10px 14px;
+            font-size: 0.82rem;
+            color: var(--gray-700);
+            display: flex;
+            gap: 6px;
+            align-items: flex-start;
+        }
+
+        .page-footer {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            padding: 24px 0 10px;
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 20px 16px;
+            }
+
+            .main-wrap {
+                padding: 20px 12px 40px;
+            }
+
+            .flow-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .map-row {
+                grid-template-columns: 1fr;
+            }
+
+            .flow-row {
+                flex-wrap: wrap;
+            }
+
+            thead th {
+                font-size: 0.75rem;
+                padding: 10px 12px;
+            }
+
+            tbody td {
+                font-size: 0.82rem;
+                padding: 10px 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!--
+    <header class="page-header">
+        <div class="title-group">
+            <div>
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+                    <h1>정책 결정 필요 및 구현 현황</h1>
+                </div>
+                <p class="sub">대표님 회의 참고 자료 · 개발 착수 전 필수 확정 요건 정리</p>
+            </div>
+        </div>
+        <div class="meta">
+            <span class="meta-badge">🗓 2026.06.26 기준</span>
+            <span class="date">한인회 웹앱 구축 프로젝트</span>
+        </div>
+    </header>
+-->
+    <div class="main-wrap">
+        <!--
+        <div class="legend">
+            <span style="font-weight:700;font-size:0.82rem;color:var(--gray-700);margin-right:4px;">범례</span>
+            <span class="legend-item"><span class="dot dot-done" style="background:#adb5bd; border:none;"></span>구현
+                완료</span>
+            <span class="legend-item"><span class="dot dot-none"></span>미구현 (개발 필요)</span>
+            <span class="legend-item"><span class="dot dot-policy"></span>정책 결정 필요 (회의 안건)</span>
+        </div>
+-->
+        <div class="section-title">
+            구현 현황 &amp; 정책 결정 안건
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:11%;">카테고리</th>
+                        <th style="width:26%;">항목</th>
+                        <th style="width:63%;">현재 시스템 구현 내용</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="cat-cell" rowspan="3">회원 및<br>개인정보</td>
+                        <td><span class="item-name">회원 인증 방식</span><span class="item-num">#1</span></td>
+                        <td>이메일, 소셜 로그인(필수) 및 폰번호(선택) 입력 폼 &nbsp;<span class="tag-done">[구현됨]</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="item-name">신분증 / ARC 보관</span><span class="item-num">#2</span></td>
+                        <td><span class="tag-none">[미구현]</span><span
+                                style="color:var(--gray-500);font-size:0.83rem;margin-left:6px;">관련 저장 로직 없음</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="item-name">개인정보 수집 / 보관</span><span class="item-num">#8</span></td>
+                        <td>기본 정보 수집 <span class="tag-done">[구현됨]</span> &nbsp;/&nbsp; 자동 파기 스케줄러 <span
+                                class="tag-none">[미구현]</span></td>
+                    </tr>
+                    <tr class="policy-row">
+                        <td colspan="3">
+                            <div class="policy-header">[정책 결정 필요] — 회원 인증 &amp; 개인정보 처리</div>
+                            <div class="policy-list">
+                                <p class="policy-item"><strong>본인 인증 방식 선택:</strong> 휴대폰 인증·ARC 등 추가 인증 수단 도입 여부 및 비용 처리
+                                    방안 확정</p>
+                                <p class="policy-item"><strong>신분증 제출 프로세스:</strong> 정회원 전환 시 신분증 제출 절차 및 데이터 보관·파기 기한
+                                    약관 명시 필요</p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="cat-cell" rowspan="3">업체 및<br>혜택 관리</td>
+                        <td><span class="item-name">업체 등록 방식</span><span class="item-num">#3</span></td>
+                        <td>업체 생성 API <span class="tag-done">[구현됨]</span> &nbsp;/&nbsp; 승인 플로우 <span
+                                class="tag-none">[미구현]</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="item-name">할인 QR 이용 방식</span><span class="item-num">#4</span></td>
+                        <td>문자열 기반 쿠폰 기록 <span class="tag-done">[구현됨]</span> &nbsp;/&nbsp; QR 스캔 시스템 <span
+                                class="tag-none">[미구현]</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="item-name">업체측 회원정보 확인</span><span class="item-num">#5</span></td>
+                        <td><span class="tag-none">[미구현]</span></td>
+                    </tr>
+                    <tr class="policy-row">
+                        <td colspan="3">
+                            <div class="policy-header">[정책 결정 필요] — 업체 등록 &amp; 혜택(QR)</div>
+                            <div class="policy-list">
+                                <p class="policy-item"><strong>가입·신청·승인 플로우 확정:</strong> 업체의 신청 → 관리자 검토 → 승인 단계별 절차 구체화
+                                    필요</p>
+                                <p class="policy-item"><strong>쿠폰 사용 방식:</strong> 업체 비밀번호(PIN) 입력 방식으로 처리 — 오프라인 현장 사용
+                                    시나리오 확정</p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="cat-cell" rowspan="3">커뮤니티<br>및 부가기능</td>
+                        <td><span class="item-name">자유게시판 운영</span><span class="item-num">#7</span></td>
+                        <td>게시글 CRUD <span class="tag-done">[구현됨]</span> &nbsp;/&nbsp; 신고 및 정지 처리 <span
+                                class="tag-none">[미구현]</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="item-name">위치정보 사용</span><span class="item-num">#6</span></td>
+                        <td>위·경도 DB 필드 <span class="tag-done">[구현됨]</span> &nbsp;/&nbsp; 위치 기반 서비스 <span
+                                class="tag-none">[미구현]</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="item-name">한인 Wiki / 신규기능</span><span class="item-num">#9</span></td>
+                        <td><span class="tag-none">[미구현]</span></td>
+                    </tr>
+                    <tr class="policy-row">
+                        <td colspan="3">
+                            <div class="policy-header">[정책 결정 필요 &amp; 기능 정의] — 커뮤니티 운영</div>
+                            <div class="policy-list">
+                                <p class="policy-item"><strong>게시판 패널티 기준:</strong> 신고 기능 동작 방식 및 신고 누적 시 계정 정지(패널티) 처리
+                                    기준 마련</p>
+                                <p class="policy-item"><strong>신고 게시물 자동 숨김:</strong> 관리자 세팅 기준치 초과 시 자동 숨김 → 관리자 확인 후
+                                    영구 숨김 또는 재게시 결정</p>
+                                <p class="policy-item"><strong>위치정보 수집 및 활용:</strong> 위·경도 수집 여부 및 주변 업체 거리 계산 서비스 도입 여부
+                                    확정 필요</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section-title" style="margin-top:48px;">
+            주요 비즈니스 플로우 &amp; 기능 정의
+        </div>
+
+        <div class="flow-grid">
+
+            <div class="flow-card">
+                <div class="flow-card-title">1. 회원 등록 플로우</div>
+                <div
+                    style="font-size:0.74rem;font-weight:700;color:var(--gray-600);margin-bottom:6px;letter-spacing:0.04em;">
+                    경로 A — 일반회원 → 정회원</div>
+                <div class="flow-row">
+                    <div class="flow-box">
+                        <div class="box-title">일반회원</div>
+                        <div class="box-sub">소셜 로그인 가입</div>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="flow-box important">
+                        <div class="box-title">정회원</div>
+                        <div class="box-sub">쿠폰 사용·글쓰기 시 체크<br>→ 관리자 승인 <span
+                                style="font-size:0.72rem;color:var(--highlight);">(인증방식 결정)</span></div>
+                    </div>
+                </div>
+                <div
+                    style="font-size:0.74rem;font-weight:700;color:var(--gray-600);margin:12px 0 6px;letter-spacing:0.04em;">
+                    경로 B — 업체회원 전환 (회원 등급 무관)</div>
+                <div class="flow-row">
+                    <div class="flow-box">
+                        <div class="box-title">일반회원 / 정회원</div>
+                        <div class="box-sub">기존 등급 무관하게 신청 가능</div>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="flow-box important">
+                        <div class="box-title">제휴업체회원</div>
+                        <div class="box-sub">정회원 권한 + 업체 등록 + 쿠폰 발행<br><span
+                                style="font-size:0.72rem;color:var(--highlight);">(인증방식 결정 필요)</span></div>
+                    </div>
+                </div>
+                <div class="admin-note">
+                    <div><strong>관리자 권한:</strong> CMS 기능, 회원 승인, 사용자 차단(block)</div>
+                </div>
+            </div>
+
+            <div class="flow-card">
+                <div class="flow-card-title">2. 제휴업체 등록 플로우</div>
+                <div class="flow-row">
+                    <div class="flow-box" style="text-align:center;">
+                        <div class="box-title">등록 공지 확인</div>
+                        <div class="box-sub">메인 배너 공지<br>(공지사항)</div>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="flow-box">
+                        <div class="box-title">상세 정보 확인</div>
+                        <div class="box-sub">제휴 설명·혜택<br>등록방법·운영방침</div>
+                    </div>
+                </div>
+                <div style="display:flex;justify-content:center;padding:2px 0;">
+                    <div class="arrow">↓</div>
+                </div>
+                <div class="flow-row">
+                    <div class="flow-box">
+                        <div class="box-title">신청 폼 작성</div>
+                        <div class="box-sub">제휴 신청 폼 노출<br>(링크 클릭 시)</div>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="flow-box important" style="border-color:var(--danger); background:var(--danger-light);">
+                        <div class="box-title" style="color:var(--danger);">관리자 확인 &amp; 승인</div>
+                        <div class="box-sub">필수 정보 검토<br>업체 정보 확인 처리</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flow-card">
+                <div class="flow-card-title">3. 지도 서비스 정책 (비용 최적화)</div>
+                <div class="map-row">
+                    <div class="map-box web">
+                        <div class="map-label">WEB (웹 서비스)</div>
+                        <div class="map-title">구글 맵 미사용</div>
+                        <div class="map-sub">View 당 과금 발생 방지</div>
+                    </div>
+                    <div class="map-box app">
+                        <div class="map-label">APP (앱 서비스)</div>
+                        <div class="map-title">구글 API 제한적 사용</div>
+                        <div class="map-sub">업체 등록 시점에만 사용</div>
+                    </div>
+                </div>
+                <div class="info-box">
+                    <div>
+                        <strong>제휴업체 정보 직접 입력 방침:</strong><br>
+                        구글 API 의존도 최소화를 위해 제휴업체 <strong>주소·대표사진·연락처</strong>는 사용자가 필수 항목으로 직접 입력하도록 처리합니다.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="section-title" style="margin-top:48px;">
+            프로젝트 진행 상황 (요약)
+        </div>
+        
+        <div style="background:white; border:1px solid var(--gray-300); border-radius:8px; padding:24px 28px; margin-bottom: 24px;">
+            <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:20px;">
+                <!-- 1 -->
+                <li style="display:flex; gap:14px; align-items:flex-start;">
+                    <div style="background:var(--gray-800); color:white; width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.85rem; font-weight:bold; flex-shrink:0; margin-top:2px;">1</div>
+                    <div style="width: 100%;">
+                        <div style="font-weight:800; font-size:0.95rem; color:var(--gray-800); margin-bottom:6px;">1차 개발 범위 개발 완료</div>
+                        <div style="font-size:0.84rem; color:var(--gray-600); line-height:1.5;">ㄴ 한인회 : 메인 CMS 기능 및 Mypage, 커뮤니티 QA 진행 [ 확정된 버전에 대한 QA ]</div>
+                        
+                        <div class="progress-details" style="margin-top: 16px; border: 1px solid var(--gray-300); border-radius: 6px; overflow: hidden;">
+                            <div style="display:flex; border-bottom: 1px solid var(--gray-300); background: var(--gray-100);">
+                                <button id="tab-btn-pending" onclick="switchProgressTab('pending')" style="flex:1; padding:10px; border:none; background:white; font-weight:bold; color:var(--highlight); cursor:pointer; border-bottom: 2px solid var(--highlight);">대기/진행중 (6)</button>
+                                <button id="tab-btn-completed" onclick="switchProgressTab('completed')" style="flex:1; padding:10px; border:none; background:transparent; font-weight:bold; color:var(--gray-600); cursor:pointer; border-bottom: 2px solid transparent;">완료 (8)</button>
+                            </div>
+                            
+                            <!-- Pending Tab -->
+                            <div id="tab-content-pending" style="padding: 0;">
+                                <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem;">
+                                    <colgroup>
+                                        <col width="22%">
+                                        <col width="10%">
+                                        <col width="68%">
+                                    </colgroup>
+                                    <tbody>
+                                        <tr style="border-bottom: 1px solid var(--gray-200);">
+                                            <td rowspan="3" style="font-weight:bold; text-align:center; background:var(--gray-50); border-right:1px solid var(--gray-200);">사용자인증/권한</td>
+                                            <td style="text-align:center; padding:8px;"><span style="background:var(--danger-light); color:var(--danger); padding:2px 8px; border-radius:12px; font-weight:bold; font-size:0.75rem;">대기</span></td>
+                                            <td style="padding:8px; font-weight:bold; color:var(--danger);">[일반회원] 일반 가입 시 약관 추가</td>
+                                        </tr>
+                                        <tr style="border-bottom: 1px solid var(--gray-200);">
+                                            <td style="text-align:center; padding:8px;"><span style="background:var(--danger-light); color:var(--danger); padding:2px 8px; border-radius:12px; font-weight:bold; font-size:0.75rem;">대기</span></td>
+                                            <td style="padding:8px; font-weight:bold; color:var(--danger);">[정회원] 글쓰기 쿠폰 확인 시 정회원 권한 신청 - 약관 및 개인정보 동의 폼 추가</td>
+                                        </tr>
+                                        <tr style="border-bottom: 1px solid var(--gray-200);">
+                                            <td style="text-align:center; padding:8px;"><span style="background:var(--danger-light); color:var(--danger); padding:2px 8px; border-radius:12px; font-weight:bold; font-size:0.75rem;">대기</span></td>
+                                            <td style="padding:8px; font-weight:bold; color:var(--danger);">[제휴업체] Mypage 내에서 제휴 업체 등록 폼 및 신청</td>
+                                        </tr>
+                                        
+                                        <tr style="border-bottom: 1px solid var(--gray-200);">
+                                            <td style="font-weight:bold; text-align:center; background:var(--gray-50); border-right:1px solid var(--gray-200);">제휴(쿠폰 Map)</td>
+                                            <td style="text-align:center; padding:8px;"><span style="background:var(--highlight-bg); color:var(--highlight); padding:2px 8px; border-radius:12px; font-weight:bold; font-size:0.75rem;">진행중</span></td>
+                                            <td style="padding:8px; font-weight:bold; color:var(--highlight);">[DB/로직] Happytuk 3종 쿠폰(범용, 개인, 한도) 처리 스키마 및 발급 제어</td>
+                                        </tr>
+                                        
+                                        <tr style="border-bottom: 1px solid var(--gray-200);">
+                                            <td rowspan="2" style="font-weight:bold; text-align:center; background:var(--gray-50); border-right:1px solid var(--gray-200);">어드민</td>
+                                            <td style="text-align:center; padding:8px;"><span style="background:var(--danger-light); color:var(--danger); padding:2px 8px; border-radius:12px; font-weight:bold; font-size:0.75rem;">대기</span></td>
+                                            <td style="padding:8px; font-weight:bold; color:var(--danger);">[제휴 업체 관리] 등록, 수정, 승인 등 기능 구현</td>
+                                        </tr>
+                                        <tr style="border-bottom: 1px solid var(--gray-200);">
+                                            <td style="text-align:center; padding:8px;"><span style="background:var(--danger-light); color:var(--danger); padding:2px 8px; border-radius:12px; font-weight:bold; font-size:0.75rem;">대기</span></td>
+                                            <td style="padding:8px; font-weight:bold; color:var(--danger);">[CMS] 게시물 관리(비공개, 계정 제재 등) 및 메인 화면 관리(영역별 데이터 설정)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Completed Tab -->
+                            <div id="tab-content-completed" style="display: none; padding: 0;">
+                                <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem;">
+                                    <colgroup>
+                                        <col width="22%">
+                                        <col width="10%">
+                                        <col width="68%">
+                                    </colgroup>
+                                    <tbody>
+                                        <tr style="border-bottom: 1px solid var(--gray-200);">
+                                            <td style="font-weight:bold; text-align:center; background:var(--gray-50); border-right:1px solid var(--gray-200); color:var(--gray-600);">홈 / 메인</td>
+                                            <td style="text-align:center; padding:8px;"><span style="background:var(--gray-200); color:var(--gray-600); padding:2px 8px; border-radius:12px; font-weight:bold; font-size:0.75rem;">완료</span></td>
+                                            <td style="padding:8px; color:var(--gray-600); text-decoration:line-through;">[홈] 메인 배너 및 퀵링크 아이콘, 하단 스크롤 공지 Feed UI 마크업</td>
+                                        </tr>
+                                        
+                                        <tr style="border-bottom: 1px solid var(--gray-200);">
+                                            <td rowspan="2" style="font-weight:bold; text-align:center; background:var(--gray-50); border-right:1px solid var(--gray-200); color:var(--gray-600);">제휴(쿠폰 Map)</td>
+                                            <td style="text-align:center; padding:8px;"><span style="background:var(--gray-200); color:var(--gray-600); padding:2px 8px; border-radius:12px; font-weight:bold; font-size:0.75rem;">완료</span></td>
+                                            <td style="padding:8px; color:var(--gray-600); text-decoration:line-through;">[기능] 오프라인 가맹점주 PIN 연동 입력 매칭 및 승인 모듈 프론트</td>
+                                        </tr>
+                                        <tr style="border-bottom: 1px solid var(--gray-200);">
+                                            <td style="text-align:center; padding:8px;"><span style="background:var(--gray-200); color:var(--gray-600); padding:2px 8px; border-radius:12px; font-weight:bold; font-size:0.75rem;">완료</span></td>
+                                            <td style="padding:8px; color:var(--gray-600); text-decoration:line-through;">[지도] 비용 최소화 방안 검토 필요 및 제휴 업체 가중치 소팅</td>
+                                        </tr>
+
+                                        <tr style="border-bottom: 1px solid var(--gray-200);">
+                                            <td rowspan="2" style="font-weight:bold; text-align:center; background:var(--gray-50); border-right:1px solid var(--gray-200); color:var(--gray-600);">커뮤니티</td>
+                                            <td style="text-align:center; padding:8px;"><span style="background:var(--gray-200); color:var(--gray-600); padding:2px 8px; border-radius:12px; font-weight:bold; font-size:0.75rem;">완료</span></td>
+                                            <td style="padding:8px; color:var(--gray-600); text-decoration:line-through;">[게시판] 공지사항, News 추가 기존 커뮤니티와 병합</td>
+                                        </tr>
+                                        <tr style="border-bottom: 1px solid var(--gray-200);">
+                                            <td style="text-align:center; padding:8px;"><span style="background:var(--gray-200); color:var(--gray-600); padding:2px 8px; border-radius:12px; font-weight:bold; font-size:0.75rem;">완료</span></td>
+                                            <td style="padding:8px; color:var(--gray-600); text-decoration:line-through;">[외부 연동] 대만 KOTRA 및 타이완 투데이 뉴스 외부 RSS 스크래핑 파서</td>
+                                        </tr>
+
+                                        <tr style="border-bottom: 1px solid var(--gray-200);">
+                                            <td style="font-weight:bold; text-align:center; background:var(--gray-50); border-right:1px solid var(--gray-200); color:var(--gray-600);">마이페이지</td>
+                                            <td style="text-align:center; padding:8px;"><span style="background:var(--gray-200); color:var(--gray-600); padding:2px 8px; border-radius:12px; font-weight:bold; font-size:0.75rem;">완료</span></td>
+                                            <td style="padding:8px; color:var(--gray-600); text-decoration:line-through;">[마이페이지] 개인 정보 수정, 찜한 쿠폰 목록, 내가 쓴 글/댓글 조회 기능</td>
+                                        </tr>
+
+                                        <tr style="border-bottom: 1px solid var(--gray-200);">
+                                            <td rowspan="2" style="font-weight:bold; text-align:center; background:var(--gray-50); border-right:1px solid var(--gray-200); color:var(--gray-600);">어드민</td>
+                                            <td style="text-align:center; padding:8px;"><span style="background:var(--gray-200); color:var(--gray-600); padding:2px 8px; border-radius:12px; font-weight:bold; font-size:0.75rem;">완료</span></td>
+                                            <td style="padding:8px; color:var(--gray-600); text-decoration:line-through;">[쿠폰 관리] 등록요청 확인/승인 및 자체 쿠폰 등록/수정</td>
+                                        </tr>
+                                        <tr style="border-bottom: 1px solid var(--gray-200);">
+                                            <td style="text-align:center; padding:8px;"><span style="background:var(--gray-200); color:var(--gray-600); padding:2px 8px; border-radius:12px; font-weight:bold; font-size:0.75rem;">완료</span></td>
+                                            <td style="padding:8px; color:var(--gray-600); text-decoration:line-through;">[회원 관리] 등급 승인 요청 리스트 확인 및 회원 정보 조회/수정</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <!-- 2 -->
+                <li style="display:flex; gap:14px; align-items:flex-start;">
+                    <div style="background:var(--gray-200); color:var(--gray-700); width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.85rem; font-weight:bold; flex-shrink:0; margin-top:2px;">2</div>
+                    <div>
+                        <div style="font-weight:700; font-size:0.95rem; color:var(--gray-700); margin-bottom:6px;">2차 정책 반영 개발</div>
+                        <div style="font-size:0.84rem; color:var(--gray-600); line-height:1.5;">ㄴ 최종 QA 진행</div>
+                    </div>
+                </li>
+                <!-- 3 -->
+                <li style="display:flex; gap:14px; align-items:flex-start;">
+                    <div style="background:var(--gray-200); color:var(--gray-700); width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.85rem; font-weight:bold; flex-shrink:0; margin-top:2px;">3</div>
+                    <div>
+                        <div style="font-weight:700; font-size:0.95rem; color:var(--gray-700);">어플 심사 및 배포</div>
+                    </div>
+                </li>
+                <!-- 4 -->
+                <li style="display:flex; gap:14px; align-items:flex-start;">
+                    <div style="background:var(--gray-200); color:var(--gray-700); width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.85rem; font-weight:bold; flex-shrink:0; margin-top:2px;">4</div>
+                    <div>
+                        <div style="font-weight:700; font-size:0.95rem; color:var(--gray-700);">운영 고도화</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <p class="page-footer">© 2026 대만 한인회 웹앱 구축 프로젝트 — 본 자료는 내부 회의 참고용이며 외부 공개 금지</p>
+    </div>
+
+<script>
+function switchProgressTab(tabId) {
+    const btnPending = document.getElementById('tab-btn-pending');
+    const btnCompleted = document.getElementById('tab-btn-completed');
+    const contentPending = document.getElementById('tab-content-pending');
+    const contentCompleted = document.getElementById('tab-content-completed');
+    
+    if (tabId === 'pending') {
+        btnPending.style.background = 'white';
+        btnPending.style.color = 'var(--highlight)';
+        btnPending.style.borderBottom = '2px solid var(--highlight)';
+        
+        btnCompleted.style.background = 'transparent';
+        btnCompleted.style.color = 'var(--gray-600)';
+        btnCompleted.style.borderBottom = '2px solid transparent';
+        
+        contentPending.style.display = 'block';
+        contentCompleted.style.display = 'none';
+    } else {
+        btnCompleted.style.background = 'white';
+        btnCompleted.style.color = 'var(--gray-800)';
+        btnCompleted.style.borderBottom = '2px solid var(--gray-800)';
+        
+        btnPending.style.background = 'transparent';
+        btnPending.style.color = 'var(--gray-600)';
+        btnPending.style.borderBottom = '2px solid transparent';
+        
+        contentCompleted.style.display = 'block';
+        contentPending.style.display = 'none';
+    }
+}
+</script>
+</body>
+
+</html>
