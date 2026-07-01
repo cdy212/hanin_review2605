@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>개발 가이드 문서</title>
+    
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    
+    <!-- Marked.js -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <!-- Google Fonts: Pretendard -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+
+    <style>
+        :root {
+            /* 눈에 편안한 Light Mode 파스텔/소프트 톤 팔레트 */
+            --bg-color: #f7f9fa; 
+            --content-bg: #ffffff; 
+            --text-primary: #333d47;
+            --text-secondary: #5e6c79;
+            --primary-color: #639bbd; /* 차분한 파스텔 블루 */
+            --secondary-color: #8bb1c9;
+            --accent-color: #4b7a99;
+            --border-color: #e5edf2;
+            --code-bg: #f0f4f8;
+            --sidebar-width: 300px;
+            --shadow-color: rgba(99, 155, 189, 0.08);
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styling */
+        #sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--content-bg);
+            border-right: 1px solid var(--border-color);
+            height: 100vh;
+            position: fixed;
+            overflow-y: auto;
+            padding: 25px 20px;
+            box-shadow: 2px 0 10px var(--shadow-color);
+            box-sizing: border-box;
+            z-index: 10;
+        }
+
+        #sidebar-header {
+            font-size: 1.25rem;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        #sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #sidebar li {
+            margin-bottom: 6px;
+        }
+
+        #sidebar a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            transition: all 0.25s ease;
+        }
+
+        #sidebar a:hover, #sidebar a.active {
+            background-color: var(--bg-color);
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+        
+        .erd-link {
+            background-color: #f0f7ff;
+            color: #0066cc !important;
+            font-weight: 600;
+            margin-bottom: 15px !important;
+            border: 1px solid #cce0ff;
+        }
+        
+        .erd-link:hover {
+            background-color: #e0f0ff !important;
+        }
+
+        /* Sub-menu (Accordion style) */
+        .sub-menu {
+            list-style: none;
+            padding-left: 15px !important;
+            margin-top: 5px !important;
+            border-left: 2px solid var(--border-color);
+            margin-left: 15px;
+        }
+
+        .sub-menu li {
+            margin-bottom: 4px;
+        }
+
+        .sub-link {
+            font-size: 0.85rem !important;
+            padding: 6px 10px !important;
+        }
+
+        /* Main Content Styling */
+        #main-content {
+            margin-left: var(--sidebar-width);
+            padding: 50px 40px;
+            width: calc(100% - var(--sidebar-width));
+            box-sizing: border-box;
+            background-color: var(--bg-color);
+            min-height: 100vh;
+        }
+
+        .markdown-body {
+            background-color: var(--content-bg);
+            padding: 50px 70px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px var(--shadow-color);
+            max-width: 950px;
+            margin: 0 auto;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .markdown-body h1 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 12px;
+            margin-top: 20px;
+            font-size: 2.2em;
+        }
+
+        .markdown-body h1:first-child {
+            margin-top: 0;
+        }
+
+        .markdown-body h2 {
+            color: var(--accent-color);
+            margin-top: 40px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+        
+        .markdown-body h3 {
+            color: var(--text-primary);
+            margin-top: 30px;
+        }
+
+        .markdown-body p, .markdown-body li {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+        }
+
+        .markdown-body a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .markdown-body a:hover {
+            text-decoration: underline;
+            color: var(--accent-color);
+        }
+
+        .markdown-body code {
+            background-color: var(--code-bg);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+            color: #d66b7b;
+        }
+
+        .markdown-body pre {
+            background-color: #2b333a; 
+            padding: 18px;
+            border-radius: 10px;
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+        }
+
+        .markdown-body pre code {
+            background-color: transparent;
+            padding: 0;
+            color: #e5edf2;
+            font-size: 0.95em;
+        }
+
+        .markdown-body blockquote {
+            margin: 25px 0;
+            padding: 18px 24px;
+            background-color: var(--code-bg);
+            border-left: 6px solid var(--secondary-color);
+            border-radius: 0 10px 10px 0;
+            color: var(--text-secondary);
+            font-style: normal;
+        }
+        
+        .markdown-body blockquote p {
+            margin: 0;
+        }
+
+        .markdown-body hr {
+            border: 0;
+            border-top: 2px dashed var(--border-color);
+            margin: 40px 0;
+        }
+
+        .markdown-body ul, .markdown-body ol {
+            padding-left: 25px;
+        }
+
+        .markdown-body li {
+            margin-bottom: 8px;
+        }
+
+        .inline-icon {
+            font-size: 1.2em;
+            vertical-align: -0.2em;
+            color: inherit;
+        }
+        
+        /* 툴팁 효과 방지용 빈 영역 */
+        .section-separator {
+            height: 40px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="sidebar">
+        <div id="sidebar-header">
+            <ion-icon name="book"></ion-icon> <span>개발 가이드 문서</span>
+        </div>
+        <ul id="toc">
+            <!-- 참조 ERD 메뉴 상단 추가 -->
+            <li class="menu-item-container erd-container">
+                <a href="erd_260701.html" target="_blank" class="erd-link">
+                    <ion-icon name="open-outline" class="inline-icon"></ion-icon> <span>참조.ERD (새창열기)</span>
+                </a>
+            </li>
+            <li style="margin-bottom: 15px;"><hr style="border: 0; border-top: 1px solid var(--border-color);" /></li>
+            
+            <!-- 문서 목록이 여기에 렌더링 됩니다 -->
+        </ul>
+    </div>
+
+    <div id="main-content">
+        <div class="markdown-body" id="content">
+            <!-- 선택된 마크다운 내용이 렌더링 됩니다 -->
+        </div>
+    </div>
+
+    <!-- ===== 분리된 마크다운 원본 데이터 ===== -->
+    
+    <script type="text/markdown" id="md-0">
+# 00. 사전 필요 지식 (Prerequisites)
+---
+
+## 1. 버전 관리: Git (깃) 사용법
+우리는 소스코드를 안전하게 관리하고 협업하기 위해 **Git**을 사용합니다.
+- **`git clone`**: 처음 프로젝트 소스 코드를 내 PC로 다운로드 받을 때 사용합니다.
+- **`git branch`**: 나만의 독립적인 작업 공간을 만듭니다. (예: `git checkout -b feature/login`)
+- **`git add` & `git commit`**: 변경된 파일들을 장바구니에 담고(add), 영수증을 찍어 기록(commit)합니다.
+- **`git push`**: 내 PC에 저장된 기록을 온라인(GitHub 등) 원격 저장소로 올려 팀원들과 공유합니다.
+- **PR (Pull Request)**: "제가 이런 기능을 만들었는데, 메인 소스에 합쳐주세요!" 라고 요청하는 과정입니다. 관리자가 코드를 리뷰한 후 승인하면 실제 서버 코드에 반영됩니다.
+
+---
+
+## 2. 백엔드 기술 스택 (Backend)
+서버와 데이터베이스 통신을 담당하는 보이지 않는 "엔진" 역할입니다. (`koreaTaiwanApi` 폴더)
+
+- **Java 11**: 백엔드 프로그래밍 언어입니다. 11 버전을 내 PC에 설치해야 합니다.
+- **Spring Boot 2.7**: 자바 서버를 빠르고 튼튼하게 만들어주는 가장 유명한 프레임워크입니다.
+- **Spring Data JPA**: 복잡한 SQL(데이터베이스 언어)을 직접 쓰지 않고도, 자바 코드로 쉽게 DB 단을 다룰 수 있게 해주는 기술입니다.
+- **JWT (JSON Web Token)**: 로그인한 유저가 '진짜 우리 유저가 맞는지' 증명하는 암호화된 출입증(토큰)입니다.
+- **Maven**: 백엔드 실행에 필요한 외부 라이브러리(부품)들을 인터넷에서 자동으로 다운로드해주고, 프로젝트를 빌드(실행 파일 생성)해주는 도구입니다.
+
+---
+
+## 3. 프론트엔드 기술 스택 (Frontend)
+사용자가 직접 눈으로 보고 터치하는 화면(앱/웹)을 담당합니다. (`koreaTaiwan` 폴더)
+
+- **React Native (React)**: 페이스북에서 만든 기술로, 자바스크립트(JavaScript) 하나만 알면 아이폰 앱과 안드로이드 앱을 동시에 만들 수 있습니다.
+- **Expo**: React Native를 훨씬 쉽고 편하게 개발할 수 있도록 도와주는 마법 같은 도구 모음집입니다. 복잡한 앱 설정 없이도 빠르게 화면을 띄워볼 수 있습니다.
+- **Node.js & npm**: 프론트엔드를 실행하기 위해 필요한 기본 환경과, 외부 라이브러리(패키지) 관리자입니다.
+
+---
+
+## 4. 데이터베이스 (DB) 및 접속 툴
+회원 정보, 게시글 등 모든 데이터가 안전하게 보관되는 "창고"입니다.
+
+- **데이터베이스 버전**: **MySQL 8.0**
+- **무료 DB 접속 툴 (추천)**:
+  명령어(검은 화면) 대신 마우스 클릭으로 쉽게 DB 데이터를 조회하고 수정할 수 있는 프로그램입니다.
+  1. **DBeaver (디비버)**: 전 세계적으로 가장 많이 쓰이는 무료 DB 툴입니다. [DBeaver 공식 사이트](https://dbeaver.io/)에서 다운로드 후, MySQL 드라이버를 선택하여 접속합니다.
+  2. **HeidiSQL (하이디SQL)**: 윈도우 환경에서 매우 가볍고 빠르게 동작하는 무료 툴입니다. [HeidiSQL 다운로드](https://www.heidisql.com/)
+
+- **접속 방법 요약 (DBeaver 기준)**:
+  1. DBeaver 실행 후 좌측 상단의 "새 연결(플러그 아이콘)" 클릭
+  2. `MySQL` 선택
+  3. Server Host (예: `localhost` 또는 `10.5.11.176`), Port (`13306`), Database, Username, Password 입력 후 `Test Connection` 클릭하여 연결 확인!
+    </script>
+
+    <script type="text/markdown" id="md-1">
+# 01. 프로젝트 개요 및 아키텍처
+
+**전체적인 폴더 구조와 기술 스택, 그리고 프론트엔드와 백엔드의 역할**을 설명합니다.
+
+---
+
+## 전체 시스템 아키텍처 (System Architecture)
+KoreaTaiwan 프로젝트는 클라이언트(화면)를 담당하는 **프론트엔드**와 데이터 처리 및 비즈니스 로직을 담당하는 **백엔드**로 명확히 분리되어 있습니다.
+
+- **Frontend (`koreaTaiwan` 폴더)**
+  - **역할**: 사용자가 직접 보는 웹 화면(UI)을 구성하고, 백엔드 서버로 데이터를 요청합니다.
+  - **기술 스택**: Expo (React Native 기반) + React. 웹과 모바일 앱(안드로이드/iOS)을 동시에 대응하기 위해 하이브리드 프레임워크인 Expo를 사용합니다.
+- **Backend (`koreaTaiwanApi` 폴더)**
+  - **역할**: 프론트엔드에서 보낸 요청(API)을 받아 데이터베이스(MySQL)에서 데이터를 조회, 수정, 삭제한 후 결과를 다시 프론트엔드에 돌려줍니다.
+  - **기술 스택**: Java 11 + Spring Boot 2.7.4 + Spring Data JPA + MySQL. 사용자 인증은 Spring Security와 JWT(Json Web Token)를 사용합니다.
+
+---
+
+## 주요 폴더 구조 설명 (Directory Structure)
+
+### 1. Frontend (`/app/koreaTaiwan/`)
+웹과 앱의 화면을 담당하는 소스코드들이 모여있습니다.
+
+- `src/` : 실제 개발자가 작성하는 소스코드의 핵심 폴더입니다.
+  - `pages/` (또는 `screens/`): 사용자가 보는 각각의 전체 화면 단위(예: 로그인 화면, 메인 화면, 마이페이지) 코드가 위치합니다.
+  - `components/`: 여러 화면에서 공통으로 재사용되는 작은 조각들(예: 버튼, 헤더, 모달창)이 모여있습니다.
+  - `contexts/` (또는 `hooks/`): 앱 전체에서 공유해야 하는 상태(예: 로그인된 사용자 정보)를 관리합니다.
+  - `utils/` (또는 `api/`): 백엔드 서버(API)와 통신하거나 날짜 변환 등 공통으로 쓰이는 함수들이 모여있습니다.
+  - `styles/`: CSS나 스타일링과 관련된 공통 속성들이 정의되어 있습니다.
+- `package.json`: 프론트엔드 프로젝트를 실행하기 위해 필요한 외부 라이브러리(모듈)들의 목록과 실행 명령어(`npm start` 등)가 적혀있는 파일입니다.
+
+### 2. Backend (`/app/koreaTaiwanApi/`)
+데이터베이스와 통신하고 API를 제공하는 백엔드 소스코드들입니다. (Maven 기반)
+
+- `src/main/java/com/kt/koreataiwan/` (예상 경로): 자바(Java) 코드가 작성되는 핵심 폴더입니다. 기능(도메인)별로 패키지가 나뉘어 있습니다.
+  - `controller/`: 프론트엔드의 요청(URL)을 제일 먼저 받는 "접수처" 역할을 합니다.
+  - `service/`: 실제 비즈니스 로직(예: 쿠폰 발급 가능 여부 계산, 비밀번호 암호화 등)을 수행하는 "작업실"입니다.
+  - `repository/`: DB에 직접 접근해서 데이터를 가져오거나 저장하는 "창고 관리자" 역할을 합니다. (Spring Data JPA 활용)
+  - `domain/` (또는 `entity/`): DB의 테이블과 1:1로 매칭되는 자바 객체(클래스)들입니다.
+  - `dto/`: 프론트엔드와 백엔드 간에 데이터를 주고받을 때 사용하는 "택배 상자" 같은 데이터 운반 객체입니다.
+- `src/main/resources/`: 설정 파일들이 모여있는 곳입니다.
+  - `application-local.properties`: 내 PC에서 개발할 때 사용하는 DB 접속 정보 등 설정 파일.
+  - `application-qa.properties`: 실서버 배포 전 테스트(QA) 서버용 설정 파일.
+- `pom.xml`: 백엔드 프로젝트에 필요한 외부 라이브러리(Spring Web, MySQL 드라이버 등) 목록을 관리하는 파일입니다.
+
+---
+
+> 참고: 화면에서 어떤 버튼을 눌렀을 때 작동하는 로직을 고치고 싶다면, 먼저 프론트엔드의 `pages/` 폴더에서 해당 화면 코드를 찾습니다. 그 화면에서 어떤 API URL을 호출하는지(`utils/` 참고) 확인한 뒤, 백엔드의 `controller/` 폴더에서 해당 URL을 매핑(`@GetMapping`, `@PostMapping`)하고 있는 코드를 찾아가는 순서로 추적하면 쉽게 코드를 파악할 수 있습니다!
+    </script>
+
+    <script type="text/markdown" id="md-2">
+# 02. 환경 설정 및 빌드 (Environment Setup & Build)
+
+이 문서는 백엔드 애플리케이션(`koreaTaiwanApi`)을 로컬에서 실행하고 테스트하기 위한 환경 설정 방법을 안내합니다.
+
+## 기본 요구 사항
+- **JDK 11** 설치 및 환경 변수(`JAVA_HOME`) 설정 완료
+- **Maven** (내장 Wrapper `mvnw` 사용 가능)
+- **MySQL** 데이터베이스 접근 권한
+- IDE (IntelliJ IDEA 추천, VSCode 등)
+
+## 프로파일 및 설정 파일
+`src/main/resources` 디렉토리에 여러 환경별 설정 파일이 존재합니다.
+- `application.properties`: 공통 설정 (기본 포트, JPA 설정 등)
+- `application-local.properties`: 로컬 개발용 DB 및 설정
+- `application-qa.properties`: QA 서버 연동용 설정
+- `application-test.properties`: 테스트 환경용 설정
+
+**주의사항**: 소셜 로그인 시크릿 키 등 민감한 정보는 `socialkey.properties` 파일 등으로 분리되어 관리됩니다.
+
+## 로컬 서버 실행 방법
+
+### 방법 1. 실행 스크립트 활용 (Windows 환경)
+프로젝트 루트 폴더(`koreaTaiwanApi`)에 준비된 배치 스크립트를 사용하면 쉽게 실행할 수 있습니다.
+- 로컬 모드 실행: `run-local.cmd`
+- QA 모드 실행: `run-qa.cmd`
+
+### 방법 2. Maven Wrapper 활용
+콘솔(터미널)에서 아래 명령어를 입력합니다.
+```bash
+# 로컬 프로파일로 실행
+./mvnw spring-boot:run -Dspring-boot.run.profiles=local
+```
+
+### 방법 3. IDE 활용
+- **IntelliJ**: `src/main/java/` 하위의 `@SpringBootApplication` 어노테이션이 있는 메인 클래스를 찾아 Run/Debug 합니다.
+- Run Configuration의 Active profiles 에 `local`을 입력하여 로컬 설정을 적용합니다.
+
+## 빌드(Build) 방법
+운영이나 QA 서버에 배포할 WAR 파일을 생성하려면 아래 명령어를 사용합니다. (테스트 제외 시 `-DskipTests` 추가)
+```bash
+./mvnw clean package -DskipTests
+```
+빌드 완료 후 `target/` 폴더 내에 `.war` 파일이 생성됩니다. (`ROOT.war`)
+    </script>
+
+    <script type="text/markdown" id="md-3">
+# 03. 구체적인 작업 단위 및 비즈니스 플로우
+
+이 문서는 KoreaTaiwan 서비스의 중요 비즈니스 시나리오가 화면(프론트엔드)부터 데이터 처리(백엔드)까지 어떻게 이어지는지 구체적인 플로우를 설명합니다.
+
+---
+
+## 1. 회원가입 및 로그인 플로우 (Authentication)
+사용자가 앱에 접속하여 활동하기 위한 가장 첫 단계입니다.
+
+- **비즈니스 로직**: 일반 회원은 소셜 로그인(구글, 카카오 등) 또는 자체 로그인을 통해 가입합니다. 가입 후 관리자(한인회)의 승인을 거치거나 후원/회비 납부를 확인받으면 **'정회원'** 또는 **'제휴회원'**으로 등급(Role)이 상승합니다. 탈퇴 시 1개월 유예 후 파기됩니다.
+- **프론트엔드 작업 폴더 (`koreaTaiwan`)**:
+  - 화면: `src/pages/Auth/` (로그인, 회원가입 화면)
+  - API 호출 로직: `src/utils/api/auth.js`
+- **백엔드 작업 폴더 (`koreaTaiwanApi`)**:
+  - `controller/AuthController.java` : 아이디/비밀번호를 받아 인증 처리.
+  - `service/JwtTokenProvider.java` : 인증 성공 시 JWT(Json Web Token)라는 보안 출입증을 발급.
+
+## 2. 장소(업체) 등록 플로우 (Place Registration)
+사용자에게 유용한 대만 현지의 업체(식당, 병원 등) 정보를 등록하는 기능입니다.
+
+- **비즈니스 로직**: 프론트엔드 상단의 '업체 등록' 배너를 통해 등록 페이지로 진입합니다. 등록 폼에 업체명, 주소, 사진, 연락처를 입력하여 제출하면 대기 상태가 되며, 관리자가 확인 후 승인하면 최종적으로 지도(Region)와 목록에 노출됩니다.
+- **프론트엔드 작업 폴더**:
+  - 화면: `src/pages/Place/PlaceRegister.js`
+- **백엔드 작업 폴더**:
+  - `controller/PlaceController.java`
+  - 데이터 저장: `Place`, `Category`, `Regions` 엔티티 활용.
+
+## 3. 커뮤니티(게시판) 및 제재 플로우 (Community & Sanction)
+사용자 간 소통 공간(구인구직 등) 및 악성 유저 차단 정책입니다.
+
+- **비즈니스 로직**:
+  - **구인구직 제한**: 정회원만 구인구직 게시판에 글을 쓸 수 있으며, 글 작성 횟수는 2주에 1회 등으로 제한(포인트 차감 방식)됩니다.
+  - **신고 및 차단**: 특정 게시물이 사용자들로부터 3회 이상 신고를 받으면 프론트엔드에서 자동으로 숨김 처리(Blind)되며, 관리자가 최종 삭제합니다. 악성 유저는 3일/5일 차단 제재를 받으며, 접속 시 '소명 팝업'이 떠서 관리자에게 해명을 보낼 수 있습니다.
+- **백엔드 작업 폴더**:
+  - `controller/BoardController.java`, `service/SanctionService.java`
+  - 제재 시 로그아웃 처리 필터: `security/JwtAuthenticationFilter.java`
+
+## 4. 쿠폰 발행 및 사용 플로우 (Coupon Management)
+업체가 발행하고 회원이 사용하는 혜택 시스템입니다.
+
+- **비즈니스 로직**:
+  - **발행**: '제휴회원(기업)' 등급 이상만 자신의 업체(Place)에 사용할 수 있는 쿠폰을 발행할 수 있습니다.
+  - **사용**: 일반회원은 쿠폰 목록 구경만 가능하고, **'정회원'** 이상만 쿠폰을 다운로드 받고 사용할 수 있습니다.
+- **백엔드 작업 폴더**:
+  - `controller/CouponController.java` : 쿠폰 발급/사용 시 동시성(많은 사람이 동시에 쿠폰을 받을 때)을 고려한 Service 로직이 중요합니다.
+
+---
+
+> 코드 정보 요약: 모든 API의 응답은 백엔드의 `ApiResponse` (또는 유사한 공통 DTO 클래스) 규격에 맞추어 `code`, `message`, `data` 구조로 반환되므로, 프론트 작업 시 해당 구조 파싱에 유의하세요.
+    </script>
+    
+    <script type="text/markdown" id="md-4">
+# 04. ERD 정보 구체화 (ERD Details & Sample Data)
+
+이 문서는 이전 문서에서 설명한 비즈니스 로직이 실제 데이터베이스(MySQL)에 어떻게 저장되고 연관되는지 설명합니다.
+
+## 전체적인 테이블 관계도
+> 참고: 좌측 메뉴 최상단의 **참조.ERD (새창열기)** 버튼을 클릭하여 시각적인 다이어그램으로 한눈에 확인하실 수 있습니다!
+
+## 1. 회원 및 권한 (User Management)
+- **`user` 테이블**: 회원의 기본 정보 보관
+  - *샘플 데이터*: `id`=1, `username`='hong123', `email`='hong@gmail.com', `account_status`='ACTIVE'
+- **`role` 테이블**: 시스템 권한 목록 (일반, 정회원, 제휴회원, 관리자)
+  - *샘플 데이터*: `id`=1(`ROLE_USER`), `id`=2(`ROLE_PREMIUM`), `id`=3(`ROLE_ADMIN`)
+- **`user_roles` 테이블**: 사용자와 권한을 연결하는 중간 다리 (N:1 연관관계)
+  - *샘플 데이터*: `user_id`=1, `role_id`=2 (홍길동은 정회원 권한을 가짐)
+
+## 2. 커뮤니티 및 활동 (Community & Posts)
+- **`user_posts` 테이블**: 커뮤니티 게시글 본문. 작성자(`user_id`)를 왜래키(FK)로 가집니다.
+  - *샘플 데이터*: `id`=100, `content_title`='대만 타이베이 맛집 추천', `user_id`=1, `deleted`=false
+  - *주의점*: 게시글을 삭제할 때 실제로 DB 레코드를 날리는 것이 아니라, **`deleted` 컬럼을 `true`**로 바꾸는 소프트 삭제(Soft Delete) 방식을 사용합니다.
+- **`user_posts_actions` 테이블**: 좋아요, 싫어요, 신고(Report) 내역 관리.
+  - *비즈니스 연관*: 이 테이블에서 `action_type='REPORT'`인 레코드가 동일한 `user_posts_id`에 대해 3개가 쌓이면, 프론트에서 자동 블라인드(숨김) 처리됩니다.
+
+## 3. 장소 및 업체 정보 (Place & Region)
+새롭게 도입된 정책으로 현지 업체 정보가 체계화됩니다.
+- **`place` 테이블 (신규)**: 승인된 업체 정보 보관
+  - *샘플 데이터*: `id`=10, `name`='타이베이 한식당', `address`='타이베이시 101빌딩 근처', `user_id`=1 (등록한 기업회원 ID)
+  - *연관관계*: `category_id` (식당, 병원 등 분류), `user_id` (등록자 맵핑)
+
+## 4. 쿠폰 시스템 (Coupon)
+쿠폰 발행(기업) 및 사용(정회원) 흐름을 위한 3개의 핵심 테이블입니다.
+- **`coupon` 테이블**: 발행된 쿠폰의 '틀(원형)' 데이터
+  - *샘플 데이터*: `id`=50, `code`='WELCOME2026', `user_id`=1(발행 기업 ID), `place_id`=10(사용처 장소 ID)
+- **`coupon_user` 테이블**: 특정 유저가 다운로드 받아 '보유'하고 있는 쿠폰 지갑 역할
+  - *샘플 데이터*: `id`=1, `coupon_id`=50, `user_id`=5(다운로드한 정회원), `is_used`=false
+- **`coupon_user_history` 테이블**: 실제 쿠폰을 매장에 가서 '사용(Use)' 완료했을 때 찍히는 로그 히스토리
+
+## 5. 포인트 및 알림 (Push & Points)
+- **`user_push` / `user_push_history` 테이블**: 앱(안드로이드/iOS) 푸시 알림 발송 시 디바이스 토큰 및 발송 이력을 저장합니다. 신고에 의한 제재 시 팝업/푸시 알림 발송에 사용됩니다.
+- (향후 도입) 구인구직 권한 등에 쓰일 수동 부여 포인트는 `user` 테이블의 컬럼이나 신규 `point_log` 테이블을 통해 관리될 예정입니다.
+    </script>
+    
+    <script type="text/markdown" id="md-5">
+# 05. 관리자 기능 구체화 및 코드 구조
+
+본 문서는 관리자(Admin) 권한을 가진 사용자가 접근할 수 있는 백엔드 주요 기능들과, 이 기능들이 소스코드 상에서 어떻게 구현되는지 설명합니다.
+
+---
+
+## 관리자 화면 기능 명세
+
+### 1. 회원 등급(Role) 및 제재 관리
+- **업무 플로우**: 가입한 일반 회원 중 회비/후원 납부자를 확인하여 '정회원' 수동 승인을 처리합니다. 또한, 신고 누적 등 제재가 필요한 유저에게 3일/5일 차단 조치를 내립니다.
+- **프론트 작업 경로 (`koreaTaiwan`)**:
+  - `src/pages/Admin/UserManagement.js`
+- **백엔드 작업 경로 (`koreaTaiwanApi`)**:
+  - `controller/admin/AdminUserController.java` : 관리자용 API 진입점. Spring Security 설정으로 인해 `@PreAuthorize("hasRole('ROLE_ADMIN')")` 어노테이션이 붙어 있어 일반 사용자는 접근 불가.
+  - `service/admin/AdminUserService.java` : DB의 `user_roles` 테이블 값을 조작하여 권한을 상승/하강시키는 로직 수행.
+
+### 2. 업체 등록 심사 및 관리
+- **업무 플로우**: 일반 사용자가 제출한 '업체 등록' 폼(이름, 사진, 주소)을 심사(Reject/Approve)합니다.
+- **백엔드 로직 흐름**: `AdminPlaceController`에서 승인 API 호출 -> `AdminPlaceService`에서 `place` 테이블의 특정 레코드 상태를 대기(WAIT)에서 승인(APPROVED)으로 변경 (또는 `is_partner=true` 변경).
+
+### 3. 커뮤니티 검열 및 공지사항
+- **업무 플로우**: 전체 게시글(`user_posts`)을 조회하며, 3회 이상 신고되어 숨김 처리된 글의 삭제(Soft Delete: `deleted=true`)를 최종 확정합니다.
+
+### 4. 쿠폰 사용 내역 추출 (Excel Download)
+- **업무 플로우**: '정회원'들이 쿠폰을 얼마나 발급받고 사용했는지(`coupon_user_history`) 목록을 확인하고, 오프라인 정산을 위해 외부 파일(Excel/CSV) 형식으로 다운로드(Export)합니다.
+- **백엔드 작업 포인트**: API 컨트롤러에서 JSON이 아닌 `application/vnd.ms-excel` 형태로 HttpServletResponse에 Apache POI 라이브러리 등을 활용해 파일을 출력(Write)해줍니다.
+
+---
+
+> 주의 사항 (권한 방어)
+> 관리자 API는 단순히 프론트엔드에서 버튼을 숨기는 것만으로는 안전하지 않습니다. 포스트맨(Postman) 같은 툴을 이용해 강제로 URL을 찌를 수 있으므로, 반드시 백엔드 Controller 단에서 **토큰 유효성 검사 및 ADMIN 권한 체크 로직**이 이중으로 들어가야 합니다.
+    </script>
+    
+    <script type="text/markdown" id="md-6">
+# 06. 사용자 기능 구체화 및 코드 구조
+
+초보 개발자를 위한 일반 앱 이용자(User) 및 정회원 대상 서비스 프론트엔드/백엔드 구현 가이드입니다.
+
+---
+
+## 사용자(앱 유저) 주요 기능 플로우
+
+### 1. 업체 등록 요청 (일반/정회원 공통)
+- **업무 플로우**: 메인 화면 상단 플로팅 배너 클릭 -> 혜택 안내 게시물 열람 -> 폼(업체명, 대표사진, 주소, 연락처) 작성 후 제출
+- **프론트 작업 경로 (`koreaTaiwan`)**:
+  - `src/pages/Home/Main.js` : 메인 화면 배너 UI 컴포넌트
+  - `src/pages/Place/PlaceApply.js` : 등록 폼 화면 (React Hook Form 등 사용)
+  - `src/utils/api/place.js` : Multipart/form-data(이미지 포함)로 백엔드에 POST 요청 전송
+- **백엔드 작업 경로 (`koreaTaiwanApi`)**:
+  - `controller/PlaceController.java`
+  - *핵심 로직*: 이미지는 서버 스토리지(또는 S3)에 저장하고 URL 주소와 파일 메타 정보를 `file_upload` 테이블에 저장한 뒤, 폼 데이터는 `place` 테이블에 저장 (상태: 심사대기).
+
+### 2. 구인구직 게시판 이용 (정회원 전용)
+- **업무 플로우**: 일반 회원이 '구인구직' 글쓰기 버튼을 누르면 권한 부족 모달 알림이 뜹니다. 정회원일 경우 글쓰기 페이지로 넘어가며, 2주에 1회 제한 횟수를 체크합니다.
+- **백엔드 로직 (`BoardController.java`)**:
+  - 사용자 토큰(JWT)에서 Role을 추출하여 `ROLE_PREMIUM`(정회원) 여부 파악.
+  - `user_posts` 테이블에서 해당 유저가 최근 14일 이내에 특정 카테고리(구인구직)에 작성한 이력이 있는지 `count` 쿼리로 조회 후 예외(Exception) 처리.
+
+### 3. 쿠폰 발급 및 사용 내역
+- **업무 플로우**:
+  - 기업회원이 발행한 쿠폰 목록 페이지 진입 (`src/pages/Coupon/CouponList.js`)
+  - '다운로드' 버튼 클릭 시, 정회원 여부 체크 후 `coupon_user` 테이블에 내역 Insert.
+  - 내 쿠폰함에서 사용하려는 매장 직원에게 보여주고 '사용하기' 버튼 클릭.
+- **백엔드 로직 (`CouponController.java`)**:
+  - *핵심 로직*: `coupon_user` 테이블의 `is_used` 값을 `true`로 바꾸고 `use_date`를 현재 시간으로 업데이트합니다. 그와 동시에 히스토리 추적을 위해 `coupon_user_history` 테이블에 로그 레코드를 하나 생성(Insert)합니다.
+
+### 4. 제재(차단) 소명하기
+- **업무 플로우**: 관리자에 의해 차단(블락) 당한 후 로그인 시도 시, "소명 알림 팝업"이 뜹니다. 해당 팝업에서 바로 사유를 적어 제출할 수 있습니다.
+- **백엔드 로직**: 차단된 계정이라도 '소명 API'(`/api/v1/user/appeal`) 만큼은 호출할 수 있도록 Spring Security Filter에서 허용(PermitAll 또는 별도 예외처리)해 주어야 합니다.
+
+---
+
+**문서 고도화 완료!**
+1~6편의 가이드를 통해 초보 개발자도 프론트엔드의 화면(Page)이 어떻게 백엔드의 Controller 및 DB 테이블까지 맞물려 돌아가는지 쉽게 파악할 수 있습니다.
+코딩 중 막히는 부분이 있다면, 각 단계별로 명시된 폴더 경로로 이동하여 관련 코드를 직접 열어보시면 큰 도움이 될 것입니다.
+    </script>
+
+    <script>
+        const scripts = document.querySelectorAll('script[type="text/markdown"]');
+        const tocUl = document.getElementById('toc');
+        const contentDiv = document.getElementById('content');
+        
+        const docs = [];
+
+        // 마크다운 스크립트들을 읽어서 객체로 저장
+        scripts.forEach((script, idx) => {
+            const rawMd = script.textContent.trim();
+            const lines = rawMd.split('\n');
+            const firstLine = lines.find(line => line.startsWith('# '));
+            const title = firstLine ? firstLine.replace('# ', '').trim() : `문서 ${idx+1}`;
+            
+            docs.push({
+                id: 'doc-' + idx,
+                title: title,
+                raw: rawMd
+            });
+        });
+
+        let currentActiveIdx = -1;
+
+        // 특정 문서 렌더링 함수
+        function renderDoc(idx) {
+            if (currentActiveIdx === idx) return; // 이미 선택된 문서
+            currentActiveIdx = idx;
+            const doc = docs[idx];
+            
+            let htmlContent = marked.parse(doc.raw);
+            contentDiv.innerHTML = htmlContent;
+
+            // H2 태그들을 찾아서 아코디언 서브메뉴 구성
+            const headings = contentDiv.querySelectorAll('h2');
+            const subMenu = document.createElement('ul');
+            subMenu.className = 'sub-menu';
+            
+            headings.forEach(heading => {
+                const baseId = heading.textContent.trim().replace(/\s+/g, '-').toLowerCase();
+                const id = baseId.replace(/[^a-z0-9\-\u3131-\uD79D]/g, ''); 
+                heading.id = id || ('heading-' + Math.random().toString(36).substring(7));
+                
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = '#' + heading.id;
+                // 꼭 필요한 메뉴 구조 인디케이터(화살표) 용도의 ion-icon만 남김
+                a.innerHTML = '<ion-icon name="chevron-forward-outline"></ion-icon> <span>' + heading.innerText.trim() + '</span>';
+                a.className = 'sub-link';
+                
+                // 클릭 시 부드럽게 스크롤
+                a.onclick = (e) => {
+                    e.preventDefault();
+                    document.getElementById(heading.id).scrollIntoView({ behavior: 'smooth' });
+                };
+                
+                li.appendChild(a);
+                subMenu.appendChild(li);
+            });
+
+            // 사이드바 메뉴 상태 업데이트 (활성화/비활성화 및 서브메뉴 추가)
+            document.querySelectorAll('.md-item-container').forEach((container, i) => {
+                const mainLink = container.querySelector('.main-link');
+                const existingSub = container.querySelector('.sub-menu');
+                if (existingSub) existingSub.remove();
+                
+                if (i === idx) {
+                    mainLink.classList.add('active');
+                    if (headings.length > 0) {
+                        container.appendChild(subMenu);
+                    }
+                } else {
+                    mainLink.classList.remove('active');
+                }
+            });
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 사이드바 메인 메뉴 아이템 초기 생성
+        docs.forEach((doc, idx) => {
+            const li = document.createElement('li');
+            li.className = 'menu-item-container md-item-container';
+            
+            const a = document.createElement('a');
+            a.href = 'javascript:void(0)';
+            a.className = 'main-link';
+            a.onclick = () => renderDoc(idx);
+            
+            // 파일 아이콘으로만 꼭 필요한 아이콘 사용
+            a.innerHTML = '<ion-icon name="document-text-outline" class="inline-icon"></ion-icon> <span>' + doc.title + '</span>';
+            
+            li.appendChild(a);
+            tocUl.appendChild(li);
+        });
+
+        // 스크롤 위치에 따른 서브링크 하이라이트
+        window.addEventListener('scroll', () => {
+            const headings = contentDiv.querySelectorAll('h2');
+            let currentId = '';
+            headings.forEach(heading => {
+                const sectionTop = heading.getBoundingClientRect().top;
+                if (sectionTop <= 150) { // 화면 상단 기준 마진
+                    currentId = heading.id;
+                }
+            });
+            
+            document.querySelectorAll('.sub-link').forEach(a => {
+                a.classList.remove('active');
+                if (a.getAttribute('href') === '#' + currentId) {
+                    a.classList.add('active');
+                }
+            });
+        });
+
+        // 첫 번째 문서 자동 렌더링
+        if (docs.length > 0) {
+            renderDoc(0);
+        }
+    </script>
+</body>
+</html>
