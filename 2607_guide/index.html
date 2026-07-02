@@ -417,6 +417,11 @@
         <span class="nav-label">TODO LIST</span>
         <span class="nav-tag">Task</span>
       </button>
+      <button class="nav-item" onclick="location.href='dev_checklist.html'">
+        <div class="nav-icon">D</div>
+        <span class="nav-label">약관</span>
+        <span class="nav-tag">Terms</span>
+      </button>
       <button class="nav-item" onclick="loadDoc('LICENSE.md', '라이선스', 'License', this)">
         <div class="nav-icon">L</div>
         <span class="nav-label">라이선스</span>
@@ -435,6 +440,10 @@
 
 <script>
   const cache = {};
+
+  function openExternal(url) {
+    window.open(url, '_blank');
+  }
 
   function setActive(btn) {
     document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));

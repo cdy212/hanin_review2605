@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>개발자 확인사항 — 정책 답변 (26.06.30)</title>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #f5f7fa;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --primary: #3b82f6;
+      --primary-light: #eff6ff;
+      --text: #1e293b;
+      --text-sub: #475569;
+      --text-muted: #94a3b8;
+      --q-bg: #f8fafc;
+      --q-border: #cbd5e1;
+      --ans-bg: #f0fdf4;
+      --ans-border: #86efac;
+    }
+
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      font-size: 13px;
+    }
+
+    header {
+      background: #1e293b;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-mark {
+      width: 26px;
+      height: 26px;
+      background: var(--primary);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .logo-mark ion-icon {
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .header-title {
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .header-sub {
+      color: #64748b;
+      font-size: 11px;
+    }
+
+    .header-spacer {
+      flex: 1;
+    }
+
+    .hbadge {
+      font-size: 10px;
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: 99px;
+      background: rgba(59, 130, 246, 0.2);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 14px 20px 24px;
+    }
+
+    /* Single card */
+    .checklist-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .card-title {
+      padding: 10px 16px;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-sub);
+      letter-spacing: 0.3px;
+    }
+
+    /* Table layout */
+    .cl-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .cl-table thead tr {
+      background: #f1f5f9;
+    }
+
+    .cl-table th {
+      padding: 7px 12px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+
+    .cl-table tbody tr {
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .cl-table tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    .cl-table tbody tr:hover {
+      background: #fafbfc;
+    }
+
+    .cl-num {
+      padding: 8px 12px;
+      width: 30px;
+      text-align: center;
+      vertical-align: top;
+      padding-top: 10px;
+    }
+
+    .num-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .cl-q {
+      padding: 8px 12px;
+      width: 200px;
+      vertical-align: top;
+      color: var(--text-sub);
+      font-size: 12px;
+      border-right: 1px solid #f1f5f9;
+    }
+
+    .cl-q .q-title-text {
+      font-weight: 600;
+      color: var(--text);
+      font-size: 12.5px;
+      margin-bottom: 3px;
+    }
+
+    .cl-q .q-orig {
+      color: var(--text-muted);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .cl-ans {
+      padding: 8px 14px;
+      vertical-align: top;
+      font-size: 12.5px;
+      color: var(--text-sub);
+    }
+
+    .cl-ans .ans-text {
+      color: #1e4d33;
+    }
+
+    .cl-ans .ans-text strong {
+      color: #15803d;
+    }
+
+    .cl-ans ul {
+      padding-left: 14px;
+      margin: 3px 0;
+    }
+
+    .cl-ans li {
+      margin-bottom: 2px;
+      line-height: 1.55;
+      color: #1e4d33;
+    }
+
+    .cl-ans li strong {
+      color: #15803d;
+    }
+
+    .sub-list {
+      margin-top: 3px;
+      padding-left: 12px;
+      border-left: 2px dashed #86efac;
+      list-style: circle;
+    }
+
+    .sub-list li {
+      font-size: 12px;
+      color: #276749;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: 600;
+      margin: 0 1px;
+    }
+
+    .tag-blue {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .tag-green {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .tag-yellow {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .tag-gray {
+      background: #f1f5f9;
+      color: #475569;
+    }
+
+    .url-link {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .url-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Ref table */
+    .ref-section {
+      margin-top: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .ref-title {
+      padding: 8px 16px;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .ref-title ion-icon {
+      font-size: 13px;
+      color: var(--primary);
+    }
+
+    .ref-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    .ref-table th {
+      background: #f1f5f9;
+      font-weight: 700;
+      text-align: left;
+      padding: 6px 12px;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .ref-table td {
+      padding: 6px 12px;
+      color: var(--text-sub);
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .ref-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .ref-table tr:hover td {
+      background: #fafbfc;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="header-inner">
+      <div class="logo-mark"><ion-icon name="document-text"></ion-icon></div>
+      <span class="header-title">개발자 확인사항 — 정책 답변</span>
+      <span class="header-sub">약관 및 개인정보처리방침</span>
+      <div class="header-spacer"></div>
+      <button onclick="location.href='index.html'" style="background:rgba(255,255,255,0.1);color:#fff;border:none;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;margin-right:8px;font-weight:600;"><ion-icon name="arrow-back" style="vertical-align:-2px;margin-right:4px;"></ion-icon>가이드로 돌아가기</button>
+      <span class="hbadge">26.06.30 확정</span>
+    </div>
+  </header>
+
+  <div class="page">
+
+    <div class="checklist-card">
+      <div class="card-title">약관 및 개인정보처리방침 작성을 위한 확인사항</div>
+      <table class="cl-table">
+        <thead>
+          <tr>
+            <th style="width:30px;">#</th>
+            <th style="width:200px;">항목</th>
+            <th>정책 답변</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <!-- 1 -->
+          <tr>
+            <td class="cl-num"><span class="num-badge">1</span></td>
+            <td class="cl-q">
+              <div class="q-title-text">회원 인증 방식</div>
+              <div class="q-orig">이메일 / 휴대폰 / 회원명부 / 관리자 승인 / ARC 등</div>
+            </td>
+            <td class="cl-ans">
+              <p class="ans-text"><strong>정회원 / 기업회원</strong> → <strong>한인회 관리자 수기 인증</strong></p>
+              <ul>
+                <li>일반 회원 가입 후, 관리자가 수동으로 정회원/제휴회원 인증 처리.</li>
+                <li>인증 대상: 한인회비 납부자 / 후원자 / 기타 (한인회 내부 기준 적용)</li>
+                <li>인증에 필요한 <strong>내부 기준 정보 및 확인 항목</strong>은 추가 정의 필요.</li>
+              </ul>
+            </td>
+          </tr>
+
+          <!-- 2 -->
+          <tr>
+            <td class="cl-num"><span class="num-badge">2</span></td>
+            <td class="cl-q">
+              <div class="q-title-text">ARC / 신분증 자료 보관</div>
+              <div class="q-orig">인증 후 삭제할지, 보관할지 확인 필요</div>
+            </td>
+            <td class="cl-ans">
+              <p class="ans-text"><strong>보관하지 않음.</strong> 인증 후 서버에 저장하지 않습니다.</p>
+            </td>
+          </tr>
+
+          <!-- 3 -->
+          <tr>
+            <td class="cl-num"><span class="num-badge">3</span></td>
+            <td class="cl-q">
+              <div class="q-title-text">업체 등록 방식</div>
+              <div class="q-orig">한인회 직접 등록 / 업체 신청 / 한인회 승인 후 등록</div>
+            </td>
+            <td class="cl-ans">
+              <p class="ans-text"><strong>업체 직접 신청 → 한인회 관리자 승인 후 등록</strong></p>
+              <ul>
+                <li>메인 상단 플로팅 배너 '업체 등록' 버튼 노출 → 혜택/정책 게시물로 이동.</li>
+                <li>기입 항목: <span class="tag tag-blue">업체명</span><span class="tag tag-blue">대표사진</span><span
+                    class="tag tag-blue">업체주소</span><span class="tag tag-blue">연락처</span><span
+                    class="tag tag-blue">첨부파일</span></li>
+                <li>관리자 확인/승인 후 등록 완료. (<a href="https://kr.happytuk.tw/main" target="_blank"
+                    class="url-link">kr.happytuk.tw/main</a>)</li>
+              </ul>
+            </td>
+          </tr>
+
+          <!-- 4 -->
+          <tr>
+            <td class="cl-num"><span class="num-badge">4</span></td>
+            <td class="cl-q">
+              <div class="q-title-text">할인 QR 이용 방식</div>
+              <div class="q-orig">QR 스캔 / 기록 저장 / 회원정보 범위 확인 필요</div>
+            </td>
+            <td class="cl-ans">
+              <p class="ans-text"><strong>QR 보류</strong> → <strong>PIN 번호 방식</strong>으로 대체</p>
+              <ul>
+                <li>업체가 쿠폰 등록 → 사용자 개별 다운로드 → 업체에 PIN 입력하여 사용 처리.</li>
+                <li>사용자는 쿠폰 <strong>1인 1개</strong>만 발급. 발급/사용 이력 확인 가능.</li>
+                <li>발행권한: <span class="tag tag-green">기업회원 이상</span> / 사용권한: <span class="tag tag-green">정회원 이상</span>
+                  (일반회원은 목록만 조회)</li>
+                <li>사용 이력 <strong>엑셀 다운로드</strong> 기능 추가 예정.</li>
+              </ul>
+            </td>
+          </tr>
+
+          <!-- 5 -->
+          <tr>
+            <td class="cl-num"><span class="num-badge">5</span></td>
+            <td class="cl-q">
+              <div class="q-title-text">업체가 확인 가능한 회원 정보</div>
+              <div class="q-orig">유효 회원 여부만 표시할지 확인 필요</div>
+            </td>
+            <td class="cl-ans">
+              <p class="ans-text">사용자가 쿠폰을 업체에 직접 공유 → 업체가 <strong>PIN 입력</strong>으로 사용 처리.</p>
+              <ul>
+                <li>별도 회원 정보 확인 없음. 업체는 회원 개인정보에 접근하지 않습니다.</li>
+              </ul>
+            </td>
+          </tr>
+
+          <!-- 6 -->
+          <tr>
+            <td class="cl-num"><span class="num-badge">6</span></td>
+            <td class="cl-q">
+              <div class="q-title-text">위치정보 사용 여부</div>
+              <div class="q-orig">주변 업체 찾기 기능에서 위치정보 사용 여부</div>
+            </td>
+            <td class="cl-ans">
+              <p class="ans-text"><strong>위치 정보 사용.</strong> 주변 업체 찾기 기능에서 사용자 위치정보를 활용합니다.</p>
+            </td>
+          </tr>
+
+          <!-- 7 -->
+          <tr>
+            <td class="cl-num"><span class="num-badge">7</span></td>
+            <td class="cl-q">
+              <div class="q-title-text">자유게시판 운영 방식</div>
+              <div class="q-orig">작성 권한, 신고, 삭제, 정지 처리 방식</div>
+            </td>
+            <td class="cl-ans">
+              <ul>
+                <li><strong>작성권한:</strong> <span class="tag tag-green">정회원 이상</span> / 구인구직: 2주에 1회 제한</li>
+                <li><strong>신고:</strong> 3회 누적 시 자동 숨김 → 관리자 확인 후 숨김/삭제 처리.</li>
+                <li><strong>사용자 제재:</strong> 관리자 수동 처리, 제재 등급 3일/5일 차단.</li>
+                <li>제재 후 로그아웃 → 재로그인 시 <strong>'소명 알림 팝업'</strong> 노출 → 관리자 검토 후 최종 처리.</li>
+              </ul>
+            </td>
+          </tr>
+
+          <!-- 8 -->
+          <tr>
+            <td class="cl-num"><span class="num-badge">8</span></td>
+            <td class="cl-q">
+              <div class="q-title-text">개인정보 수집 및 보관</div>
+              <div class="q-orig">수집 항목, 보관 기간, 삭제 방식</div>
+            </td>
+            <td class="cl-ans">
+              <ul>
+                <li><strong>필수:</strong> <span class="tag tag-blue">이메일</span><span class="tag tag-blue">소셜계정 Key</span>
+                </li>
+                <li><strong>선택:</strong> <span class="tag tag-gray">생년월일,핸드폰</span><span class="tag tag-gray">주소</span>
+                </li>
+                <li><strong>삭제:</strong> 탈퇴 신청 후 <strong>30일 경과</strong>된 사용자에 한하여 삭제 처리.</li>
+              </ul>
+            </td>
+          </tr>
+
+          <!-- 9 -->
+          <tr>
+            <td class="cl-num"><span class="num-badge">9</span></td>
+            <td class="cl-q">
+              <div class="q-title-text">한인 Wiki 및 향후 추가 기능</div>
+              <div class="q-orig">한인 Wiki 기능 정의, 신규 기능 시 약관 검토</div>
+            </td>
+            <td class="cl-ans">
+              <p class="ans-text"><strong>한인 Wiki — 개발 제외 (Drop).</strong></p>
+              <ul>
+                <li>2차 검토 시 포인트 기능과 함께 검토 예정.</li>
+              </ul>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 참고 테이블 -->
+    <div class="ref-section">
+      <div class="ref-title"><ion-icon name="library"></ion-icon>기능별 약관 참고 목록</div>
+      <table class="ref-table">
+        <thead>
+          <tr>
+            <th>기능</th>
+            <th>약관 참고</th>
+            <th>비고</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>회원등록</td>
+            <td>Dcard / Ocard</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>자유게시판</td>
+            <td>Dcard</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>공지사항</td>
+            <td>Dcard</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>업체 찾기</td>
+            <td>LINE HOT PLACE</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>업체 등록</td>
+            <td>LINE SPOT 업체 서비스 약관</td>
+            <td><span class="tag tag-yellow">확인 후 변동 가능</span></td>
+          </tr>
+          <tr>
+            <td>할인 / 회원 QR</td>
+            <td>Ocard</td>
+            <td><span class="tag tag-green">PIN 방식으로 대체 확정</span></td>
+          </tr>
+          <tr>
+            <td>회원 인증</td>
+            <td>Dcard / Ocard</td>
+            <td><span class="tag tag-green">관리자 수기 인증 확정</span></td>
+          </tr>
+          <tr>
+            <td>개인정보처리</td>
+            <td>Dcard / Ocard</td>
+            <td><span class="tag tag-green">수집 범위 확정</span></td>
+          </tr>
+          <tr>
+            <td>한인 Wiki</td>
+            <td>—</td>
+            <td><span class="tag tag-gray">개발 Drop</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</body>
+
+</html>
