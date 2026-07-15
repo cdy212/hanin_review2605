@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>대만 한인회 서비스 운영 흐름도</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-bg: #eff6ff;
+            --admin: #be185d;
+            --admin-bg: #fdf2f8;
+            --border: #e2e8f0;
+            --text-dark: #0f172a;
+            --text-mut: #64748b;
+            --bg: #f8fafc;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 24px;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .header p {
+            margin: 4px 0 0 0;
+            color: var(--text-mut);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .flow-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-header {
+            background: #f1f5f9;
+            padding: 10px 14px;
+            font-weight: 600;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .step-row {
+            display: flex;
+            align-items: stretch;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .step-row:last-child {
+            border-bottom: none;
+        }
+
+        .actor {
+            width: 80px;
+            flex-shrink: 0;
+            padding: 12px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            text-align: center;
+            border-right: 1px solid #f1f5f9;
+        }
+
+        .actor i {
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .actor-user { background: var(--primary-bg); color: var(--primary); }
+        .actor-admin { background: var(--admin-bg); color: var(--admin); }
+        .actor-sys { background: #f8fafc; color: #475569; }
+
+        .content {
+            padding: 12px 14px;
+            flex-grow: 1;
+        }
+
+        .content h4 {
+            margin: 0 0 4px 0;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .content p {
+            margin: 0;
+            color: var(--text-mut);
+            font-size: 12px;
+        }
+
+        .url-link {
+            display: inline-block;
+            margin-top: 6px;
+            font-size: 11px;
+            color: var(--primary);
+            text-decoration: none;
+            background: var(--primary-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .url-link:hover { text-decoration: underline; }
+
+        /* Screenshot Viewer */
+        .screenshot-box {
+            margin-top: 8px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            background: #000;
+            max-height: 120px;
+        }
+
+        .screenshot-box img {
+            width: 100%;
+            height: auto;
+            display: block;
+            opacity: 0.9;
+            transition: opacity 0.2s;
+        }
+
+        .screenshot-box:hover img {
+            opacity: 1;
+            cursor: pointer;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            background: #e2e8f0;
+            color: #334155;
+            margin-right: 4px;
+        }
+        .b-warn { background: #ffedd5; color: #c2410c; }
+        .b-succ { background: #dcfce3; color: #166534; }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div>
+            <h1>대만 한인회 서비스 통합 운영 가이드</h1>
+            <p>사용자와 관리자 간의 핵심 비즈니스 로직과 실제 화면 연동 흐름도</p>
+        </div>
+        <div style="text-align: right; font-size: 11px; color: var(--text-mut);">
+            실서버: <a href="https://kr.happytuk.tw/main" target="_blank">kr.happytuk.tw</a><br>
+            관리자: <a href="https://kr.happytuk.tw/admin/index.html" target="_blank">kr.happytuk.tw/admin</a>
+        </div>
+    </div>
+
+    <div class="grid-container">
+
+        <!-- 1. 멤버십 승급 -->
+        <div class="flow-card">
+            <div class="card-header"><i class="ri-vip-crown-line"></i> 1. 멤버십 (정회원) 승급</div>
+            
+            <div class="step-row">
+                <div class="actor actor-user"><i class="ri-smartphone-line"></i>사용자</div>
+                <div class="content">
+                    <h4>정회원 신청 (서류 업로드)</h4>
+                    <p>앱 [멤버십] 메뉴에서 증빙 서류 첨부 후 제출. 상태는 <span class="badge b-warn">심사 중</span> 대기.</p>
+                </div>
+            </div>
+            
+            <div class="step-row">
+                <div class="actor actor-admin"><i class="ri-macbook-line"></i>관리자</div>
+                <div class="content">
+                    <h4>서류 심사 및 승인</h4>
+                    <p>관리자 콘솔에서 접수된 서류 확인 후 승인/반려 처리.</p>
+                    <a href="https://kr.happytuk.tw/admin/index.html" class="url-link" target="_blank">admin/index.html (멤버십 탭)</a>
+                    <div class="screenshot-box"><img src="./screenshots/admin.png" alt="Admin UI"></div>
+                </div>
+            </div>
+
+            <div class="step-row">
+                <div class="actor actor-sys"><i class="ri-refresh-line"></i>시스템</div>
+                <div class="content">
+                    <h4>권한 즉시 부여</h4>
+                    <p>등급이 <span class="badge b-succ">정회원</span>으로 변경되며 구인게시판 작성 및 쿠폰 혜택 활성화.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. 악성 유저 제재 -->
+        <div class="flow-card">
+            <div class="card-header"><i class="ri-alarm-warning-line"></i> 2. 커뮤니티 신고 및 제재/소명</div>
+            
+            <div class="step-row">
+                <div class="actor actor-user"><i class="ri-group-line"></i>사용자들</div>
+                <div class="content">
+                    <h4>게시물 신고 및 자동 블라인드</h4>
+                    <p>타 유저의 신고 누적(3회) 시 시스템이 게시물을 즉시 블라인드 처리.</p>
+                    <a href="https://kr.happytuk.tw/community" class="url-link" target="_blank">kr.happytuk.tw/community</a>
+                    <div class="screenshot-box"><img src="./screenshots/community.png" alt="Community UI"></div>
+                </div>
+            </div>
+            
+            <div class="step-row">
+                <div class="actor actor-admin"><i class="ri-macbook-line"></i>관리자</div>
+                <div class="content">
+                    <h4>신고 내역 확인 및 계정 제재</h4>
+                    <p>관리자가 신고 사유 확인 후 해당 계정을 제재 처리. 앱 접속이 전면 차단됨.</p>
+                </div>
+            </div>
+
+            <div class="step-row">
+                <div class="actor actor-user"><i class="ri-error-warning-line"></i>제재유저</div>
+                <div class="content">
+                    <h4>소명서 제출 및 관리자 해제</h4>
+                    <p>차단된 유저는 앱에서 '소명서'만 작성 가능. 관리자가 소명서 승인 시 계정 복구.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. 제휴처 쿠폰 -->
+        <div class="flow-card">
+            <div class="card-header"><i class="ri-coupon-2-line"></i> 3. 제휴처 쿠폰 발생 및 사용</div>
+            
+            <div class="step-row">
+                <div class="actor actor-admin"><i class="ri-macbook-line"></i>관리자</div>
+                <div class="content">
+                    <h4>이벤트 쿠폰 신규 발행</h4>
+                    <p>할인율, 수량, 만료일을 설정하여 쿠폰 발행. 앱에 즉시 노출.</p>
+                </div>
+            </div>
+
+            <div class="step-row">
+                <div class="actor actor-user"><i class="ri-download-2-line"></i>사용자</div>
+                <div class="content">
+                    <h4>쿠폰 다운로드</h4>
+                    <p>정회원에 한해 선착순으로 앱에서 쿠폰 발급.</p>
+                </div>
+            </div>
+
+            <div class="step-row">
+                <div class="actor actor-sys"><i class="ri-qr-code-line"></i>오프라인</div>
+                <div class="content">
+                    <h4>매장 방문 및 QR 사용</h4>
+                    <p>제휴 매장에서 QR코드 제시. 직원이 PIN 입력 시 <span class="badge b-succ">사용완료</span> 실시간 전환 (재사용 불가).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. 배너 및 홈 관리 -->
+        <div class="flow-card">
+            <div class="card-header"><i class="ri-layout-top-line"></i> 4. 메인 화면 및 지도 동기화</div>
+            
+            <div class="step-row">
+                <div class="actor actor-admin"><i class="ri-macbook-line"></i>관리자</div>
+                <div class="content">
+                    <h4>배너 / 제휴장소 등록</h4>
+                    <p>상단 배너 ON/OFF 토글 및 신규 제휴 장소 정보(위치 등) 등록 승인.</p>
+                </div>
+            </div>
+
+            <div class="step-row">
+                <div class="actor actor-user"><i class="ri-smartphone-line"></i>사용자</div>
+                <div class="content">
+                    <h4>앱 실시간 반영</h4>
+                    <p>앱 메인 화면 및 지도 탭(스토어)에 새로고침 없이 즉각 데이터 반영.</p>
+                    <a href="https://kr.happytuk.tw/main" class="url-link" target="_blank">kr.happytuk.tw/main</a>
+                    <div class="screenshot-box"><img src="./screenshots/main.png" alt="Main UI"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
