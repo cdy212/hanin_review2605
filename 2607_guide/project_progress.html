@@ -31,19 +31,20 @@
       background-color: var(--bg-color);
       color: var(--text-main);
       line-height: 1.6;
-      padding: 40px 20px;
+      padding: 20px 10px; /* 기본 좌우 여백 삭제 및 최소화 */
     }
 
     .container {
-      max-width: 900px;
+      max-width: 1400px; /* 넓은 화면 지원 */
       margin: 0 auto;
+      padding: 0 10px;
     }
 
     .header {
       display: flex;
       align-items: center;
-      margin-bottom: 30px;
-      padding-bottom: 20px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
       border-bottom: 1px solid var(--border-color);
     }
 
@@ -54,7 +55,7 @@
     }
 
     .header h1 {
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 700;
       color: var(--text-main);
     }
@@ -83,14 +84,82 @@
       margin-right: 6px;
     }
 
+    /* TODO 섹션 */
+    .todo-section {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    .todo-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .todo-header h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .todo-header ion-icon {
+      font-size: 24px;
+      color: var(--warning-color);
+    }
+
+    .todo-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 12px;
+    }
+
+    .todo-list li {
+      font-size: 14px;
+      padding: 12px 16px;
+      background-color: var(--secondary-color);
+      border-radius: 8px;
+      color: var(--text-main);
+    }
+
+    .todo-list li strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--primary-color);
+    }
+
+    .todo-link {
+      color: var(--primary-color);
+      text-decoration: none;
+      word-break: break-all;
+      font-size: 13px;
+    }
+
+    .todo-link:hover {
+      text-decoration: underline;
+    }
+
+    /* 카드 그리드 레이아웃 */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+    }
+
     .card {
       background-color: var(--card-bg);
       border-radius: 12px;
-      padding: 24px 30px;
-      margin-bottom: 24px;
+      padding: 16px; /* 좌우 여백 최소화 */
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
       border: 1px solid var(--border-color);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      flex-direction: column;
     }
 
     .card:hover {
@@ -108,45 +177,33 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 28px;
-      height: 28px;
+      width: 26px;
+      height: 26px;
       background-color: var(--primary-color);
       color: #ffffff;
       border-radius: 50%;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
-      margin-right: 12px;
+      margin-right: 10px;
+      flex-shrink: 0;
     }
 
     .card-title {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 600;
       color: var(--text-main);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 4px 10px;
-      font-size: 12px;
-      font-weight: 600;
-      border-radius: 6px;
-      background-color: var(--secondary-color);
-      color: var(--primary-color);
-      margin-bottom: 16px;
+      line-height: 1.3;
     }
 
     .content-section {
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
 
     .role-title {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--text-main);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       display: flex;
       align-items: center;
       gap: 6px;
@@ -157,21 +214,21 @@
     }
 
     .role-desc {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--text-muted);
-      padding-left: 24px;
-      margin-bottom: 12px;
+      padding-left: 20px;
+      margin-bottom: 8px;
     }
 
     .links-section {
       background-color: var(--secondary-color);
-      padding: 12px 16px;
+      padding: 12px;
       border-radius: 8px;
-      margin-top: 16px;
+      margin-top: auto; /* 하단으로 밀어내기 */
     }
 
     .links-title {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
       color: var(--text-main);
       margin-bottom: 8px;
@@ -182,8 +239,8 @@
 
     .link-item {
       display: flex;
-      align-items: center;
-      font-size: 13px;
+      align-items: flex-start;
+      font-size: 12px;
       margin-bottom: 6px;
     }
 
@@ -193,8 +250,15 @@
 
     .link-label {
       font-weight: 500;
-      width: 70px;
+      width: 50px;
       color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .link-content {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
 
     .link-url {
@@ -209,7 +273,6 @@
 
     .link-extra {
       color: var(--text-muted);
-      margin-left: 6px;
     }
   </style>
 </head>
@@ -224,207 +287,198 @@
       </a>
     </div>
 
-    <!-- 1. 악성 사용자 제재 -->
-    <div class="card">
-      <div class="card-header">
-        <div class="card-number">1</div>
-        <h2 class="card-title">악성 사용자 제재 및 커뮤니티 정화 (User Sanction)</h2>
+    <!-- TODO 섹션 -->
+    <div class="todo-section">
+      <div class="todo-header">
+        <ion-icon name="checkbox-outline"></ion-icon>
+        <h2>TODO LIST</h2>
       </div>
-      <div class="badge">
-        <ion-icon name="swap-horizontal-outline" style="vertical-align: middle; margin-right: 4px;"></ion-icon>
-        [사용자 화면] ↔ [관리자 화면]
-      </div>
-      
-      <div class="content-section">
-        <div class="role-title">
-          <ion-icon name="phone-portrait-outline"></ion-icon>
-          사용자 (앱)
-        </div>
-        <div class="role-desc">
-          타인의 부적절한 게시물을 신고할 수 있으며, 소셜 로그인 사용자를 포함하여 제재를 받은 계정은 앱의 모든 서비스 이용이 전면 차단됩니다. 차단된 사용자는 전용 화면에서 소명서를 작성하여 제출할 수 있습니다.
-        </div>
-      </div>
-      
-      <div class="content-section">
-        <div class="role-title">
-          <ion-icon name="desktop-outline"></ion-icon>
-          관리자 (웹)
-        </div>
-        <div class="role-desc">
-          관리자 콘솔 내 '제재 관리' 페이지가 신설되었습니다. 사용자 ID 검색을 통해 제재 대상자를 팝업으로 간편하게 지정하고 사유를 기록할 수 있으며, 사용자가 제출한 소명서를 검토 후 제재를 해제(승인)할 수 있습니다.
-        </div>
-      </div>
-
-      <div class="links-section">
-        <div class="links-title">
-          <ion-icon name="link-outline"></ion-icon>
-          확인 경로
-        </div>
-        <div class="link-item">
-          <span class="link-label">사용자:</span>
-          <a href="https://kr.happytuk.tw/community" class="link-url" target="_blank">https://kr.happytuk.tw/community</a>
-        </div>
-        <div class="link-item">
-          <span class="link-label">관리자:</span>
-          <a href="https://kr.happytuk.tw/admin/index.html" class="link-url" target="_blank">https://kr.happytuk.tw/admin/index.html</a>
-          <span class="link-extra">(사용자/신고 관리 탭)</span>
-        </div>
-      </div>
+      <ul class="todo-list">
+        <li>
+          <strong>1. 한인회 : 도메인 확인</strong>
+          한인회와 협의하여 도메인 상태를 체크하고 변경 준비
+        </li>
+        <li>
+          <strong>2. 한인회 : 서버 확인</strong>
+          운영 배포 서버 준비
+        </li>
+        <li>
+          <strong>3. 한인회, 개발팀 : 테스트 및 피드백 반영</strong>
+        </li>
+        <li>
+          <strong>4. 한인회 : 약관 및 라이센스 확인</strong>
+          <a href="https://hanin-review2605.pages.dev/2607_guide/dev_checklist" class="todo-link" target="_blank">https://hanin-review2605.pages.dev/2607_guide/dev_checklist</a>
+        </li>
+        <li>
+          <strong>5. 개발팀 : 소프트 런칭 준비</strong>
+          개발 작업 90% 완료 및 QA 대기 중
+        </li>
+        <li>
+          <strong>6. 한인회, 개발팀 : 프로젝트 소스 공유 및 개발 작업 등 확인 전달</strong>
+        </li>
+      </ul>
     </div>
 
-    <!-- 2. 정회원 승급 -->
-    <div class="card">
-      <div class="card-header">
-        <div class="card-number">2</div>
-        <h2 class="card-title">정회원 승급 및 권한 차등 시스템 (Membership & Permissions)</h2>
-      </div>
-      <div class="badge">
-        <ion-icon name="swap-horizontal-outline" style="vertical-align: middle; margin-right: 4px;"></ion-icon>
-        [사용자 화면] ↔ [관리자 화면]
-      </div>
-      
-      <div class="content-section">
-        <div class="role-title">
-          <ion-icon name="phone-portrait-outline"></ion-icon>
-          사용자 (앱)
+    <!-- 카드 그리드 영역 -->
+    <div class="cards-grid">
+      <!-- 1. 악성 사용자 제재 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-number">1</div>
+          <h2 class="card-title">악성 사용자 제재 및 커뮤니티 정화</h2>
         </div>
-        <div class="role-desc">
-          멤버십 승급을 위한 기능이 안정화되었습니다. 회원 등급(일반/정회원)에 따라 구인구직 게시판의 글쓰기 권한 및 전용 쿠폰 다운로드 권한이 엄격하게 분리되어 적용됩니다.
+        
+        <div class="content-section">
+          <div class="role-title"><ion-icon name="phone-portrait-outline"></ion-icon> 사용자 (앱)</div>
+          <div class="role-desc">
+            타인의 부적절한 게시물을 신고할 수 있으며, 제재받은 계정은 서비스 전면 차단. 전용 화면에서 소명서 제출 가능.
+          </div>
         </div>
-      </div>
-      
-      <div class="content-section">
-        <div class="role-title">
-          <ion-icon name="desktop-outline"></ion-icon>
-          관리자 (웹)
+        
+        <div class="content-section">
+          <div class="role-title"><ion-icon name="desktop-outline"></ion-icon> 관리자 (웹)</div>
+          <div class="role-desc">
+            '제재 관리' 페이지 신설. 제재 대상자 지정 및 사유 기록, 소명서 검토 후 제재 해제 처리 기능.
+          </div>
         </div>
-        <div class="role-desc">
-          사용자가 제출한 증빙 서류를 검토하고 정회원 등급을 부여할 수 있는 심사 처리 기능이 연동 완료되었습니다.
+
+        <div class="links-section">
+          <div class="links-title"><ion-icon name="link-outline"></ion-icon> 확인 경로</div>
+          <div class="link-item">
+            <span class="link-label">사용자:</span>
+            <div class="link-content">
+              <a href="https://kr.happytuk.tw/community" class="link-url" target="_blank">https://kr.happytuk.tw/community</a>
+            </div>
+          </div>
+          <div class="link-item">
+            <span class="link-label">관리자:</span>
+            <div class="link-content">
+              <a href="https://kr.happytuk.tw/admin/index.html" class="link-url" target="_blank">https://kr.happytuk.tw/admin/index.html</a>
+              <span class="link-extra">(사용자/신고 관리 탭)</span>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="links-section">
-        <div class="links-title">
-          <ion-icon name="link-outline"></ion-icon>
-          확인 경로
+      <!-- 2. 정회원 승급 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-number">2</div>
+          <h2 class="card-title">정회원 승급 및 권한 차등 시스템</h2>
         </div>
-        <div class="link-item">
-          <span class="link-label">사용자:</span>
-          <a href="https://kr.happytuk.tw/membership" class="link-url" target="_blank">https://kr.happytuk.tw/membership</a>
+        
+        <div class="content-section">
+          <div class="role-title"><ion-icon name="phone-portrait-outline"></ion-icon> 사용자 (앱)</div>
+          <div class="role-desc">
+            회원 등급(일반/정회원)에 따라 구인구직 게시판 글쓰기 및 전용 쿠폰 다운로드 권한 엄격 분리 적용.
+          </div>
         </div>
-        <div class="link-item">
-          <span class="link-label">관리자:</span>
-          <a href="https://kr.happytuk.tw/admin/index.html" class="link-url" target="_blank">https://kr.happytuk.tw/admin/index.html</a>
-          <span class="link-extra">(멤버십 탭)</span>
+        
+        <div class="content-section">
+          <div class="role-title"><ion-icon name="desktop-outline"></ion-icon> 관리자 (웹)</div>
+          <div class="role-desc">
+            증빙 서류 검토 및 정회원 등급 부여 심사 처리 기능 연동 완료.
+          </div>
         </div>
-      </div>
-    </div>
 
-    <!-- 3. 메인 배너 및 쿠폰 -->
-    <div class="card">
-      <div class="card-header">
-        <div class="card-number">3</div>
-        <h2 class="card-title">메인 배너 및 제휴 쿠폰 운영 (Banner & Coupon)</h2>
-      </div>
-      <div class="badge">
-        <ion-icon name="swap-horizontal-outline" style="vertical-align: middle; margin-right: 4px;"></ion-icon>
-        [사용자 화면] ↔ [관리자 화면]
-      </div>
-      
-      <div class="content-section">
-        <div class="role-title">
-          <ion-icon name="phone-portrait-outline"></ion-icon>
-          사용자 (앱)
-        </div>
-        <div class="role-desc">
-          메인 화면의 사용자 경험(스크롤 이동 등)이 개선되었으며, 이벤트 탭에서 제휴처 할인 쿠폰을 원활하게 다운로드할 수 있습니다.
-        </div>
-      </div>
-      
-      <div class="content-section">
-        <div class="role-title">
-          <ion-icon name="desktop-outline"></ion-icon>
-          관리자 (웹)
-        </div>
-        <div class="role-desc">
-          메인 화면에 노출되는 상단 배너 이미지를 직접 등록 및 관리할 수 있으며, 앱으로 즉시 노출되는 쿠폰의 발행 정보(할인율, 수량 등)를 제어할 수 있도록 관리자 메인 화면이 개선되었습니다.
+        <div class="links-section">
+          <div class="links-title"><ion-icon name="link-outline"></ion-icon> 확인 경로</div>
+          <div class="link-item">
+            <span class="link-label">사용자:</span>
+            <div class="link-content">
+              <a href="https://kr.happytuk.tw/membership" class="link-url" target="_blank">https://kr.happytuk.tw/membership</a>
+            </div>
+          </div>
+          <div class="link-item">
+            <span class="link-label">관리자:</span>
+            <div class="link-content">
+              <a href="https://kr.happytuk.tw/admin/index.html" class="link-url" target="_blank">https://kr.happytuk.tw/admin/index.html</a>
+              <span class="link-extra">(멤버십 탭)</span>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="links-section">
-        <div class="links-title">
-          <ion-icon name="link-outline"></ion-icon>
-          확인 경로
+      <!-- 3. 메인 배너 및 쿠폰 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-number">3</div>
+          <h2 class="card-title">메인 배너 및 제휴 쿠폰 운영</h2>
         </div>
-        <div class="link-item">
-          <span class="link-label">사용자:</span>
-          <span>
-            <a href="https://kr.happytuk.tw/main" class="link-url" target="_blank">https://kr.happytuk.tw/main</a> , 
-            <a href="https://kr.happytuk.tw/coupon" class="link-url" target="_blank">https://kr.happytuk.tw/coupon</a>
-          </span>
+        
+        <div class="content-section">
+          <div class="role-title"><ion-icon name="phone-portrait-outline"></ion-icon> 사용자 (앱)</div>
+          <div class="role-desc">
+            메인 화면 경험(스크롤 등) 개선, 이벤트 탭에서 제휴처 할인 쿠폰 원활한 다운로드 기능 추가.
+          </div>
         </div>
-        <div class="link-item">
-          <span class="link-label">관리자:</span>
-          <a href="https://kr.happytuk.tw/admin/index.html" class="link-url" target="_blank">https://kr.happytuk.tw/admin/index.html</a>
-          <span class="link-extra">(쿠폰 관리/배너 탭)</span>
+        
+        <div class="content-section">
+          <div class="role-title"><ion-icon name="desktop-outline"></ion-icon> 관리자 (웹)</div>
+          <div class="role-desc">
+            메인 배너 등록 관리 및 앱으로 노출되는 쿠폰 발행 정보(할인율, 수량 등) 제어 기능.
+          </div>
         </div>
-      </div>
-    </div>
 
-    <!-- 4. 제휴 장소 탐색 -->
-    <div class="card">
-      <div class="card-header">
-        <div class="card-number">4</div>
-        <h2 class="card-title">제휴 장소 탐색 및 지도 편의성 강화 (Map & Places)</h2>
-      </div>
-      <div class="badge">
-        <ion-icon name="phone-portrait-outline" style="vertical-align: middle; margin-right: 4px;"></ion-icon>
-        [사용자 화면] 단독
-      </div>
-      
-      <div class="content-section">
-        <div class="role-title">
-          <ion-icon name="phone-portrait-outline"></ion-icon>
-          사용자 (앱)
-        </div>
-        <div class="role-desc">
-          지도 메뉴 진입 시 한인회 공식 제휴 업체가 전용 뱃지(마커)로 뚜렷하게 표시되어 시인성이 높아졌습니다. 또한, 사용자의 현재 위치를 기반으로 제휴 장소까지의 실제 거리를 자동 계산하여 안내하는 편의 기능이 추가되었습니다.
+        <div class="links-section">
+          <div class="links-title"><ion-icon name="link-outline"></ion-icon> 확인 경로</div>
+          <div class="link-item">
+            <span class="link-label">사용자:</span>
+            <div class="link-content">
+              <a href="https://kr.happytuk.tw/main" class="link-url" target="_blank">https://kr.happytuk.tw/main</a>
+              <a href="https://kr.happytuk.tw/coupon" class="link-url" target="_blank">https://kr.happytuk.tw/coupon</a>
+            </div>
+          </div>
+          <div class="link-item">
+            <span class="link-label">관리자:</span>
+            <div class="link-content">
+              <a href="https://kr.happytuk.tw/admin/index.html" class="link-url" target="_blank">https://kr.happytuk.tw/admin/index.html</a>
+              <span class="link-extra">(쿠폰 관리/배너 탭)</span>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="links-section">
-        <div class="links-title">
-          <ion-icon name="link-outline"></ion-icon>
-          확인 경로
+      <!-- 4. 제휴 장소 탐색 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-number">4</div>
+          <h2 class="card-title">제휴 장소 탐색 및 지도 편의성 강화</h2>
         </div>
-        <div class="link-item">
-          <a href="https://kr.happytuk.tw/store" class="link-url" target="_blank">https://kr.happytuk.tw/store</a>
+        
+        <div class="content-section">
+          <div class="role-title"><ion-icon name="phone-portrait-outline"></ion-icon> 사용자 (앱)</div>
+          <div class="role-desc">
+            지도 진입 시 제휴 업체 전용 마커 표시로 시인성 향상, 현재 위치 기반 실제 거리 자동 계산 편의 기능.
+          </div>
         </div>
-      </div>
-    </div>
 
-    <!-- 5. 서비스 약관 및 공통 기반 -->
-    <div class="card">
-      <div class="card-header">
-        <div class="card-number">5</div>
-        <h2 class="card-title">서비스 약관 및 공통 기반 (Policy)</h2>
-      </div>
-      <div class="badge">
-        <ion-icon name="layers-outline" style="vertical-align: middle; margin-right: 4px;"></ion-icon>
-        통합
-      </div>
-      
-      <div class="content-section">
-        <div class="role-title">
-          <ion-icon name="document-text-outline"></ion-icon>
-          상세 내용
-        </div>
-        <div class="role-desc">
-          파일 업로드 시스템이 강화되었으며, 대만 현지 법률 및 지식재산권 보호 기준에 맞춰 전체 서비스의 라이선스 및 정책 가이드가 최신 버전으로 갱신(7/15)되었습니다.
+        <div class="links-section">
+          <div class="links-title"><ion-icon name="link-outline"></ion-icon> 확인 경로</div>
+          <div class="link-item">
+            <div class="link-content">
+              <a href="https://kr.happytuk.tw/store" class="link-url" target="_blank">https://kr.happytuk.tw/store</a>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
 
+      <!-- 5. 서비스 약관 및 공통 기반 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-number">5</div>
+          <h2 class="card-title">서비스 약관 및 공통 기반 (Policy)</h2>
+        </div>
+        
+        <div class="content-section">
+          <div class="role-title"><ion-icon name="document-text-outline"></ion-icon> 상세 내용</div>
+          <div class="role-desc">
+            파일 업로드 시스템 강화, 대만 현지 법률 및 지식재산권 보호 기준에 맞춘 라이선스 및 정책 가이드 갱신(7/15).
+          </div>
+        </div>
+      </div>
+
+    </div> <!-- cards-grid 끝 -->
   </div>
 </body>
 </html>
