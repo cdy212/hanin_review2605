@@ -86,18 +86,21 @@
 
     /* TODO 섹션 */
     .todo-section {
-      background-color: var(--secondary-color);
+      background-color: var(--card-bg);
       border-radius: 12px;
-      padding: 20px;
+      padding: 20px 24px;
       margin-bottom: 24px;
       border: 1px solid var(--border-color);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
     }
 
     .todo-header {
       display: flex;
       align-items: center;
       gap: 8px;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
     }
 
     .todo-header h2 {
@@ -115,24 +118,21 @@
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 8px;
     }
 
     .todo-list li {
       font-size: 14px;
-      padding: 16px 20px;
-      background-color: #ffffff;
-      border-radius: 10px;
+      padding: 4px 0;
       color: var(--text-main);
-      border: 1px solid var(--border-color);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+      line-height: 1.5;
     }
 
     .todo-list li strong {
-      display: block;
-      margin-bottom: 6px;
+      display: inline;
+      margin-right: 6px;
       color: var(--primary-color);
-      font-size: 15px;
+      font-size: 14px;
     }
 
     .todo-link {
