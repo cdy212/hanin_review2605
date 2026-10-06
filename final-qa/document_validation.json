@@ -1,0 +1,10 @@
+{
+  "cases": 67,
+  "uniqueCaseIds": true,
+  "sourceAnchors": 36,
+  "screenshots": 12,
+  "brokenAbsoluteLinks": [],
+  "htmlBytes": 796794,
+  "htmlScreenshotEmbedding": true,
+  "scope": "Document consistency only; authenticated E2E not executed"
+}

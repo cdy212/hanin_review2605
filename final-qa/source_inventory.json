@@ -1,0 +1,1356 @@
+{
+  "date": "2026-10-06",
+  "frontCommit": "3c5219684f0b37110e6eafa4f4bfad5dbee44aa7",
+  "backCommit": "63219d74490ac85126a4a243bb2b22e5c62982e3",
+  "frontStatus": "M components/home/index.js\n?? CLAUDE.md\n?? GEMINI.md\n?? LOCAL_TEST_GUIDE.md\n?? public/arcade-gallery/\n?? start-local-qa-db-20260827.cmd\n?? start-local-qa-db-20260827.ps1",
+  "backStatus": "?? AGENTS.md\n?? CLAUDE.md\n?? GEMINI.md\n?? LOCAL_TEST_GUIDE.md\n?? docs/email_spam_improvement_guide.md\n?? run-local-qa-db-20260827.cmd\n?? run-local-qa-token-test-20260827.cmd",
+  "routes": [
+    {
+      "route": "/admin",
+      "path": "koreaTaiwan/app/(auth)/admin/index.js"
+    },
+    {
+      "route": "/admin/login",
+      "path": "koreaTaiwan/app/(auth)/admin/login.js"
+    },
+    {
+      "route": "/block",
+      "path": "koreaTaiwan/app/(auth)/block.js"
+    },
+    {
+      "route": "/forget/id",
+      "path": "koreaTaiwan/app/(auth)/forget/id.js"
+    },
+    {
+      "route": "/forget/password",
+      "path": "koreaTaiwan/app/(auth)/forget/password.js"
+    },
+    {
+      "route": "/forget/resetPassword",
+      "path": "koreaTaiwan/app/(auth)/forget/resetPassword.js"
+    },
+    {
+      "route": "/",
+      "path": "koreaTaiwan/app/(auth)/index.js"
+    },
+    {
+      "route": "/index_splash",
+      "path": "koreaTaiwan/app/(auth)/index_splash.js"
+    },
+    {
+      "route": "/login",
+      "path": "koreaTaiwan/app/(auth)/login.js"
+    },
+    {
+      "route": "/register",
+      "path": "koreaTaiwan/app/(auth)/register.js"
+    },
+    {
+      "route": "/sample",
+      "path": "koreaTaiwan/app/(auth)/sample/index.js"
+    },
+    {
+      "route": "/sample/upload",
+      "path": "koreaTaiwan/app/(auth)/sample/upload.js"
+    },
+    {
+      "route": "/terms/location/[lang]",
+      "path": "koreaTaiwan/app/(auth)/terms/location/[lang].js"
+    },
+    {
+      "route": "/terms/location",
+      "path": "koreaTaiwan/app/(auth)/terms/location/index.js"
+    },
+    {
+      "route": "/terms/marketing/[lang]",
+      "path": "koreaTaiwan/app/(auth)/terms/marketing/[lang].js"
+    },
+    {
+      "route": "/terms/marketing",
+      "path": "koreaTaiwan/app/(auth)/terms/marketing/index.js"
+    },
+    {
+      "route": "/terms/policy/[lang]",
+      "path": "koreaTaiwan/app/(auth)/terms/policy/[lang].js"
+    },
+    {
+      "route": "/terms/policy",
+      "path": "koreaTaiwan/app/(auth)/terms/policy/index.js"
+    },
+    {
+      "route": "/terms/privacy/[lang]",
+      "path": "koreaTaiwan/app/(auth)/terms/privacy/[lang].js"
+    },
+    {
+      "route": "/terms/privacy",
+      "path": "koreaTaiwan/app/(auth)/terms/privacy/index.js"
+    },
+    {
+      "route": "/view_layout",
+      "path": "koreaTaiwan/app/(auth)/view_layout.js"
+    },
+    {
+      "route": "/admin/main-content",
+      "path": "koreaTaiwan/app/(views)/admin/main-content/index.js"
+    },
+    {
+      "route": "/community/create",
+      "path": "koreaTaiwan/app/(views)/community/create.js"
+    },
+    {
+      "route": "/community/detail/[id]",
+      "path": "koreaTaiwan/app/(views)/community/detail/[id].js"
+    },
+    {
+      "route": "/community/edit-post/[id]",
+      "path": "koreaTaiwan/app/(views)/community/edit-post/[id].js"
+    },
+    {
+      "route": "/community",
+      "path": "koreaTaiwan/app/(views)/community/index.js"
+    },
+    {
+      "route": "/coupon/[target]",
+      "path": "koreaTaiwan/app/(views)/coupon/[target].js"
+    },
+    {
+      "route": "/coupon",
+      "path": "koreaTaiwan/app/(views)/coupon/index.js"
+    },
+    {
+      "route": "/coupon/manage/[target]",
+      "path": "koreaTaiwan/app/(views)/coupon/manage/[target].js"
+    },
+    {
+      "route": "/coupon/manage/create",
+      "path": "koreaTaiwan/app/(views)/coupon/manage/create.js"
+    },
+    {
+      "route": "/coupon/manage",
+      "path": "koreaTaiwan/app/(views)/coupon/manage/index.js"
+    },
+    {
+      "route": "/coupon/my/[target]",
+      "path": "koreaTaiwan/app/(views)/coupon/my/[target].js"
+    },
+    {
+      "route": "/coupon/my",
+      "path": "koreaTaiwan/app/(views)/coupon/my/index.js"
+    },
+    {
+      "route": "/discover",
+      "path": "koreaTaiwan/app/(views)/discover/index.js"
+    },
+    {
+      "route": "/likes",
+      "path": "koreaTaiwan/app/(views)/likes/index.js"
+    },
+    {
+      "route": "/main",
+      "path": "koreaTaiwan/app/(views)/main/index.js"
+    },
+    {
+      "route": "/membership",
+      "path": "koreaTaiwan/app/(views)/membership/index.js"
+    },
+    {
+      "route": "/mypage/edit",
+      "path": "koreaTaiwan/app/(views)/mypage/edit.js"
+    },
+    {
+      "route": "/mypage",
+      "path": "koreaTaiwan/app/(views)/mypage/index.js"
+    },
+    {
+      "route": "/mypage/profile",
+      "path": "koreaTaiwan/app/(views)/mypage/profile.js"
+    },
+    {
+      "route": "/rules/customer",
+      "path": "koreaTaiwan/app/(views)/rules/customer.js"
+    },
+    {
+      "route": "/rules/location/[lang]",
+      "path": "koreaTaiwan/app/(views)/rules/location/[lang].js"
+    },
+    {
+      "route": "/rules/marketing/[lang]",
+      "path": "koreaTaiwan/app/(views)/rules/marketing/[lang].js"
+    },
+    {
+      "route": "/rules/policy/[lang]",
+      "path": "koreaTaiwan/app/(views)/rules/policy/[lang].js"
+    },
+    {
+      "route": "/rules/policy/privacy/[lang]",
+      "path": "koreaTaiwan/app/(views)/rules/policy/privacy/[lang].js"
+    },
+    {
+      "route": "/rules/privacy/[lang]",
+      "path": "koreaTaiwan/app/(views)/rules/privacy/[lang].js"
+    },
+    {
+      "route": "/rules/privacy",
+      "path": "koreaTaiwan/app/(views)/rules/privacy.js"
+    },
+    {
+      "route": "/setting",
+      "path": "koreaTaiwan/app/(views)/setting/index.js"
+    },
+    {
+      "route": "/setting/withdraw",
+      "path": "koreaTaiwan/app/(views)/setting/withdraw.js"
+    },
+    {
+      "route": "/store",
+      "path": "koreaTaiwan/app/(views)/store/index.js"
+    },
+    {
+      "route": "/store/manage/[target]",
+      "path": "koreaTaiwan/app/(views)/store/manage/[target].js"
+    },
+    {
+      "route": "/store/manage/create",
+      "path": "koreaTaiwan/app/(views)/store/manage/create.js"
+    },
+    {
+      "route": "/store/manage",
+      "path": "koreaTaiwan/app/(views)/store/manage/index.js"
+    },
+    {
+      "route": "/",
+      "path": "koreaTaiwan/app/index.js"
+    }
+  ],
+  "controllerMappingAnchors": [
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/AdminBoardController.java",
+      "line": 23,
+      "annotation": "@RequestMapping(\"/api/admin/board\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/AdminBoardController.java",
+      "line": 34,
+      "annotation": "@GetMapping(\"/categories\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/AdminBoardController.java",
+      "line": 39,
+      "annotation": "@PostMapping(\"/categories\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/AdminBoardController.java",
+      "line": 53,
+      "annotation": "@PutMapping(\"/categories/{id}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/AdminBoardController.java",
+      "line": 68,
+      "annotation": "@DeleteMapping(\"/categories/{id}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/AdminBoardController.java",
+      "line": 83,
+      "annotation": "@GetMapping(\"/posts\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/AdminBoardController.java",
+      "line": 97,
+      "annotation": "@PostMapping(\"/posts\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/AdminBoardController.java",
+      "line": 120,
+      "annotation": "@PutMapping(\"/posts/{id}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/AdminBoardController.java",
+      "line": 140,
+      "annotation": "@DeleteMapping(\"/posts/{id}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/AdminBoardController.java",
+      "line": 155,
+      "annotation": "@GetMapping(\"/reported-posts\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/AdminBoardController.java",
+      "line": 168,
+      "annotation": "@GetMapping(\"/posts/{id}/reports\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/AdminBoardController.java",
+      "line": 179,
+      "annotation": "@PutMapping(\"/posts/{id}/report-review\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/AdminUserController.java",
+      "line": 25,
+      "annotation": "@RequestMapping(\"/api/admin/users\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/AdminUserController.java",
+      "line": 31,
+      "annotation": "@GetMapping"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/AdminUserController.java",
+      "line": 42,
+      "annotation": "@GetMapping(\"/{id}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/AdminUserController.java",
+      "line": 47,
+      "annotation": "@PutMapping(\"/{id}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/CouponAdminController.java",
+      "line": 26,
+      "annotation": "@RequestMapping(\"/api/admin/coupons\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/CouponAdminController.java",
+      "line": 36,
+      "annotation": "@GetMapping"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/CouponAdminController.java",
+      "line": 71,
+      "annotation": "@GetMapping(\"/{id}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/CouponAdminController.java",
+      "line": 88,
+      "annotation": "@PostMapping"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/CouponAdminController.java",
+      "line": 106,
+      "annotation": "@PutMapping(\"/{id}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/CouponAdminController.java",
+      "line": 124,
+      "annotation": "@DeleteMapping(\"/{id}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/CouponAdminController.java",
+      "line": 141,
+      "annotation": "@PostMapping(\"/{id}/targetUsers\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/CouponAdminController.java",
+      "line": 164,
+      "annotation": "@GetMapping(\"/places\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/CouponAdminController.java",
+      "line": 170,
+      "annotation": "@GetMapping(\"/{id}/downloadList\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/CouponAdminController.java",
+      "line": 185,
+      "annotation": "@GetMapping(\"/{id}/downloadList/csv\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/FileManageAdminController.java",
+      "line": 16,
+      "annotation": "@RequestMapping(\"/api/admin/fileManage\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/FileManageAdminController.java",
+      "line": 22,
+      "annotation": "@PostMapping(\"/upload\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/FileManageAdminController.java",
+      "line": 34,
+      "annotation": "@GetMapping"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/FileManageAdminController.java",
+      "line": 47,
+      "annotation": "@PutMapping(\"/{id}/memo\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/FileManageAdminController.java",
+      "line": 59,
+      "annotation": "@DeleteMapping(\"/{id}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/MainContentAdminController.java",
+      "line": 30,
+      "annotation": "@RequestMapping(\"/api/admin\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/MainContentAdminController.java",
+      "line": 36,
+      "annotation": "@GetMapping(\"/main-top-banners\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/MainContentAdminController.java",
+      "line": 41,
+      "annotation": "@PostMapping(value = \"/main-top-banners\", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/MainContentAdminController.java",
+      "line": 69,
+      "annotation": "@PutMapping(value = \"/main-top-banners/{id}\", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/MainContentAdminController.java",
+      "line": 97,
+      "annotation": "@PatchMapping(\"/main-top-banners/{id}/active\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/MainContentAdminController.java",
+      "line": 105,
+      "annotation": "@DeleteMapping(\"/main-top-banners/{id}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/MainContentAdminController.java",
+      "line": 111,
+      "annotation": "@GetMapping(\"/main-middle-icons\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/MainContentAdminController.java",
+      "line": 116,
+      "annotation": "@PostMapping(value = \"/main-middle-icons\", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/MainContentAdminController.java",
+      "line": 143,
+      "annotation": "@PutMapping(value = \"/main-middle-icons/{id}\", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/MainContentAdminController.java",
+      "line": 170,
+      "annotation": "@PatchMapping(\"/main-middle-icons/{id}/active\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/MainContentAdminController.java",
+      "line": 178,
+      "annotation": "@DeleteMapping(\"/main-middle-icons/{id}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/MembershipAdminController.java",
+      "line": 15,
+      "annotation": "@RequestMapping(\"/api/admin/membership\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/MembershipAdminController.java",
+      "line": 22,
+      "annotation": "@GetMapping(\"/list\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/MembershipAdminController.java",
+      "line": 36,
+      "annotation": "@GetMapping(\"/{id}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/MembershipAdminController.java",
+      "line": 42,
+      "annotation": "@PutMapping(\"/{id}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/MembershipAdminController.java",
+      "line": 50,
+      "annotation": "@PutMapping(\"/{id}/status\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/UserPushAdminController.java",
+      "line": 19,
+      "annotation": "@RequestMapping(\"/api/admin/userPush\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/UserPushAdminController.java",
+      "line": 25,
+      "annotation": "@GetMapping(\"/users\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/UserPushAdminController.java",
+      "line": 39,
+      "annotation": "@DeleteMapping(\"/users/{id}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/UserPushAdminController.java",
+      "line": 45,
+      "annotation": "@GetMapping(\"/history\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/UserPushAdminController.java",
+      "line": 55,
+      "annotation": "@PostMapping(\"/send\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/controller/UserPushAdminController.java",
+      "line": 97,
+      "annotation": "@PostMapping(\"/history/{id}/resend\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/AuthController.java",
+      "line": 54,
+      "annotation": "@RequestMapping(\"/api/auth\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/AuthController.java",
+      "line": 101,
+      "annotation": "@PostMapping(\"/login\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/AuthController.java",
+      "line": 151,
+      "annotation": "@PostMapping(\"/register\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/AuthController.java",
+      "line": 216,
+      "annotation": "@PostMapping(\"/findId\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/AuthController.java",
+      "line": 245,
+      "annotation": "@PostMapping(\"/findPw\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/AuthController.java",
+      "line": 297,
+      "annotation": "@PostMapping(\"/resetPwWithToken\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/AuthController.java",
+      "line": 328,
+      "annotation": "@PostMapping(\"/sendSignupAuthCode\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/AuthController.java",
+      "line": 416,
+      "annotation": "@PostMapping(\"/verifySignupAuthCode\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/AuthController.java",
+      "line": 432,
+      "annotation": "@PostMapping(\"/withdraw\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/AuthController.java",
+      "line": 465,
+      "annotation": "@PostMapping(\"/cancelWithdraw\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/AuthController.java",
+      "line": 486,
+      "annotation": "@PostMapping(\"/refresh\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/CategoryController.java",
+      "line": 11,
+      "annotation": "@RequestMapping(\"/api/v2/category\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/CategoryController.java",
+      "line": 18,
+      "annotation": "@GetMapping(\"/list\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/CategoryController.java",
+      "line": 24,
+      "annotation": "@GetMapping(\"/{code}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/CouponController.java",
+      "line": 25,
+      "annotation": "@RequestMapping(\"/api/v2/coupon\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/CouponController.java",
+      "line": 34,
+      "annotation": "@GetMapping(\"/list\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/CouponController.java",
+      "line": 46,
+      "annotation": "@GetMapping(\"/manage/list\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/CouponController.java",
+      "line": 64,
+      "annotation": "@GetMapping(\"/{id}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/CouponController.java",
+      "line": 81,
+      "annotation": "@GetMapping(\"/my/{id}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/CouponController.java",
+      "line": 105,
+      "annotation": "@GetMapping(\"/manage/{id}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/CouponController.java",
+      "line": 146,
+      "annotation": "@PostMapping(\"/manage/create\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/CouponController.java",
+      "line": 170,
+      "annotation": "@PutMapping(\"/manage/update/{id}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/CouponController.java",
+      "line": 192,
+      "annotation": "@PostMapping(\"/{code}/use\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/CouponController.java",
+      "line": 228,
+      "annotation": "@GetMapping(\"/code/{code}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/CouponController.java",
+      "line": 242,
+      "annotation": "@PostMapping(\"/{id}/download\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/CouponController.java",
+      "line": 263,
+      "annotation": "@GetMapping(value = \"/myCoupons\", produces = \"application/json; charset=UTF-8\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/CouponController.java",
+      "line": 290,
+      "annotation": "@PostMapping(\"/use\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/CouponController.java",
+      "line": 339,
+      "annotation": "@GetMapping(\"/manage/{id}/targetUsers\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/CouponController.java",
+      "line": 360,
+      "annotation": "@PostMapping(\"/manage/{id}/targetUsers\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/CouponController.java",
+      "line": 385,
+      "annotation": "@GetMapping(\"/search\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/ExampleController.java",
+      "line": 14,
+      "annotation": "@RequestMapping(\"/api/example\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/ExampleController.java",
+      "line": 16,
+      "annotation": "@GetMapping(\"/all\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/ExampleController.java",
+      "line": 21,
+      "annotation": "@GetMapping(\"/user\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/ExampleController.java",
+      "line": 27,
+      "annotation": "@GetMapping(\"/admin\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/MainContentPublicController.java",
+      "line": 15,
+      "annotation": "@RequestMapping(\"/api/v2/main\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/MainContentPublicController.java",
+      "line": 20,
+      "annotation": "@GetMapping(\"/top-banners\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/MainContentPublicController.java",
+      "line": 25,
+      "annotation": "@GetMapping(\"/middle-icons\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/MembershipController.java",
+      "line": 20,
+      "annotation": "@RequestMapping(\"/api/membership\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/MembershipController.java",
+      "line": 39,
+      "annotation": "@GetMapping(\"/status/{membershipType}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/MembershipController.java",
+      "line": 72,
+      "annotation": "@PostMapping(\"/create\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/MembershipController.java",
+      "line": 93,
+      "annotation": "@PostMapping(\"/update\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/PlaceController.java",
+      "line": 31,
+      "annotation": "@RequestMapping(\"/api/v2/places\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/PlaceController.java",
+      "line": 55,
+      "annotation": "@GetMapping"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/PlaceController.java",
+      "line": 73,
+      "annotation": "@GetMapping(\"/my\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/PlaceController.java",
+      "line": 91,
+      "annotation": "@GetMapping(\"/{id}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/PlaceController.java",
+      "line": 98,
+      "annotation": "@PostMapping"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/PlaceController.java",
+      "line": 121,
+      "annotation": "@PutMapping(\"/{id}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/PlaceController.java",
+      "line": 154,
+      "annotation": "@DeleteMapping(\"/{id}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/PlaceController.java",
+      "line": 173,
+      "annotation": "@GetMapping(\"/{id}/coupons\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/PlaceController.java",
+      "line": 182,
+      "annotation": "@GetMapping(\"/search-places\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/RegionController.java",
+      "line": 22,
+      "annotation": "@RequestMapping(\"/api/v2/regions\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/RegionController.java",
+      "line": 32,
+      "annotation": "@GetMapping"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/RegionController.java",
+      "line": 97,
+      "annotation": "@GetMapping(\"/{id}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/SocialAuthController.java",
+      "line": 30,
+      "annotation": "@RequestMapping(\"/api/social\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/SocialAuthController.java",
+      "line": 63,
+      "annotation": "@PostMapping(\"/register\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/SocialAuthController.java",
+      "line": 164,
+      "annotation": "@PostMapping(\"/login\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/SocialAuthController.java",
+      "line": 250,
+      "annotation": "@PostMapping(\"/naver/register\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/SocialAuthController.java",
+      "line": 366,
+      "annotation": "@PostMapping(\"/naver\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/SocialAuthController.java",
+      "line": 454,
+      "annotation": "@PostMapping(\"/withdraw\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/SocialAuthController.java",
+      "line": 484,
+      "annotation": "@PostMapping(\"/cancelWithdraw\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UploadFileController.java",
+      "line": 39,
+      "annotation": "@PostMapping({\"/api/v2/files/upload\", \"/api/v2/images/upload\"})"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UploadFileController.java",
+      "line": 85,
+      "annotation": "@GetMapping(\"/upload/{type}/{date}/{filename}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UploadFileController.java",
+      "line": 144,
+      "annotation": "@GetMapping(\"/upload/user/{uploadPath}/{uploadDate}/{filename}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UploadFileController.java",
+      "line": 204,
+      "annotation": "@GetMapping(\"/images/{filename}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserController.java",
+      "line": 38,
+      "annotation": "@RequestMapping(\"/api/users/me\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserController.java",
+      "line": 57,
+      "annotation": "@GetMapping(\"/profile\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserController.java",
+      "line": 74,
+      "annotation": "@PatchMapping(\"/profile\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserController.java",
+      "line": 145,
+      "annotation": "@GetMapping(\"/posts\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserController.java",
+      "line": 164,
+      "annotation": "@GetMapping(\"/comments\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserController.java",
+      "line": 180,
+      "annotation": "@GetMapping(\"/like-posts\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserController.java",
+      "line": 206,
+      "annotation": "@GetMapping(\"/bookmark-posts\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserController.java",
+      "line": 234,
+      "annotation": "@GetMapping(\"/profile/duplicate/{profileName}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/userPosts/PublicUserPostsController.java",
+      "line": 27,
+      "annotation": "@RequestMapping(\"/api/v2/article\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/userPosts/PublicUserPostsController.java",
+      "line": 44,
+      "annotation": "@GetMapping(\"/posts\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/userPosts/PublicUserPostsController.java",
+      "line": 65,
+      "annotation": "@GetMapping(\"/search\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/userPosts/UserPostsActionController.java",
+      "line": 31,
+      "annotation": "@RequestMapping(\"/api/post-action\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/userPosts/UserPostsActionController.java",
+      "line": 51,
+      "annotation": "@PostMapping(\"/like\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/userPosts/UserPostsActionController.java",
+      "line": 84,
+      "annotation": "@PostMapping(\"/dislike\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/userPosts/UserPostsActionController.java",
+      "line": 118,
+      "annotation": "@PostMapping(\"/report\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/userPosts/UserPostsActionController.java",
+      "line": 147,
+      "annotation": "@GetMapping(\"/report-reasons\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/userPosts/UserPostsBookmarkController.java",
+      "line": 26,
+      "annotation": "@RequestMapping(\"/api/post-bookmarks\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/userPosts/UserPostsBookmarkController.java",
+      "line": 38,
+      "annotation": "@GetMapping(\"/{contentNo}/status\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/userPosts/UserPostsBookmarkController.java",
+      "line": 71,
+      "annotation": "@PutMapping(\"/{contentNo}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/userPosts/UserPostsBookmarkController.java",
+      "line": 105,
+      "annotation": "@DeleteMapping(\"/{contentNo}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/userPosts/UserPostsCommentController.java",
+      "line": 30,
+      "annotation": "@RequestMapping(\"/api/comment\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/userPosts/UserPostsCommentController.java",
+      "line": 50,
+      "annotation": "@PostMapping(\"/create\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/userPosts/UserPostsCommentController.java",
+      "line": 82,
+      "annotation": "@PatchMapping(\"/update\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/userPosts/UserPostsCommentController.java",
+      "line": 113,
+      "annotation": "@DeleteMapping(\"/delete\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/userPosts/UserPostsController.java",
+      "line": 35,
+      "annotation": "@RequestMapping(\"/api/article\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/userPosts/UserPostsController.java",
+      "line": 48,
+      "annotation": "@GetMapping(\"/categories\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/userPosts/UserPostsController.java",
+      "line": 64,
+      "annotation": "@GetMapping(\"/list\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/userPosts/UserPostsController.java",
+      "line": 96,
+      "annotation": "@GetMapping(\"/list-important\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/userPosts/UserPostsController.java",
+      "line": 130,
+      "annotation": "@GetMapping(\"/detail\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/userPosts/UserPostsController.java",
+      "line": 154,
+      "annotation": "@PostMapping(\"/create\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/userPosts/UserPostsController.java",
+      "line": 186,
+      "annotation": "@PatchMapping(\"/update\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/userPosts/UserPostsController.java",
+      "line": 220,
+      "annotation": "@DeleteMapping(\"/delete\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserPushController.java",
+      "line": 15,
+      "annotation": "@RequestMapping(\"/api/v2/push\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserPushController.java",
+      "line": 28,
+      "annotation": "@PostMapping(\"/register\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserPushController.java",
+      "line": 52,
+      "annotation": "@GetMapping(\"/list\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserPushController.java",
+      "line": 58,
+      "annotation": "@DeleteMapping(\"/{id}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserPushController.java",
+      "line": 75,
+      "annotation": "@PostMapping(\"/sends\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserPushController.java",
+      "line": 95,
+      "annotation": "@PostMapping(\"/send\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserPushController.java",
+      "line": 113,
+      "annotation": "@GetMapping(\"/status\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserRegionController.java",
+      "line": 21,
+      "annotation": "@RequestMapping(\"/api/users/me/regions\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserRegionController.java",
+      "line": 31,
+      "annotation": "@GetMapping"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserRegionController.java",
+      "line": 65,
+      "annotation": "@PostMapping"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserRegionController.java",
+      "line": 176,
+      "annotation": "@DeleteMapping(\"/{regionId}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserSanctionController.java",
+      "line": 44,
+      "annotation": "@RequestMapping(\"/api/admin/sanctions\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserSanctionController.java",
+      "line": 52,
+      "annotation": "@PostMapping(\"\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserSanctionController.java",
+      "line": 70,
+      "annotation": "@GetMapping(\"\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserSanctionController.java",
+      "line": 87,
+      "annotation": "@GetMapping(\"/types\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserSanctionController.java",
+      "line": 95,
+      "annotation": "@GetMapping(\"/users/{userId}/active\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserSanctionController.java",
+      "line": 106,
+      "annotation": "@GetMapping(\"/{sanctionHistoryId}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserSanctionController.java",
+      "line": 117,
+      "annotation": "@PutMapping(\"/{sanctionHistoryId}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserSanctionController.java",
+      "line": 129,
+      "annotation": "@DeleteMapping(\"/{sanctionHistoryId}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserSanctionController.java",
+      "line": 259,
+      "annotation": "@GetMapping(\"/certificates\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserSanctionController.java",
+      "line": 271,
+      "annotation": "@GetMapping(\"/certificates/{id}\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserSanctionController.java",
+      "line": 277,
+      "annotation": "@PutMapping(\"/certificates/{id}/decision\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserSanctionPublicController.java",
+      "line": 24,
+      "annotation": "@RequestMapping(\"/api/v2/sanctions\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserSanctionPublicController.java",
+      "line": 33,
+      "annotation": "@GetMapping(\"/users/{userId}/active\")"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserSanctionPublicController.java",
+      "line": 44,
+      "annotation": "@GetMapping(\"/certificate\") // api/v2/sanctions/certificate"
+    },
+    {
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/UserSanctionPublicController.java",
+      "line": 65,
+      "annotation": "@PostMapping(\"/certificate\")"
+    }
+  ],
+  "evidence": [
+    {
+      "feature": "일반 가입 UI 검증·자동 로그인",
+      "path": "koreaTaiwan/components/login/register.js",
+      "line": 664,
+      "needle": "if (!isEmailVerified) {",
+      "sha256": "e84d86dcdc7a58b1660ccb158f7d980554758765dd75e103264cd2eb228dc643"
+    },
+    {
+      "feature": "가입 인증번호 발송",
+      "path": "koreaTaiwan/components/login/register.js",
+      "line": 787,
+      "needle": "/api/auth/sendSignupAuthCode",
+      "sha256": "e84d86dcdc7a58b1660ccb158f7d980554758765dd75e103264cd2eb228dc643"
+    },
+    {
+      "feature": "가입 인증번호 확인",
+      "path": "koreaTaiwan/components/login/register.js",
+      "line": 821,
+      "needle": "/api/auth/verifySignupAuthCode",
+      "sha256": "e84d86dcdc7a58b1660ccb158f7d980554758765dd75e103264cd2eb228dc643"
+    },
+    {
+      "feature": "일반 가입 서버",
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/AuthController.java",
+      "line": 152,
+      "needle": "public ResponseEntity<?> registerUser",
+      "sha256": "fb600e0b9a63d80e1a3ddab5ae7c6c56f384188e46cc98dc9c3da124f4390e20"
+    },
+    {
+      "feature": "가입 인증 서버·일회 코드",
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/AuthController.java",
+      "line": 417,
+      "needle": "public ResponseEntity<?> verifySignupAuthCode",
+      "sha256": "fb600e0b9a63d80e1a3ddab5ae7c6c56f384188e46cc98dc9c3da124f4390e20"
+    },
+    {
+      "feature": "소셜 가입·약관",
+      "path": "koreaTaiwan/components/login/register.js",
+      "line": 165,
+      "needle": "const handleSocialRegister",
+      "sha256": "e84d86dcdc7a58b1660ccb158f7d980554758765dd75e103264cd2eb228dc643"
+    },
+    {
+      "feature": "Google·카카오 가입 요청",
+      "path": "koreaTaiwan/components/login/register.js",
+      "line": 531,
+      "needle": "const socialRegisterProcess",
+      "sha256": "e84d86dcdc7a58b1660ccb158f7d980554758765dd75e103264cd2eb228dc643"
+    },
+    {
+      "feature": "네이버 가입 요청",
+      "path": "koreaTaiwan/components/login/register.js",
+      "line": 438,
+      "needle": "/api/social/naver/register",
+      "sha256": "e84d86dcdc7a58b1660ccb158f7d980554758765dd75e103264cd2eb228dc643"
+    },
+    {
+      "feature": "소셜 신규 가입·중복 거절",
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/SocialAuthController.java",
+      "line": 64,
+      "needle": "public ResponseEntity<?> registerSocialUser",
+      "sha256": "8c4551311de71cbadcd69d835a756ccc45d4c12ecd007af5e6e74b9455017f05"
+    },
+    {
+      "feature": "네이버 신규 가입",
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/SocialAuthController.java",
+      "line": 250,
+      "needle": "@PostMapping(\"/naver/register\")",
+      "sha256": "8c4551311de71cbadcd69d835a756ccc45d4c12ecd007af5e6e74b9455017f05"
+    },
+    {
+      "feature": "메인 관리 섹션",
+      "path": "koreaTaiwanApi/src/main/resources/static/admin/core.js",
+      "line": 118,
+      "needle": "mainContent: [",
+      "sha256": "c904f2a9c988e602daf19f0289bc62e9e2537ff1444037f6e77643ff06a98a4e"
+    },
+    {
+      "feature": "운영자 인증",
+      "path": "koreaTaiwanApi/src/main/resources/static/admin/core.js",
+      "line": 97,
+      "needle": "roles.includes(\"ROLE_ADMIN\")",
+      "sha256": "c904f2a9c988e602daf19f0289bc62e9e2537ff1444037f6e77643ff06a98a4e"
+    },
+    {
+      "feature": "메인 조회",
+      "path": "koreaTaiwan/components/home/index.js",
+      "line": 648,
+      "needle": "const [topBanners, middleIcons]",
+      "sha256": "1db0ffa3aa36aaff9c8798a3246d3318a70a4f4e0d085db56836dc54d77d73f8"
+    },
+    {
+      "feature": "메인 API",
+      "path": "koreaTaiwan/components/home/mainContentApi.js",
+      "line": 5,
+      "needle": "const publicBaseUrl",
+      "sha256": "7ed5cd064346924d4f11b2d0113fae4f72c50e996c591b7d0637dca8f4743fd1"
+    },
+    {
+      "feature": "메인 활성 제한",
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/service/main/MainContentService.java",
+      "line": 36,
+      "needle": "TOP_MAX_ACTIVE_COUNT = 5",
+      "sha256": "99e78dbad9f332927f8d63ee9842cba5b121c428b8b554ab058e5660ac877636"
+    },
+    {
+      "feature": "메인 활성 필터",
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/repository/UserPostsRepository.java",
+      "line": 84,
+      "needle": "AND p.active = true",
+      "sha256": "1f7872682ebe2b9a327dac73c2e49a9b80de554415753b442645c598b0ba5ecb"
+    },
+    {
+      "feature": "신청 화면",
+      "path": "koreaTaiwan/components/membership/index.js",
+      "line": 502,
+      "needle": "const getStatusDisplay",
+      "sha256": "925e951921c8c30502c00998139004fe913c5d47cc6c1b32df49647bb3edbf21"
+    },
+    {
+      "feature": "신청 API",
+      "path": "koreaTaiwan/components/membership/hook/membershipHook.js",
+      "line": 49,
+      "needle": "\"/api/membership/create\"",
+      "sha256": "5ad9983bfafebbd129d99975289dcee91098ed9e8a5c3faf5cc20ab06be4c495"
+    },
+    {
+      "feature": "멤버십 심사",
+      "path": "koreaTaiwanApi/src/main/resources/static/admin/membership.js",
+      "line": 14,
+      "needle": "async function nativeFetch",
+      "sha256": "cf982211d825ffe9b9d819572639e100e51e7db4e9f3014ef7d134663356abb4"
+    },
+    {
+      "feature": "승인 권한 변경",
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/admin/service/MembershipAdminService.java",
+      "line": 34,
+      "needle": "private void handleUserRoleGrantOrRevoke",
+      "sha256": "d012e3a5b7525e17c390fdcaa20935a9adf220efe7979ebf1aa32dc2095974c4"
+    },
+    {
+      "feature": "신청 사유 저장",
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/service/MembershipService.java",
+      "line": 54,
+      "needle": "\"기타\".equals(dto.getReasonType())",
+      "sha256": "00348d62c30b016bd69c42fa96a3dade7bccc3bb54aeec66cdeb42d3403c1682"
+    },
+    {
+      "feature": "업체 등록 리다이렉트",
+      "path": "koreaTaiwan/app/(views)/store/manage/create.js",
+      "line": 14,
+      "needle": "<Redirect href=\"/store\"",
+      "sha256": "5886d36f34523f31952431cbea76f4b7cdc915e052f71870687c55a5ff7c46b2"
+    },
+    {
+      "feature": "업체 실제 등록 모달",
+      "path": "koreaTaiwan/components/store/index.js",
+      "line": 237,
+      "needle": "{isAdmin && (",
+      "sha256": "9df2dc531f3b92bfa67354b132469a9583c08e0cbb53703e382be90ae19fc0cc"
+    },
+    {
+      "feature": "업체 등록 처리",
+      "path": "koreaTaiwan/src/hooks/useMap.js",
+      "line": 218,
+      "needle": "await placeApiHook.createPlace(newPlace)",
+      "sha256": "9913b1c453b0a19b082cd3749228ded54ca982b7c4a5ce5f9454db61aa917de8"
+    },
+    {
+      "feature": "업체 등록 API",
+      "path": "koreaTaiwan/src/api/placeApi.js",
+      "line": 55,
+      "needle": "const createPlace",
+      "sha256": "0a751a1a009beff1a0d69ab319387ab7703b69907a22c6b568fce0f70b720451"
+    },
+    {
+      "feature": "업체 수정 소유권",
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/PlaceController.java",
+      "line": 131,
+      "needle": "if (!place.getUser().getId().equals(userId))",
+      "sha256": "759cd2b3d58f9c61ea0b393e1d48769961708e4ed66cf35a6eb264d3688b6bea"
+    },
+    {
+      "feature": "쿠폰 UI 사용 API",
+      "path": "koreaTaiwan/components/coupon/hook/couponHook.js",
+      "line": 361,
+      "needle": "const applyCouponUse",
+      "sha256": "63dc16de235d8741664a6eee4c60258f373618dd97a99ec1cf452699f8ef8cc1"
+    },
+    {
+      "feature": "쿠폰 사용 서비스",
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/service/CouponService.java",
+      "line": 264,
+      "needle": "public CouponUser useCoupon",
+      "sha256": "55d422290833ba84259cf96a8a94996946f118277d9bb5b9de8b11b4d26bd232"
+    },
+    {
+      "feature": "쿠폰 사용 컨트롤러",
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/CouponController.java",
+      "line": 290,
+      "needle": "@PostMapping(\"/use\")",
+      "sha256": "42a1f116fe923776637be26ccbd4e230babf3ba04e5f053185210aa858c5557f"
+    },
+    {
+      "feature": "기존 코드형 사용 API",
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/controller/CouponController.java",
+      "line": 192,
+      "needle": "@PostMapping(\"/{code}/use\")",
+      "sha256": "42a1f116fe923776637be26ccbd4e230babf3ba04e5f053185210aa858c5557f"
+    },
+    {
+      "feature": "개인쿠폰 다운로드",
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/service/CouponService.java",
+      "line": 346,
+      "needle": "coupon.getTargetUser() == null",
+      "sha256": "55d422290833ba84259cf96a8a94996946f118277d9bb5b9de8b11b4d26bd232"
+    },
+    {
+      "feature": "메인 쿠폰 조회",
+      "path": "koreaTaiwan/components/home/index.js",
+      "line": 716,
+      "needle": "/api/v2/coupon/list?status=ALL",
+      "sha256": "1db0ffa3aa36aaff9c8798a3246d3318a70a4f4e0d085db56836dc54d77d73f8"
+    },
+    {
+      "feature": "내 쿠폰 조회",
+      "path": "koreaTaiwan/components/coupon/couponMyList.js",
+      "line": 38,
+      "needle": "/api/v2/coupon/myCoupons",
+      "sha256": "44d7623ed74428dc367d921f728330bf2a44d869225d68cd439aa0b514d4449b"
+    },
+    {
+      "feature": "토큰 재시도",
+      "path": "koreaTaiwan/contexts/useTokenFetch.js",
+      "line": 31,
+      "needle": "response.status === 401 || response.status == 403",
+      "sha256": "194d4bbfc7c45a93f5e4bcd6cfdb6775bbd53b49e6a195aa21e00a5dfdab79bb"
+    },
+    {
+      "feature": "정적 로그 예정",
+      "path": "koreaTaiwanApi/src/main/resources/static/admin/logs.html",
+      "line": 6,
+      "needle": "감사 이력 저장 예정",
+      "sha256": "375266ca2e848d7a25e12696ea2c823a8f277ebbe187b6dab5f410fa65a9d895"
+    },
+    {
+      "feature": "인증 본문 로그 확인",
+      "path": "koreaTaiwanApi/src/main/java/com/kt/api/config/logging/ApiLoggingFilter.java",
+      "line": 55,
+      "needle": "request.getMethod(), request.getRequestURI(), requestBody, responseBody",
+      "sha256": "88c8961c0f452feddea79b541302f50efab76d501b879065421e8ed045f7ab66"
+    }
+  ]
+}

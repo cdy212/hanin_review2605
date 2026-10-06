@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>한인회 통합 운영 매뉴얼</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --primary: #2563eb;
+      --primary-light: #eff6ff;
+      --success: #16a34a;
+      --success-bg: #dcfce7;
+      --warning: #d97706;
+      --warning-bg: #fef3c7;
+      --danger: #dc2626;
+      --danger-bg: #fee2e2;
+      --tree-bg: #1e293b;
+      --tree-text: #f1f5f9;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      padding: 16px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    /* 상단 헤더 */
+    .header-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .header-top {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 14px;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+    .header-top h1 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-main);
+      text-align: center;
+      width: 100%;
+    }
+
+    /* 대시보드 퀵 네비 & 오버뷰 그리드 */
+    .overview-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 900px) {
+      .overview-grid { grid-template-columns: 1fr; }
+    }
+
+    .overview-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .box-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    /* 트리 다이어그램 스타일 */
+    .tree-block {
+      background: var(--tree-bg);
+      color: var(--tree-text);
+      font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 11.5px;
+      line-height: 1.45;
+      padding: 12px;
+      border-radius: 6px;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    /* 목차 테이블 */
+    .toc-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .toc-table th, .toc-table td {
+      padding: 6px 8px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+    .toc-table th {
+      background: #f8fafc;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .toc-table a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .toc-table a:hover { text-decoration: underline; }
+
+    /* 섹션 레이아웃 */
+    .section-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 16px;
+      scroll-margin-top: 16px;
+    }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+      margin-bottom: 12px;
+    }
+    .section-head h2 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .section-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: #f1f5f9;
+      color: var(--text-muted);
+    }
+
+    /* 워크플로우 인포박스 */
+    .workflow-box {
+      background: #f8fafc;
+      border-left: 3px solid var(--primary);
+      padding: 10px 14px;
+      margin-bottom: 12px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .workflow-box strong { color: var(--text-main); }
+
+    /* URL 뱃지 박스 */
+    .url-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      background: #f1f5f9;
+      padding: 8px 12px;
+      border-radius: 6px;
+      margin-bottom: 14px;
+      font-size: 12px;
+    }
+    .url-item strong {
+      color: var(--text-muted);
+      margin-right: 6px;
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+    .url-item a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      word-break: break-all;
+    }
+    .url-item a:hover { text-decoration: underline; }
+
+    /* 테이블 스타일 */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 14px;
+      font-size: 12px;
+    }
+    .data-table th, .data-table td {
+      padding: 7px 10px;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+    .data-table th {
+      background: #f8fafc;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* 뱃지 */
+    .badge {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .badge-success { background: var(--success-bg); color: var(--success); }
+    .badge-warning { background: var(--warning-bg); color: var(--warning); }
+    .badge-danger { background: var(--danger-bg); color: var(--danger); }
+    .badge-info { background: var(--primary-light); color: var(--primary); }
+
+    /* 이미지 프리뷰 카드 */
+    .screenshot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .screenshot-card {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      background: #ffffff;
+    }
+    .screenshot-header {
+      background: #f8fafc;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+    }
+    .screenshot-img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .screenshot-img:hover {
+      opacity: 0.95;
+    }
+
+    .top-anchor-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--primary);
+      color: #ffffff;
+      padding: 8px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 2px 8px rgba(37,99,235,0.3);
+      z-index: 100;
+    }
+  </style>
+</head>
+<body>
+
+<a href="#top" class="top-anchor-btn">TOP 이동</a>
+
+<div class="container" id="top">
+
+  <!-- 헤더 (중앙 배치) -->
+  <div class="header-card">
+    <div class="header-top">
+      <h1>한인회 통합 운영 매뉴얼 (Operator Manual)</h1>
+    </div>
+
+    <!-- 첫장 한눈에 보기: 워크플로우 트리 & 빠른 목차 -->
+    <div class="overview-grid">
+      <div class="overview-box">
+        <div class="box-title">
+          <span>0-1. 전체 운영 워크플로우 트리</span>
+          <span class="section-badge">구조 요약</span>
+        </div>
+        <div class="tree-block">[한인회 통합 운영 체계]
+│
+├── 1. 계정 및 권한 수명주기
+│    ├── 일반 가입 (ROLE_USER) ──> 이메일/소셜 인증 (F/register)
+│    ├── 정회원 심사 ──> 증빙 검토 ──> 승인(apply) / 반려 (A/membership)
+│    └── 제휴사 심사 ──> 사업자 검토 ──> 승인 (A/membership) ──> 제휴 권한
+│
+├── 2. 메인 전시 운영 (CMS)
+│    └── TOP 배너 (최대 5건, 링크/이미지/버튼) (A/mainContent)
+│
+├── 3. 상생 제휴 및 혜택
+│    ├── 한인맵 매장 신규 등록(+) 및 정보 수정 (F/store, F/store/manage)
+│    └── 쿠폰 발행 ──> 정회원 발급 ──> 매장 현장 PIN 인증 차감
+│
+└── 4. 커뮤니티 & 제재 관리
+     ├── 게시글/댓글 모니터링 ──> 신고 접수 ──> 블라인드/삭제 (A/userPosts)
+     └── 불량 회원 정지 (A/sanctions) ──> 소명서 심사 (A/sanctionCertificate)</div>
+      </div>
+
+      <div class="overview-box">
+        <div class="box-title">
+          <span>0-2. 파트별 바로가기 및 주요 URL</span>
+          <span class="section-badge">빠른 이동</span>
+        </div>
+        <table class="toc-table">
+          <thead>
+            <tr>
+              <th>파트</th>
+              <th>주요 업무</th>
+              <th>관리자 URL (A)</th>
+              <th>사용자 확인 URL (F)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="#part1">PART 1. 접속 및 권한</a></td>
+              <td>관리자 로그인, 세션 제어</td>
+              <td><code>https://koreans.tw/admin/index.html</code></td>
+              <td><code>https://koreans.tw/login</code></td>
+            </tr>
+            <tr>
+              <td><a href="#part2">PART 2. 메인 CMS</a></td>
+              <td>TOP 배너 전시/관리</td>
+              <td><code>.../admin/index.html?section=mainContent</code></td>
+              <td><code>https://koreans.tw/main</code></td>
+            </tr>
+            <tr>
+              <td><a href="#part3">PART 3. 멤버십 심사</a></td>
+              <td>정회원, 제휴업체 등급 심사</td>
+              <td><code>.../admin/index.html?section=membership</code></td>
+              <td><code>https://koreans.tw/membership</code></td>
+            </tr>
+            <tr>
+              <td><a href="#part4">PART 4. 회원 관리</a></td>
+              <td>회원 조회, 계정 정보 확인</td>
+              <td><code>.../admin/index.html?section=users</code></td>
+              <td><code>https://koreans.tw/mypage</code></td>
+            </tr>
+            <tr>
+              <td><a href="#part5">PART 5. 제휴/한인맵</a></td>
+              <td>매장 등록, 좌표, 제휴 마커</td>
+              <td><code>https://koreans.tw/store/manage</code></td>
+              <td><code>https://koreans.tw/store</code></td>
+            </tr>
+            <tr>
+              <td><a href="#part6">PART 6. 쿠폰/현장 PIN</a></td>
+              <td>쿠폰 생성, 현장 PIN 결제 검증</td>
+              <td><code>.../admin/index.html?section=coupons</code></td>
+              <td><code>https://koreans.tw/coupon</code></td>
+            </tr>
+            <tr>
+              <td><a href="#part7">PART 7. 커뮤니티 관리</a></td>
+              <td>게시글/댓글 모니터링, 신고 중재</td>
+              <td><code>.../admin/index.html?section=userPosts</code></td>
+              <td><code>https://koreans.tw/community</code></td>
+            </tr>
+            <tr>
+              <td><a href="#part9">PART 9. 불량 회원 정지/소명</a></td>
+              <td>이용정지(sanctions), 소명서 검토</td>
+              <td><code>.../admin/index.html?section=sanctions</code></td>
+              <td><code>https://koreans.tw/block</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 1 -->
+  <div class="section-card" id="part1">
+    <div class="section-head">
+      <h2>PART 1. 접속 및 권한 체계</h2>
+      <span class="section-badge">ROLE MANAGEMENT</span>
+    </div>
+    
+    <div class="workflow-box">
+      <strong>업무 플로우:</strong> 운영자 접속 (https://koreans.tw/admin/index.html) → 권한 검증 (ROLE_ADMIN) → 통합 콘솔 진입 | 제휴업체 접속 (https://koreans.tw/login) → ROLE_PARTNER 기능 수행
+    </div>
+
+    <div class="url-bar">
+      <div class="url-item">
+        <strong>관리자 콘솔 (A):</strong>
+        <a href="https://koreans.tw/admin/index.html" target="_blank">https://koreans.tw/admin/index.html</a>
+      </div>
+      <div class="url-item">
+        <strong>사용자 로그인 (F):</strong>
+        <a href="https://koreans.tw/login" target="_blank">https://koreans.tw/login</a>
+      </div>
+    </div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>역할 코드</th>
+          <th>표시 명칭</th>
+          <th>허용 기능 및 접근 권한</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>ROLE_ADMIN</code></td>
+          <td>최고 관리자</td>
+          <td>관리자 콘솔 전체 (배너, 심사, 회원, 쿠폰, 게시글, 제재 관리)</td>
+        </tr>
+        <tr>
+          <td><code>ROLE_PARTNER</code></td>
+          <td>제휴업체</td>
+          <td>한인맵 매장 등록/수정, 자체 매장 쿠폰 발행/관리</td>
+        </tr>
+        <tr>
+          <td><code>ROLE_REGULAR</code></td>
+          <td>정회원</td>
+          <td>일반 기능 + 제휴 쿠폰 다운로드 및 매장 현장 사용, 정회원 전용 커뮤니티</td>
+        </tr>
+        <tr>
+          <td><code>ROLE_USER</code></td>
+          <td>일반회원</td>
+          <td>기본 커뮤니티 열람/작성, 정회원 및 제휴업체 승인 신청</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="screenshot-grid">
+      <div class="screenshot-card">
+        <div class="screenshot-header">운영자 로그인 화면</div>
+        <img class="screenshot-img" src="screenshots/step6_admin_login_prompt_1791249079585.png" alt="운영자 로그인">
+      </div>
+      <div class="screenshot-card">
+        <div class="screenshot-header">사용자 로그인 화면</div>
+        <img class="screenshot-img" src="screenshots/step1_login_page_1791248975292.png" alt="사용자 로그인">
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 2 -->
+  <div class="section-card" id="part2">
+    <div class="section-head">
+      <h2>PART 2. 메인 CMS 관리 (TOP 배너)</h2>
+      <span class="section-badge">CONTENT DISPLAY</span>
+    </div>
+
+    <div class="workflow-box">
+      <strong>업무 플로우:</strong> [https://koreans.tw/admin/index.html?section=mainContent] → TOP 배너 선택 → 제목/링크/순서/이미지 입력 → [저장] → [https://koreans.tw/main] 새로고침하여 즉시 노출 검증
+    </div>
+
+    <div class="url-bar">
+      <div class="url-item">
+        <strong>관리자 CMS (A):</strong>
+        <a href="https://koreans.tw/admin/index.html?section=mainContent" target="_blank">https://koreans.tw/admin/index.html?section=mainContent</a>
+      </div>
+      <div class="url-item">
+        <strong>노출 확인 (F):</strong>
+        <a href="https://koreans.tw/main" target="_blank">https://koreans.tw/main</a>
+      </div>
+    </div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>구분</th>
+          <th>최대 활성 수</th>
+          <th>정렬 규칙</th>
+          <th>권장 규격 및 비고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>TOP 배너</td>
+          <td>최대 5건</td>
+          <td>순서 오름차순 (동일 순서 시 최신 등록일 우선)</td>
+          <td>1200 x 600 px (2:1 비율), 제목, 설명, 링크, 버튼명 필수</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="screenshot-grid">
+      <div class="screenshot-card">
+        <div class="screenshot-header">운영자 CMS 대시보드 화면</div>
+        <img class="screenshot-img" src="screenshots/admin_dashboard_1791249330065.png" alt="관리자 대시보드 CMS">
+      </div>
+      <div class="screenshot-card">
+        <div class="screenshot-header">사용자 메인 화면 노출 결과</div>
+        <img class="screenshot-img" src="screenshots/main_logged_in_1791249953461.png" alt="사용자 메인 화면">
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 3 -->
+  <div class="section-card" id="part3">
+    <div class="section-head">
+      <h2>PART 3. 멤버십 심사 관리 (정회원 & 제휴업체 승인)</h2>
+      <span class="section-badge">MEMBERSHIP AUDIT</span>
+    </div>
+
+    <div class="workflow-box">
+      <strong>업무 플로우:</strong> [https://koreans.tw/membership 신청] → [https://koreans.tw/admin/index.html?section=membership 대기 목록 조회] → 첨부 증빙/사업자 서류 검토 → [승인(apply) / 반려(reject)] → 사용자 재로그인 시 권한 자동 반영
+    </div>
+
+    <div class="url-bar">
+      <div class="url-item">
+        <strong>관리자 심사 (A):</strong>
+        <a href="https://koreans.tw/admin/index.html?section=membership" target="_blank">https://koreans.tw/admin/index.html?section=membership</a>
+      </div>
+      <div class="url-item">
+        <strong>사용자 신청/상태 (F):</strong>
+        <a href="https://koreans.tw/membership" target="_blank">https://koreans.tw/membership</a>
+      </div>
+    </div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>상태 코드</th>
+          <th>한글 상태명</th>
+          <th>운영자 처리 내용 및 시스템 반영</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-warning">request</span></td>
+          <td>승인 대기</td>
+          <td>신규 신청 상태. 운영자의 서류 검토 대기</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-success">apply</span></td>
+          <td>승인 완료</td>
+          <td>REGULAR: role_id 3, PARTNER: role_id 4 부여. 사용자 재로그인 시 즉시 활성화</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-danger">reject</span></td>
+          <td>반려 처리</td>
+          <td>반려 사유 필수 입력. 사용자 화면에 사유 안내 및 수정 후 재신청 가능</td>
+        </tr>
+        <tr>
+          <td><span class="badge">cancel</span></td>
+          <td>신청 취소</td>
+          <td>사용자 자진 취소 또는 권한 회수 처리 상태</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="screenshot-grid">
+      <div class="screenshot-card">
+        <div class="screenshot-header">관리자 멤버십 심사 관리 화면</div>
+        <img class="screenshot-img" src="screenshots/admin_membership_management_1791249463786.png" alt="관리자 멤버십 심사">
+      </div>
+      <div class="screenshot-card">
+        <div class="screenshot-header">사용자 멤버십 신청 현황 화면</div>
+        <img class="screenshot-img" src="screenshots/membership_status_1791249983443.png" alt="사용자 멤버십 현황">
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 4 -->
+  <div class="section-card" id="part4">
+    <div class="section-head">
+      <h2>PART 4. 회원 정보 및 계정 관리</h2>
+      <span class="section-badge">USER MANAGEMENT</span>
+    </div>
+
+    <div class="workflow-box">
+      <strong>업무 플로우:</strong> [회원 검색(아이디/이메일/닉네임)] → 가입일, 보유 권한 및 상태 확인 → 계정 상세 정보 조회
+    </div>
+
+    <div class="url-bar">
+      <div class="url-item">
+        <strong>회원 관리 (A):</strong>
+        <a href="https://koreans.tw/admin/index.html?section=users" target="_blank">https://koreans.tw/admin/index.html?section=users</a>
+      </div>
+      <div class="url-item">
+        <strong>사용자 마이페이지 (F):</strong>
+        <a href="https://koreans.tw/mypage" target="_blank">https://koreans.tw/mypage</a>
+      </div>
+    </div>
+
+    <div class="screenshot-grid">
+      <div class="screenshot-card">
+        <div class="screenshot-header">관리자 회원 관리 콘솔</div>
+        <img class="screenshot-img" src="screenshots/admin_user_management_1791249449633.png" alt="관리자 회원 관리">
+      </div>
+      <div class="screenshot-card">
+        <div class="screenshot-header">사용자 프로필 및 마이페이지</div>
+        <img class="screenshot-img" src="screenshots/mypage_logged_in_1791249967099.png" alt="마이페이지">
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 5 -->
+  <div class="section-card" id="part5">
+    <div class="section-head">
+      <h2>PART 5. 제휴업체 및 한인맵 매장 운영</h2>
+      <span class="section-badge">STORE & PARTNERS</span>
+    </div>
+
+    <div class="workflow-box">
+      <strong>업무 플로우:</strong> 제휴 권한 승인 (ROLE_PARTNER) → [https://koreans.tw/store] 진입 → 우측 상단 '+' 버튼 클릭 → 매장명/주소/좌표/카테고리 입력 → [등록] → 실시간 마커 및 목록 반영 확인
+    </div>
+
+    <div class="url-bar">
+      <div class="url-item">
+        <strong>한인맵 탐색/등록 (F):</strong>
+        <a href="https://koreans.tw/store" target="_blank">https://koreans.tw/store</a>
+      </div>
+      <div class="url-item">
+        <strong>내 매장 관리 (F):</strong>
+        <a href="https://koreans.tw/store/manage" target="_blank">https://koreans.tw/store/manage</a>
+      </div>
+    </div>
+
+    <div class="screenshot-grid">
+      <div class="screenshot-card">
+        <div class="screenshot-header">한인맵 매장 및 지도 화면</div>
+        <img class="screenshot-img" src="screenshots/store_map_logged_in_1791249999960.png" alt="한인맵 매장">
+      </div>
+      <div class="screenshot-card">
+        <div class="screenshot-header">사용자 회원가입 및 이메일 인증 절차</div>
+        <img class="screenshot-img" src="screenshots/register_mail_sent_1791251740682.png" alt="회원가입 이메일 발송">
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 6 -->
+  <div class="section-card" id="part6">
+    <div class="section-head">
+      <h2>PART 6. 쿠폰 발행 및 매장 현장 PIN 결제</h2>
+      <span class="section-badge">COUPON & POS AUTH</span>
+    </div>
+
+    <div class="workflow-box">
+      <strong>업무 플로우:</strong> [쿠폰 생성(https://koreans.tw/coupon/manage/create)] → [정회원 다운로드(https://koreans.tw/coupon)] → [내 보관함 확인(https://koreans.tw/coupon/my)] → [매장 방문 제시] → [직원 PIN 비밀번호 입력] → 즉시 차감 및 사용완료 전환
+    </div>
+
+    <div class="url-bar">
+      <div class="url-item">
+        <strong>관리자 쿠폰 (A):</strong>
+        <a href="https://koreans.tw/admin/index.html?section=coupons" target="_blank">https://koreans.tw/admin/index.html?section=coupons</a>
+      </div>
+      <div class="url-item">
+        <strong>쿠폰 다운로드 (F):</strong>
+        <a href="https://koreans.tw/coupon" target="_blank">https://koreans.tw/coupon</a>
+      </div>
+      <div class="url-item">
+        <strong>내 쿠폰함 (F):</strong>
+        <a href="https://koreans.tw/coupon/my" target="_blank">https://koreans.tw/coupon/my</a>
+      </div>
+    </div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>쿠폰 유형</th>
+          <th>대상 회원</th>
+          <th>수량 관리 및 사용 규칙</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>UNIVERSAL</code></td>
+          <td>모든 정회원 (ROLE_REGULAR)</td>
+          <td>무제한 다운로드 가능 (계정당 1회)</td>
+        </tr>
+        <tr>
+          <td><code>LIMITED</code></td>
+          <td>선착순 정회원</td>
+          <td>설정된 선착순 수량 소진 시 다운로드 자동 마감</td>
+        </tr>
+        <tr>
+          <td><code>PERSONAL</code></td>
+          <td>지정된 특정 회원</td>
+          <td>관리자가 지정한 타깃 사용자에게만 개별 지급</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="screenshot-grid">
+      <div class="screenshot-card">
+        <div class="screenshot-header">매장 현장 PIN 인증 팝업</div>
+        <img class="screenshot-img" src="screenshots/coupon_pin_check_1791251019409.png" alt="쿠폰 PIN 확인">
+      </div>
+      <div class="screenshot-card">
+        <div class="screenshot-header">사용자 마이페이지 쿠폰 보관함</div>
+        <img class="screenshot-img" src="screenshots/mypage_logged_in_1791249967099.png" alt="내 쿠폰함">
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 7 -->
+  <div class="section-card" id="part7">
+    <div class="section-head">
+      <h2>PART 7. 커뮤니티 게시글 및 신고 관리</h2>
+      <span class="section-badge">COMMUNITY & MODERATION</span>
+    </div>
+
+    <div class="workflow-box">
+      <strong>업무 플로우:</strong> [https://koreans.tw/admin/index.html?section=userPosts] 게시글 및 신고 내역 모니터링 → 불량/악성 글 [숨김/블라인드] 또는 [영구 삭제] 처리
+    </div>
+
+    <div class="url-bar">
+      <div class="url-item">
+        <strong>게시글 관리 (A):</strong>
+        <a href="https://koreans.tw/admin/index.html?section=userPosts" target="_blank">https://koreans.tw/admin/index.html?section=userPosts</a>
+      </div>
+      <div class="url-item">
+        <strong>커뮤니티 확인 (F):</strong>
+        <a href="https://koreans.tw/community" target="_blank">https://koreans.tw/community</a>
+      </div>
+    </div>
+
+    <div class="screenshot-grid">
+      <div class="screenshot-card">
+        <div class="screenshot-header">커뮤니티 게시글 상세 및 댓글</div>
+        <img class="screenshot-img" src="screenshots/post_detail_view_1791251078136.png" alt="게시글 상세 화면">
+      </div>
+      <div class="screenshot-card">
+        <div class="screenshot-header">검색 및 보안 테스트 화면</div>
+        <img class="screenshot-img" src="screenshots/xss_search_test_1791251140620.png" alt="보안 검색 테스트">
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 9 -->
+  <div class="section-card" id="part9">
+    <div class="section-head">
+      <h2>PART 9. 불량 회원 정지 및 소명서 심사</h2>
+      <span class="section-badge">SANCTIONS & APPEAL</span>
+    </div>
+
+    <div class="workflow-box">
+      <strong>업무 플로우:</strong> 부정 이용 / 규정 위반 적발 → [https://koreans.tw/admin/index.html?section=sanctions] 제재 등록(정지 기간/사유) → 사용자 로그인 시 차단 안내(https://koreans.tw/block) 강제 이동 → 사용자 소명서 제출 → [https://koreans.tw/admin/index.html?section=sanctionCertificate] 소명서 검토 후 인용 시 제재 즉시 해제
+    </div>
+
+    <div class="url-bar">
+      <div class="url-item">
+        <strong>제재 관리 (A):</strong>
+        <a href="https://koreans.tw/admin/index.html?section=sanctions" target="_blank">https://koreans.tw/admin/index.html?section=sanctions</a>
+      </div>
+      <div class="url-item">
+        <strong>소명서 검토 (A):</strong>
+        <a href="https://koreans.tw/admin/index.html?section=sanctionCertificate" target="_blank">https://koreans.tw/admin/index.html?section=sanctionCertificate</a>
+      </div>
+      <div class="url-item">
+        <strong>사용자 차단 화면 (F):</strong>
+        <a href="https://koreans.tw/block" target="_blank">https://koreans.tw/block</a>
+      </div>
+    </div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>구분</th>
+          <th>처리 주체</th>
+          <th>상세 절차 및 시스템 반영</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-danger">제재 등록</span></td>
+          <td>운영자</td>
+          <td>대상 회원 선택 후 정지 사유 및 일수(또는 영구) 지정. 저장 시 해당 계정은 즉시 세션 차단</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-warning">차단 안내</span></td>
+          <td>시스템</td>
+          <td>제재된 계정 로그인 시 일반 화면 진입 불가 및 <code>https://koreans.tw/block</code>으로 강제 리다이렉트</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-info">소명서 제출</span></td>
+          <td>사용자</td>
+          <td>차단 화면에서 소명 사유 및 해명 증빙 자료 작성 후 제출</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-success">소명서 심사</span></td>
+          <td>운영자</td>
+          <td>제출된 소명서 검토 후 [승인] 시 제재 해제 및 정상 계정 복원, [기각] 시 제재 상태 유지</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="screenshot-grid">
+      <div class="screenshot-card">
+        <div class="screenshot-header">관리자 제재 및 회원 관리 콘솔</div>
+        <img class="screenshot-img" src="screenshots/admin_user_management_1791249449633.png" alt="제재 관리">
+      </div>
+      <div class="screenshot-card">
+        <div class="screenshot-header">사용자 계정 상태 화면</div>
+        <img class="screenshot-img" src="screenshots/mypage_logged_in_1791249967099.png" alt="계정 상태">
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

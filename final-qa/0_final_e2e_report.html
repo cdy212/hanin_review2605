@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>한인회 LIVE E2E 최종 브라우저 검증 종합 리포트</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --pass: #166534;
+      --pass-bg: #dcfce7;
+      --primary: #2563eb;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      padding: 14px;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    .header {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px 16px;
+      margin-bottom: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .header h1 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .meta-list {
+      display: flex;
+      gap: 14px;
+      font-size: 12px;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+    .meta-item strong { color: var(--text-main); margin-right: 4px; }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.3px;
+    }
+    .badge-pass { background: var(--pass-bg); color: var(--pass); border: 1px solid #bbf7d0; }
+
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+    .summary-table th, .summary-table td {
+      padding: 7px 10px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+    }
+    .summary-table th {
+      background: #f1f5f9;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .summary-table tr:last-child td { border-bottom: none; }
+    .summary-table a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .summary-table a:hover { text-decoration: underline; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 10px;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .card-head {
+      padding: 7px 10px;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .card-head .title {
+      font-weight: 700;
+      font-size: 12px;
+      color: var(--text-main);
+    }
+    .card-body {
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      flex: 1;
+    }
+    .row {
+      display: flex;
+      font-size: 11px;
+      gap: 6px;
+    }
+    .row .label {
+      width: 64px;
+      flex-shrink: 0;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .row .val {
+      flex: 1;
+      word-break: break-all;
+      color: var(--text-main);
+    }
+    .code-val {
+      font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 11px;
+      background: #f1f5f9;
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+    .img-box {
+      margin-top: 5px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      background: #f8fafc;
+      text-align: center;
+      max-height: 200px;
+    }
+    .img-box img {
+      width: 100%;
+      height: 200px;
+      object-fit: contain;
+      display: block;
+      cursor: pointer;
+    }
+    .footer-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px 16px;
+      margin-top: 14px;
+      font-size: 12px;
+    }
+    .footer-box h2 {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .footer-box ul {
+      margin-left: 18px;
+      color: var(--text-muted);
+    }
+    .footer-box li { margin-bottom: 4px; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div>
+      <h1>한인회 LIVE E2E 최종 브라우저 검증 종합 리포트</h1>
+      <div class="meta-list">
+        <span class="meta-item"><strong>대상 도메인:</strong> https://koreans.tw</span>
+        <span class="meta-item"><strong>실행 식별자:</strong> QA_20261006_LIVE</span>
+        <span class="meta-item"><strong>검증 도구:</strong> browser_subagent</span>
+        <span class="meta-item"><strong>운영자 계정:</strong> cdy212 (ROLE_ADMIN)</span>
+        <span class="meta-item"><strong>사용자 세션:</strong> 랑하 (google_107226787888491879892, ROLE_REGULAR)</span>
+      </div>
+    </div>
+    <div>
+      <span class="badge badge-pass" style="font-size: 13px; padding: 4px 12px;">전체 17건 전건 PASS (100%)</span>
+    </div>
+  </div>
+
+  <table class="summary-table">
+    <thead>
+      <tr>
+        <th style="width: 75px;">TC ID</th>
+        <th style="width: 135px;">기능 단위</th>
+        <th>점검 URL</th>
+        <th>최종 도달 URL</th>
+        <th style="width: 65px;">판정</th>
+        <th>검증 결과 요약</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>TC-AUTH-01</strong></td>
+        <td>로그인 폼 렌더</td>
+        <td><a href="https://koreans.tw/login" target="_blank">https://koreans.tw/login</a></td>
+        <td><span class="code-val">/login</span></td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td>아이디/비밀번호 필드, 로그인 버튼, 회원가입/찾기 링크 및 SNS 로그인 렌더 정상 (콘솔 에러 0건)</td>
+      </tr>
+      <tr>
+        <td><strong>TC-AUTH-02</strong></td>
+        <td>회원가입 폼 렌더</td>
+        <td><a href="https://koreans.tw/register" target="_blank">https://koreans.tw/register</a></td>
+        <td><span class="code-val">/register</span></td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td>아이디, 이메일, 메일발송, 프로필명, 비밀번호, 약관동의 체크박스 렌더 정상</td>
+      </tr>
+      <tr>
+        <td><strong>TC-AUTH-03A</strong></td>
+        <td>메인 비인가 가드</td>
+        <td><a href="https://koreans.tw/main" target="_blank">https://koreans.tw/main</a></td>
+        <td><span class="code-val">/login</span></td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td>비로그인 직접 접근 즉시 차단 및 로그인 페이지 리다이렉트 (데이터 보호)</td>
+      </tr>
+      <tr>
+        <td><strong>TC-AUTH-03B</strong></td>
+        <td>멤버십 비인가 가드</td>
+        <td><a href="https://koreans.tw/membership" target="_blank">https://koreans.tw/membership</a></td>
+        <td><span class="code-val">/login</span></td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td>비로그인 등급 신청 직접 접근 차단 및 로그인 페이지 리다이렉트</td>
+      </tr>
+      <tr>
+        <td><strong>TC-AUTH-03C</strong></td>
+        <td>한인맵 비인가 가드</td>
+        <td><a href="https://koreans.tw/store" target="_blank">https://koreans.tw/store</a></td>
+        <td><span class="code-val">/login</span></td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td>비로그인 스토어 직접 접근 차단 및 로그인 페이지 리다이렉트</td>
+      </tr>
+      <tr>
+        <td><strong>TC-ADMIN-01</strong></td>
+        <td>관리자 콘솔 가드</td>
+        <td><a href="https://koreans.tw/admin/index.html" target="_blank">https://koreans.tw/admin/index.html</a></td>
+        <td><span class="code-val">/admin/index.html</span></td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td>비인가 접근 시 대시보드 미노출, 관리자 전용 인증 폼 정상 요구</td>
+      </tr>
+      <tr>
+        <td><strong>TC-ADMIN-02</strong></td>
+        <td>운영자 세션 & CMS</td>
+        <td><a href="https://koreans.tw/admin/index.html" target="_blank">https://koreans.tw/admin/index.html</a></td>
+        <td><span class="code-val">/admin/index.html</span></td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td>cdy212 (ROLE_ADMIN) 로그인 확인, CMS/USER/UPLOAD/SYSTEM 메뉴 정상 렌더</td>
+      </tr>
+      <tr>
+        <td><strong>TC-ADMIN-03</strong></td>
+        <td>유저 권한관리 조회</td>
+        <td>운영 콘솔 (유저 권한관리)</td>
+        <td><span class="code-val">users/authority</span></td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td>전체 회원 목록 78건 로딩, 계정 검색 및 상태(ACTIVE/ROLE_ADMIN 등) 정상 표시</td>
+      </tr>
+      <tr>
+        <td><strong>TC-ADMIN-04</strong></td>
+        <td>멤버쉽 심사 관리</td>
+        <td>운영 콘솔 (멤버쉽 관리)</td>
+        <td><span class="code-val">membership/approval</span></td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td>총 18건 심사 내역 조회, 대기 건수 및 cdy212 제휴 승인 완료건 확인</td>
+      </tr>
+      <tr>
+        <td><strong>TC-SIGNUP-01</strong></td>
+        <td>인증 메일 발송 연동</td>
+        <td><a href="https://koreans.tw/register" target="_blank">https://koreans.tw/register</a></td>
+        <td><span class="code-val">/register</span></td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td>cdy212@naver.com 메일발송 버튼 클릭 -> 버튼 '재발송' 변경 및 인증번호 6자리 입력란 활성화 성공</td>
+      </tr>
+      <tr>
+        <td><strong>TC-AUTH-04</strong></td>
+        <td>사용자 로그인 세션</td>
+        <td>소셜 로그인 연동</td>
+        <td><span class="code-val">/main</span></td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td>소셜 인증 완료 후 세션 토큰 발급, 메인 자동 진입 및 로그인 유지 성공</td>
+      </tr>
+      <tr>
+        <td><strong>TC-MAIN-01</strong></td>
+        <td>로그인 사용자 메인</td>
+        <td><a href="https://koreans.tw/main" target="_blank">https://koreans.tw/main</a></td>
+        <td><span class="code-val">/main</span></td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td>TOP 배너 캐러셀, 카테고리 퀵메뉴, 내 쿠폰(9개 보유), 게시글 피드 정상 로딩</td>
+      </tr>
+      <tr>
+        <td><strong>TC-USER-01</strong></td>
+        <td>마이페이지 프로필</td>
+        <td><a href="https://koreans.tw/mypage" target="_blank">https://koreans.tw/mypage</a></td>
+        <td><span class="code-val">/mypage</span></td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td>닉네임 "랑하", [ 정회원 ] 등급 뱃지, 내 활동 내역 탭 정상 표기</td>
+      </tr>
+      <tr>
+        <td><strong>TC-MEM-01</strong></td>
+        <td>멤버십 신청 현황</td>
+        <td><a href="https://koreans.tw/membership" target="_blank">https://koreans.tw/membership</a></td>
+        <td><span class="code-val">/membership</span></td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td>정회원(승인 완료) / 제휴업체(반려) 신청 이력 및 재신청 동선 정상 확인</td>
+      </tr>
+      <tr>
+        <td><strong>TC-STORE-01</strong></td>
+        <td>한인맵 및 권한 가드</td>
+        <td><a href="https://koreans.tw/store" target="_blank">https://koreans.tw/store</a></td>
+        <td><span class="code-val">/store</span></td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td>지도 타일 및 업체 리스트 정상, ROLE_REGULAR에 대해 '+ 업체 등록' 비노출 정상 통제</td>
+      </tr>
+      <tr>
+        <td><strong>TC-COUPON-01</strong></td>
+        <td>쿠폰 상세 및 보안 PIN</td>
+        <td><a href="https://koreans.tw/coupon/3" target="_blank">https://koreans.tw/coupon/3</a></td>
+        <td><span class="code-val">/coupon/3</span></td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td>쿠폰명, 바코드, 유효기간(D-87), 오프라인 보안 PIN 1111 정상 표시</td>
+      </tr>
+      <tr>
+        <td><strong>TC-COMM-01</strong></td>
+        <td>커뮤니티 게시글 상세</td>
+        <td><a href="https://koreans.tw/community/detail/71" target="_blank">/community/detail/71</a></td>
+        <td><span class="code-val">/community/detail/71</span></td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td>제목, 작성자, 온도(36.5°C), 본문, 좋아요 1, 북마크, 신고 및 댓글 렌더 정상</td>
+      </tr>
+      <tr>
+        <td><strong>TC-SEC-01</strong></td>
+        <td>검색창 XSS 인젝션 방어</td>
+        <td>스토어 및 커뮤니티 검색창</td>
+        <td><span class="code-val">/store, /community</span></td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td>악성 스크립트 태그 입력 시 팝업 미실행, 안전한 텍스트 이스케이프 처리 무결성 확인</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="grid">
+    <!-- 카드 1 -->
+    <div class="card">
+      <div class="card-head">
+        <span class="title">TC-AUTH-01: 로그인 폼 무결성</span>
+        <span class="badge badge-pass">PASS</span>
+      </div>
+      <div class="card-body">
+        <div class="row"><span class="label">대상 URL</span><span class="val code-val">https://koreans.tw/login</span></div>
+        <div class="row"><span class="label">기대 결과</span><span class="val">아이디/비밀번호 입력 및 로그인 동선 정상 노출</span></div>
+        <div class="row"><span class="label">실제 결과</span><span class="val">타이틀 "중화민국대만한인회", 폼 및 링크 전건 정상 (콘솔 0건)</span></div>
+        <div class="img-box"><img src="./screenshots/step1_login_page_1791248975292.png" alt="TC-AUTH-01" onclick="window.open(this.src)"></div>
+      </div>
+    </div>
+
+    <!-- 카드 2 -->
+    <div class="card">
+      <div class="card-head">
+        <span class="title">TC-SIGNUP-01: 이메일 인증 발송</span>
+        <span class="badge badge-pass">PASS</span>
+      </div>
+      <div class="card-body">
+        <div class="row"><span class="label">대상 URL</span><span class="val code-val">https://koreans.tw/register</span></div>
+        <div class="row"><span class="label">기대 결과</span><span class="val">cdy212@naver.com 메일발송 클릭 시 인증코드 입력란 활성화</span></div>
+        <div class="row"><span class="label">실제 결과</span><span class="val">버튼 '재발송' 전환, 6자리 인증번호 입력란 및 확인 버튼 정상 활성화</span></div>
+        <div class="img-box"><img src="./screenshots/register_mail_sent_1791251740682.png" alt="TC-SIGNUP-01" onclick="window.open(this.src)"></div>
+      </div>
+    </div>
+
+    <!-- 카드 3 -->
+    <div class="card">
+      <div class="card-head">
+        <span class="title">TC-MAIN-01: 로그인 사용자 메인</span>
+        <span class="badge badge-pass">PASS</span>
+      </div>
+      <div class="card-body">
+        <div class="row"><span class="label">대상 URL</span><span class="val code-val">https://koreans.tw/main</span></div>
+        <div class="row"><span class="label">기대 결과</span><span class="val">TOP 배너, 카테고리 퀵메뉴, 보유 쿠폰 9건, 피드 렌더</span></div>
+        <div class="row"><span class="label">실제 결과</span><span class="val">배너 캐러셀, 내 쿠폰 9건 보유 목록, 피드 렌더 정상 (콘솔 0건)</span></div>
+        <div class="img-box"><img src="./screenshots/main_logged_in_1791249953461.png" alt="TC-MAIN-01" onclick="window.open(this.src)"></div>
+      </div>
+    </div>
+
+    <!-- 카드 4 -->
+    <div class="card">
+      <div class="card-head">
+        <span class="title">TC-USER-01: 마이페이지 & 정회원 등급</span>
+        <span class="badge badge-pass">PASS</span>
+      </div>
+      <div class="card-body">
+        <div class="row"><span class="label">대상 URL</span><span class="val code-val">https://koreans.tw/mypage</span></div>
+        <div class="row"><span class="label">기대 결과</span><span class="val">닉네임, 등급 뱃지, 활동 내역(글/댓글/좋아요/북마크) 렌더</span></div>
+        <div class="row"><span class="label">실제 결과</span><span class="val">닉네임 "랑하", [ 정회원 ] 등급 표기, 활동 탭 정상 작동</span></div>
+        <div class="img-box"><img src="./screenshots/mypage_logged_in_1791249967099.png" alt="TC-USER-01" onclick="window.open(this.src)"></div>
+      </div>
+    </div>
+
+    <!-- 카드 5 -->
+    <div class="card">
+      <div class="card-head">
+        <span class="title">TC-COUPON-01: 쿠폰 상세 및 보안 PIN</span>
+        <span class="badge badge-pass">PASS</span>
+      </div>
+      <div class="card-body">
+        <div class="row"><span class="label">대상 URL</span><span class="val code-val">https://koreans.tw/coupon/3</span></div>
+        <div class="row"><span class="label">기대 결과</span><span class="val">쿠폰 상세정보, 바코드, 유효기간, 보안 PIN 표시</span></div>
+        <div class="row"><span class="label">실제 결과</span><span class="val">코드 77CCC74E-A7F, 만료일 D-87, 오프라인 보안 PIN 1111 정상 확인</span></div>
+        <div class="img-box"><img src="./screenshots/coupon_pin_check_1791251019409.png" alt="TC-COUPON-01" onclick="window.open(this.src)"></div>
+      </div>
+    </div>
+
+    <!-- 카드 6 -->
+    <div class="card">
+      <div class="card-head">
+        <span class="title">TC-COMM-01: 커뮤니티 게시글 상세</span>
+        <span class="badge badge-pass">PASS</span>
+      </div>
+      <div class="card-body">
+        <div class="row"><span class="label">대상 URL</span><span class="val code-val">https://koreans.tw/community/detail/71</span></div>
+        <div class="row"><span class="label">기대 결과</span><span class="val">제목, 작성자 매너온도, 본문, 댓글, 반응 버튼 정상 렌더</span></div>
+        <div class="row"><span class="label">실제 결과</span><span class="val">작성자 "하이하이(36.5°C)", 좋아요 1, 북마크, 댓글 목록 정상 표기</span></div>
+        <div class="img-box"><img src="./screenshots/post_detail_view_1791251078136.png" alt="TC-COMM-01" onclick="window.open(this.src)"></div>
+      </div>
+    </div>
+
+    <!-- 카드 7 -->
+    <div class="card">
+      <div class="card-head">
+        <span class="title">TC-STORE-01: 한인맵 & 제휴 등록 권한 통제</span>
+        <span class="badge badge-pass">PASS</span>
+      </div>
+      <div class="card-body">
+        <div class="row"><span class="label">대상 URL</span><span class="val code-val">https://koreans.tw/store</span></div>
+        <div class="row"><span class="label">기대 결과</span><span class="val">지도/업체 목록 표시 및 ROLE_REGULAR의 업체 등록 차단</span></div>
+        <div class="row"><span class="label">실제 결과</span><span class="val">업체 리스트 정상 렌더, PARTNER 전용 '+ 업체등록' 버튼 비노출 확인</span></div>
+        <div class="img-box"><img src="./screenshots/store_map_logged_in_1791249999960.png" alt="TC-STORE-01" onclick="window.open(this.src)"></div>
+      </div>
+    </div>
+
+    <!-- 카드 8 -->
+    <div class="card">
+      <div class="card-head">
+        <span class="title">TC-SEC-01: 검색창 XSS 인젝션 방어</span>
+        <span class="badge badge-pass">PASS</span>
+      </div>
+      <div class="card-body">
+        <div class="row"><span class="label">대상 URL</span><span class="val code-val">https://koreans.tw/store & /community</span></div>
+        <div class="row"><span class="label">기대 결과</span><span class="val">스크립트 태그 삽입 시 무단 실행 없이 안전 텍스트 처리</span></div>
+        <div class="row"><span class="label">실제 결과</span><span class="val">&lt;script&gt;alert('XSS')&lt;/script&gt; 입력 시 알림창 미실행 및 안전 이스케이프</span></div>
+        <div class="img-box"><img src="./screenshots/xss_search_test_1791251140620.png" alt="TC-SEC-01" onclick="window.open(this.src)"></div>
+      </div>
+    </div>
+
+    <!-- 카드 9 -->
+    <div class="card">
+      <div class="card-head">
+        <span class="title">TC-ADMIN-02: 운영자 대시보드 세션</span>
+        <span class="badge badge-pass">PASS</span>
+      </div>
+      <div class="card-body">
+        <div class="row"><span class="label">대상 URL</span><span class="val code-val">https://koreans.tw/admin/index.html</span></div>
+        <div class="row"><span class="label">기대 결과</span><span class="val">ROLE_ADMIN 로그인 상태 유지 및 CMS/운영 메뉴 렌더</span></div>
+        <div class="row"><span class="label">실제 결과</span><span class="val">cdy212(ROLE_ADMIN) 로그인 완료, 통계 그래프 및 네비게이션 정상</span></div>
+        <div class="img-box"><img src="./screenshots/admin_dashboard_1791249330065.png" alt="TC-ADMIN-02" onclick="window.open(this.src)"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-box">
+    <h2>E2E 테스트 실행 최종 결론</h2>
+    <ul>
+      <li><strong>검증 완성도:</strong> 총 17건 핵심 비즈니스·권한·보안 TC 전건 정상 (PASS 100%). JavaScript 콘솔 런타임 오류(TypeError 등) 0건.</li>
+      <li><strong>운영자 - 사용자 간 데이터 정합성:</strong> 운영자 콘솔(cdy212)의 심사 승인 상태(정회원)가 사용자 웹(랑하)의 마이페이지, 메인 쿠폰함(9장), 한인맵 권한 가드에 실시간 정확히 동기화되어 반영됨을 확인 완료.</li>
+      <li><strong>보안 및 권한 통제 무결성:</strong> 비로그인 보호 라우트 리다이렉트 차단, 정회원의 제휴 전용 기능 접근 차단, 검색창 XSS 스크립트 무해화 처리가 완벽히 동작하고 있습니다.</li>
+    </ul>
+  </div>
+
+</body>
+</html>
